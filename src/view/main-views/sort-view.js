@@ -31,7 +31,7 @@ function createEventsSortTemplate () {
   );
 }
 
-export default class EventsSort {
+export default class EventsSortView {
   getTemplate() {
     return createEventsSortTemplate();
   }

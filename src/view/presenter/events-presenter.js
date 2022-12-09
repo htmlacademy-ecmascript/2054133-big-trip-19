@@ -1,11 +1,11 @@
 import {render} from '../../render.js';
-import EventsSort from '../../view/main-views/sort-view.js';
-import EventsList from '../../view/main-views/list-view.js';
-import Point from '../../view/main-views/point.js';
-import CreatePoint from '../../view/main-views/create-point-view.js';
-import CreatePointOffers from '../main-views/create-point-offers-view.js';
-import CreatePointDestination from '../main-views/create-point-destination-view.js';
-import EditPoint from '../../view/main-views/edit-point-view.js';
+import EventsSortView from '../../view/main-views/sort-view.js';
+import EventsListView from '../../view/main-views/list-view.js';
+import PointView from '../../view/main-views/point.js';
+import CreatePointView from '../../view/main-views/create-point-view.js';
+import CreatePointOffersView from '../main-views/create-point-offers-view.js';
+import CreatePointDestinationView from '../main-views/create-point-destination-view.js';
+import EditPointView from '../../view/main-views/edit-point-view.js';
 
 export default class EventsPresenter {
   constructor({eventsContainer}) {
@@ -13,15 +13,15 @@ export default class EventsPresenter {
   }
 
   init() {
-    render(new EventsSort(), this.eventsContainer);
-    render(new EventsList(), this.eventsContainer);
+    render(new EventsSortView(), this.eventsContainer);
+    render(new EventsListView(), this.eventsContainer);
     const listElement = document.querySelector('.trip-events__list');
-    render(new EditPoint(), listElement);
+    render(new EditPointView(), listElement);
     for (let i = 0; i < 3; i++) {
-      render(new Point(), listElement);
+      render(new PointView(), listElement);
     }
-    render(new CreatePoint(), listElement);
-    render(new CreatePointOffers(), listElement);
-    render(new CreatePointDestination(), listElement);
+    render(new CreatePointView(), listElement);
+    render(new CreatePointOffersView(), listElement);
+    render(new CreatePointDestinationView(), listElement);
   }
 }

@@ -117,7 +117,7 @@ function createPointDestinationTemplate () {
   );
 }
 
-export default class CreatePointDestination {
+export default class CreatePointDestinationView {
   getTemplate() {
     return createPointDestinationTemplate();
   }

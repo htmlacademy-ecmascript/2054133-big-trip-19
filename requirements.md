@@ -8,7 +8,7 @@ npm i dayjs@1.11.6 -E
 npm i eslint@8.28.0 -DE
 ```
 
-## Зависимости приложения (`dependencies`)
+## Зависимости приложения (`тз`)
 
 - dayjs@1.11.6
 - flatpickr@4.6.13

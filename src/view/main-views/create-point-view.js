@@ -167,7 +167,7 @@ function createPointTemplate () {
   );
 }
 
-export default class CreatePoint {
+export default class CreatePointView {
   getTemplate() {
     return createPointTemplate();
   }

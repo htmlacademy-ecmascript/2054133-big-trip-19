@@ -160,7 +160,7 @@ function createItemEditPointTemplate () {
   );
 }
 
-export default class EditPoint {
+export default class EditPointView {
   getTemplate() {
     return createItemEditPointTemplate();
   }

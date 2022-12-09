@@ -153,7 +153,7 @@ function createPointOffersTemplate () {
   );
 }
 
-export default class CreatePointOffers {
+export default class CreatePointOffersView {
   getTemplate() {
     return createPointOffersTemplate();
   }

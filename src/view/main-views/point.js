@@ -42,7 +42,7 @@ function createPointTemplate () {
   );
 }
 
-export default class Point {
+export default class PointView {
   getTemplate() {
     return createPointTemplate();
   }
