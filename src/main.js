@@ -1,12 +1,14 @@
-import HeaderPresenter from './view/presenter/header-presenter.js';
-import EventsPresenter from './view/presenter/events-presenter.js';
+import PointModel from './model/point-model';
+import HeaderPresenter from './presenter/header-presenter';
+import EventsPresenter from './presenter/events-presenter';
 
 const mainElement = document.querySelector('.trip-main');
 const filtersElement = document.querySelector('.trip-controls__filters');
 const eventsElement = document.querySelector('.trip-events');
 
-const headerPresenter = new HeaderPresenter({mainContainer: mainElement, filtersContainer: filtersElement});
-const eventsPresenter = new EventsPresenter({eventsContainer: eventsElement});
+const pointModel = new PointModel();
+const headerPresenter = new HeaderPresenter(mainElement, filtersElement);
+const eventsPresenter = new EventsPresenter(eventsElement, pointModel);
 
 headerPresenter.init();
 eventsPresenter.init();
