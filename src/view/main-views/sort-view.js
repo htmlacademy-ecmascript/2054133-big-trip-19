@@ -1,4 +1,4 @@
-import {createElement} from '../../render.js';
+import { createElement } from '../../render';
 
 function createEventsSortTemplate () {
   return (
@@ -31,7 +31,7 @@ function createEventsSortTemplate () {
   );
 }
 
-export default class EventsSort {
+export default class EventsSortView {
   getTemplate() {
     return createEventsSortTemplate();
   }

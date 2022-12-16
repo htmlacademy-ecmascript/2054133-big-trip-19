@@ -1,4 +1,4 @@
-import {createElement} from '../../render.js';
+import { createElement } from '../../render';
 
 function createPointDestinationTemplate () {
   return (
@@ -117,7 +117,7 @@ function createPointDestinationTemplate () {
   );
 }
 
-export default class CreatePointDestination {
+export default class CreatePointDestinationView {
   getTemplate() {
     return createPointDestinationTemplate();
   }

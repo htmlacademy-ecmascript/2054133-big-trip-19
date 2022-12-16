@@ -1,4 +1,4 @@
-import {createElement} from '../../render.js';
+import { createElement } from '../../render';
 
 function createPointOffersTemplate () {
   return (
@@ -153,7 +153,7 @@ function createPointOffersTemplate () {
   );
 }
 
-export default class CreatePointOffers {
+export default class CreatePointOffersView {
   getTemplate() {
     return createPointOffersTemplate();
   }
