@@ -1,11 +1,13 @@
-import { renderPoint, Destinations, Offers } from '../mock/data';
+import { generatePoint, Destinations, Offers } from '../mock/data';
 
 const POINTS_COUNT = 10;
 
 export default class PointModel {
-  events = Array.from({length: POINTS_COUNT}, renderPoint);
-  destinations = Destinations;
-  offers = Offers;
+  init() {
+    this.events = Array.from({length: POINTS_COUNT}, generatePoint);
+    this.destinations = Destinations;
+    this.offers = Offers;
+  }
 
   getEvent() {
     return this.events;

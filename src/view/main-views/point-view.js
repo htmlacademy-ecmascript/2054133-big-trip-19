@@ -1,54 +1,30 @@
 import { createElement } from '../../render';
-import { humanizeDate, humanizeTime, humanizeDateTime } from '../../utils';
+import { humanizeDate, DATE_FORMAT, TIME_FORMAT, DATE_TIME_FORMAT } from '../../utils';
 import dayjs from 'dayjs';
 
 function createPointTemplate (point, pointDestination) {
   const {type, basePrice, dateFrom, dateTo, isFavorite} = point;
   const {name} = pointDestination;
 
-  const formatDate = (date) => humanizeDate(date);
-  const formatDateTime = (date) => humanizeDateTime(date);
-  const formatTime = (date) => humanizeTime(date.slice(0,-1));
+  const differenceTime = dayjs(dateTo).diff(dateFrom,'h', 'm');
+  const differenceDays = dayjs(dateTo).diff(dateFrom,'d');
+  const roundedMinutes = Math.ceil(Number(`${0}.${differenceTime.toString().split('.')[1]}`) * 60);
 
-  const timeDuration = () => {
-    const differenceTime = dayjs(dateTo).diff(dateFrom,'h', 'm');
-    const differenceDays = dayjs(dateTo).diff(dateFrom,'d');
+  const getFormattedDate = (date, format) => {
+    if (!date.toString().length) {
+      return '';
+    }
 
-    const days = () => {
+    if (date.toString().length === 1) {
+      return `0${date}${format}`;
+    }
 
-      if (differenceDays === 0) {
-        return '';
-      }
-      else if (differenceDays.toString().length === 1) {
-        return `0${differenceDays}D`;
-      }
-      return `${differenceDays}D`;
-    };
-
-    const hours = () => {
-      const integerHours = Math.trunc(differenceTime);
-      if (integerHours === 0) {
-        return '';
-      }
-      else if (integerHours.toString().length === 1) {
-        return `0${integerHours}H`;
-      }
-      return `${integerHours}H`;
-    };
-
-    const minutes = () => {
-      const roundedMinutes = Math.ceil(Number(`${0}.${differenceTime.toString().split('.')[1]}`) * 60);
-
-      if (roundedMinutes.toString().length === 1) {
-        return `0${roundedMinutes}M`;
-      }
-      return `${roundedMinutes}M`;
-    };
-
-    return `${days()} ${hours()} ${minutes()}`;
+    return `${date}${format}`;
   };
 
-  const favorite = () => {
+  const timeDuration = `${getFormattedDate(differenceDays, 'D')} ${getFormattedDate(Math.trunc(differenceTime), 'H')} ${getFormattedDate(roundedMinutes, 'M')}`;
+
+  const getFavorite = () => {
     if (isFavorite) {
       return ' event__favorite-btn--active';
     }
@@ -58,18 +34,18 @@ function createPointTemplate (point, pointDestination) {
   return (
     `<li class="trip-events__item">
       <div class="event">
-        <time class="event__date" datetime="${(formatDateTime(dateFrom))}">${formatDate(dateFrom)}</time>
+        <time class="event__date" datetime="${humanizeDate(dateFrom, DATE_TIME_FORMAT)}">${humanizeDate(dateFrom, DATE_FORMAT)}</time>
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
         <h3 class="event__title">${type} ${name}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="${(formatDateTime(dateFrom))}">${formatTime(dateFrom)}</time>
+            <time class="event__start-time" datetime="${humanizeDate(dateFrom, DATE_TIME_FORMAT)}">${humanizeDate(dateFrom.slice(0,-1), TIME_FORMAT)}</time>
             &mdash;
-            <time class="event__end-time" datetime="${(formatDateTime(dateTo))}">${formatTime(dateTo)}</time>
+            <time class="event__end-time" datetime="${humanizeDate(dateTo, DATE_TIME_FORMAT)}">${humanizeDate(dateTo.slice(0,-1), TIME_FORMAT)}</time>
           </p>
-          <p class="event__duration">${timeDuration()}</p>
+          <p class="event__duration">${timeDuration}</p>
         </div>
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
@@ -82,7 +58,7 @@ function createPointTemplate (point, pointDestination) {
            <span class="event__offer-price">20</span>
           </li>
         </ul>
-        <button class="event__favorite-btn${favorite()}" type="button">
+        <button class="event__favorite-btn${getFavorite()}" type="button">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
             <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>

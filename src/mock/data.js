@@ -136,7 +136,7 @@ const Offers = [
   },
 ];
 
-const renderPoint = () => ({
+const generatePoint = () => ({
   basePrice: getRandomIntInclusive(POINT_PRICE.min, POINT_PRICE.max),
   dateFrom: '2022-07-14T07:55:56.845Z',
   dateTo: '2022-07-15T16:25:13.375Z',
@@ -147,5 +147,5 @@ const renderPoint = () => ({
   type: getRandomArrayElement(TYPES_OF_TRANSPORT),
 });
 
-export { Destinations, Offers, renderPoint };
+export { Destinations, Offers, generatePoint };
 

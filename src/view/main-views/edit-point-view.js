@@ -1,12 +1,10 @@
 import { createElement } from '../../render';
-import { humanizeDateTimeInput } from '../../utils';
+import { humanizeDate, DATE_TIME_INPUT_FORMAT } from '../../utils';
 
 function createItemEditPointTemplate (point, pointDestination, pointOffers) {
   const {type, basePrice, dateFrom, dateTo} = point;
   const {description, name} = pointDestination;
   const {offers} = pointOffers;
-
-  const dateTimeInput = (date) => humanizeDateTimeInput(date);
 
   const createOfferElements = `${offers.reduce((prev, offer) =>
     `${prev} <div class="event__offer-selector">
@@ -96,10 +94,10 @@ function createItemEditPointTemplate (point, pointDestination, pointOffers) {
 
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time-1">From</label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dateTimeInput(dateFrom)}">
+        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeDate(dateFrom, DATE_TIME_INPUT_FORMAT)}">
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">To</label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dateTimeInput(dateTo)}">
+        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeDate(dateTo, DATE_TIME_INPUT_FORMAT)}">
       </div>
 
       <div class="event__field-group  event__field-group--price">

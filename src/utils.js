@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-const DATA_FORMAT = 'MMM DD';
+const DATE_FORMAT = 'MMM DD';
 const TIME_FORMAT = 'HH:mm';
 const DATE_TIME_FORMAT = 'YYYY-MM-DDTHH:mm';
 const DATE_TIME_INPUT_FORMAT = 'DD/MM/YY HH:mm';
@@ -15,12 +15,6 @@ const getRandomIntInclusive = (min, max) => {
 
 const isBoolean = (firstValue, secondValue) => firstValue === secondValue;
 
-const humanizeDate = (dueDate) => dueDate ? dayjs(dueDate).format(DATA_FORMAT) : '';
+const humanizeDate = (dueDate, dataFormat) => dueDate ? dayjs(dueDate).format(dataFormat) : '';
 
-const humanizeTime = (dueDate) => dueDate ? dayjs(dueDate).format(TIME_FORMAT) : '';
-
-const humanizeDateTime = (dueDate) => dueDate ? dayjs(dueDate).format(DATE_TIME_FORMAT) : '';
-
-const humanizeDateTimeInput = (dueDate) => dueDate ? dayjs(dueDate).format(DATE_TIME_INPUT_FORMAT) : '';
-
-export { getRandomArrayElement, getRandomIntInclusive, isBoolean, humanizeDate, humanizeTime, humanizeDateTime, humanizeDateTimeInput };
+export { getRandomArrayElement, getRandomIntInclusive, isBoolean, humanizeDate, DATE_FORMAT, TIME_FORMAT, DATE_TIME_FORMAT, DATE_TIME_INPUT_FORMAT };
