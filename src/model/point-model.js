@@ -3,21 +3,25 @@ import { generatePoint, Destinations, Offers } from '../mock/data';
 const POINTS_COUNT = 10;
 
 export default class PointModel {
+  #points = null;
+  #destinations = null;
+  #offers = null;
+
   init() {
-    this.events = Array.from({length: POINTS_COUNT}, generatePoint);
-    this.destinations = Destinations;
-    this.offers = Offers;
+    this.#points = Array.from({length: POINTS_COUNT}, generatePoint);
+    this.#destinations = Destinations;
+    this.#offers = Offers;
   }
 
-  getEvent() {
-    return this.events;
+  get points() {
+    return this.#points;
   }
 
-  getDestinations() {
-    return this.destinations;
+  get destinations() {
+    return this.#destinations;
   }
 
-  getOffers() {
-    return this.offers;
+  get offers() {
+    return this.#offers;
   }
 }

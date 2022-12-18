@@ -15,6 +15,6 @@ const getRandomIntInclusive = (min, max) => {
 
 const isBoolean = (firstValue, secondValue) => firstValue === secondValue;
 
-const humanizeDate = (dueDate, dataFormat) => dueDate ? dayjs(dueDate).format(dataFormat) : '';
+const humanizeDate = (dueDate, dateFormat) => dueDate ? dayjs(dueDate).format(dateFormat) : '';
 
 export { getRandomArrayElement, getRandomIntInclusive, isBoolean, humanizeDate, DATE_FORMAT, TIME_FORMAT, DATE_TIME_FORMAT, DATE_TIME_INPUT_FORMAT };

@@ -118,18 +118,20 @@ function createPointDestinationTemplate () {
 }
 
 export default class CreatePointDestinationView {
-  getTemplate() {
+  #element = null;
+
+  get template() {
     return createPointDestinationTemplate();
   }
 
-  getElement () {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
-    return this.element;
+    return this.#element;
   }
 
   removeElement () {
-    this.element = null;
+    this.#element = null;
   }
 }

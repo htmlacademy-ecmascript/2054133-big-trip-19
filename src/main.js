@@ -7,9 +7,9 @@ const filtersElement = document.querySelector('.trip-controls__filters');
 const eventsElement = document.querySelector('.trip-events');
 
 const pointModel = new PointModel();
-pointModel.init();
 const headerPresenter = new HeaderPresenter(mainElement, filtersElement);
 const eventsPresenter = new EventsPresenter(eventsElement, pointModel);
 
+pointModel.init();
 headerPresenter.init();
 eventsPresenter.init();
