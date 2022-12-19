@@ -6,7 +6,7 @@ import CreatePointView from '../view/main-views/create-point-view';
 import CreatePointOffersView from '../view/main-views/create-point-offers-view';
 import CreatePointDestinationView from '../view/main-views/create-point-destination-view';
 import EditPointView from '../view/main-views/edit-point-view';
-import { getRandomArrayElement } from '../utils';
+import { getRandomArrayElement, isEscapeKey } from '../utils';
 
 const POINT_VIEW_COUNT = 3;
 
@@ -36,7 +36,6 @@ export default class EventsPresenter {
 
     render(new EventsSortView(), this.#eventsElement);
     render(this.#eventsListComponent, this.#eventsElement);
-    // render(new EditPointView(randomPoint, getDestination(randomPoint), getOffer(randomPoint)), eventslistElement);
     for (let i = 0; i < POINT_VIEW_COUNT; i++) {
       this.#renderPoint(this.#points[i], getDestination(this.#points[i]), getOffer(randomPoint));
     }
@@ -55,12 +54,30 @@ export default class EventsPresenter {
     const replacePointToCard = () =>
       this.#eventsListComponent.element.replaceChild(pointComponent.element, pointEditComponent.element);
 
-    pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => replacePointToForm());
+    const onEscKeydown = (evt) => {
+      if(isEscapeKey(evt)) {
+        evt.preventDefault();
+        replacePointToCard();
+        document.removeEventListener('keydown', onEscKeydown);
+      }
+    };
+
+    pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+      replacePointToForm();
+      document.addEventListener('keydown', onEscKeydown);
+    });
+
+    pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+      replacePointToCard();
+      document.removeEventListener('keydown', onEscKeydown);
+    });
 
     pointEditComponent.element.querySelector('form').addEventListener('submit', (evt) => {
       evt.preventDefault();
       replacePointToCard();
+      document.removeEventListener('keydown', onEscKeydown);
     });
+
     render(pointComponent, this.#eventsListComponent.element);
   }
 }
