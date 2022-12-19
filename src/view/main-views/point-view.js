@@ -2,13 +2,22 @@ import { createElement } from '../../render';
 import { humanizeDate, DATE_FORMAT, TIME_FORMAT, DATE_TIME_FORMAT } from '../../utils';
 import dayjs from 'dayjs';
 
-function createPointTemplate (point, pointDestination) {
+function createPointTemplate (point, pointDestination, pointOffers) {
   const {type, basePrice, dateFrom, dateTo, isFavorite} = point;
   const {name} = pointDestination;
+  const {offers} = pointOffers;
 
   const differenceTime = dayjs(dateTo).diff(dateFrom,'h', 'm');
   const differenceDays = dayjs(dateTo).diff(dateFrom,'d');
   const roundedMinutes = Math.ceil(Number(`${0}.${differenceTime.toString().split('.')[1]}`) * 60);
+
+  const createOfferElements = `${offers.reduce((prev, offer) =>
+    `${prev}<li class="event__offer">
+    <span class="event__offer-title">${offer.title}</span>
+    &plus;&euro;&nbsp;
+    <span class="event__offer-price">${offer.price}</span>
+    </li>`, '')
+  }`;
 
   const getFormattedDate = (date, format) => {
     if (!date.toString().length) {
@@ -52,11 +61,7 @@ function createPointTemplate (point, pointDestination) {
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
-          <li class="event__offer">
-           <span class="event__offer-title">Order Uber</span>
-           &plus;&euro;&nbsp;
-           <span class="event__offer-price">20</span>
-          </li>
+          ${createOfferElements}
         </ul>
         <button class="event__favorite-btn${getFavorite()}" type="button">
           <span class="visually-hidden">Add to favorite</span>
@@ -76,14 +81,16 @@ export default class PointView {
   #point = null;
   #pointDestination = null;
   #element = null;
+  #pointOffers = null;
 
-  constructor(point, destination) {
+  constructor(point, destination, offers) {
     this.#point = point;
     this.#pointDestination = destination;
+    this.#pointOffers = offers;
   }
 
   get template() {
-    return createPointTemplate(this.#point, this.#pointDestination);
+    return createPointTemplate(this.#point, this.#pointDestination, this.#pointOffers);
   }
 
   get element() {
