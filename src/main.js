@@ -10,5 +10,6 @@ const pointModel = new PointModel();
 const headerPresenter = new HeaderPresenter(mainElement, filtersElement);
 const eventsPresenter = new EventsPresenter(eventsElement, pointModel);
 
+pointModel.init();
 headerPresenter.init();
 eventsPresenter.init();
