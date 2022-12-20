@@ -6,8 +6,6 @@ import EditPointView from '../view/main-views/edit-point-view';
 import { getRandomArrayElement, isEscapeKey } from '../utils';
 import EventsMessage from '../view/main-views/message-view';
 
-const POINT_VIEW_COUNT = 3;
-
 export default class EventsPresenter {
   #eventsElement = null;
   #pointModel = null;
