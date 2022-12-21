@@ -1,4 +1,4 @@
-import { getRandomArrayElement, getRandomIntInclusive, isBoolean } from '../utils';
+import { getRandomArrayElement, getRandomIntInclusive, isEqual } from '../utils';
 
 const POINT_PRICE = {
   min: 100,
@@ -142,7 +142,7 @@ const generatePoint = () => ({
   dateTo: '2022-07-15T16:25:13.375Z',
   destination: getRandomArrayElement(Destinations).id,
   id: '0',
-  isFavorite: isBoolean(getRandomIntInclusive(0, 1), 1),
+  isFavorite: isEqual(getRandomIntInclusive(0, 1), 1),
   offers: getRandomArrayElement(Offers).offers,
   type: getRandomArrayElement(TYPES_OF_TRANSPORT),
 });

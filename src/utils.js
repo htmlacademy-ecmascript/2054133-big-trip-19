@@ -15,8 +15,8 @@ const getRandomIntInclusive = (min, max) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
-const isBoolean = (firstValue, secondValue) => firstValue === secondValue;
+const isEqual = (firstValue, secondValue) => firstValue === secondValue;
 
 const humanizeDate = (dueDate, dateFormat) => dueDate ? dayjs(dueDate).format(dateFormat) : '';
 
-export { getRandomArrayElement, getRandomIntInclusive, isEscapeKey, isBoolean, humanizeDate, DATE_FORMAT, TIME_FORMAT, DATE_TIME_FORMAT, DATE_TIME_INPUT_FORMAT };
+export { getRandomArrayElement, getRandomIntInclusive, isEscapeKey, isEqual, humanizeDate, DATE_FORMAT, TIME_FORMAT, DATE_TIME_FORMAT, DATE_TIME_INPUT_FORMAT };
