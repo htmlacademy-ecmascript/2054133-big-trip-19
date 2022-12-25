@@ -73,12 +73,13 @@ export default class EventsPresenter {
 
     if (this.#points.length <= 0) {
       render (new EventsMessage(), this.#eventsElement);
-    } else {
-      render(new EventsSortView(), this.#eventsElement);
-      render(this.#eventsListComponent, this.#eventsElement);
-      for (let i = 0; i < this.#points.length; i++) {
-        this.#renderPoint(this.#points[i], getDestination(this.#points[i]), getOffer(randomPoint));
-      }
+      return;
+    }
+
+    render(new EventsSortView(), this.#eventsElement);
+    render(this.#eventsListComponent, this.#eventsElement);
+    for (let i = 0; i < this.#points.length; i++) {
+      this.#renderPoint(this.#points[i], getDestination(this.#points[i]), getOffer(randomPoint));
     }
   }
 }

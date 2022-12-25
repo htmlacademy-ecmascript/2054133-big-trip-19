@@ -4,20 +4,24 @@ import dayjs from 'dayjs';
 
 function createPointTemplate (point, pointDestination, pointOffers) {
   const {type, basePrice, dateFrom, dateTo, isFavorite} = point;
-  const {name} = pointDestination;
-  const {offers} = pointOffers;
+  const {name} = pointDestination || {};
+  const {offers} = pointOffers || {};
 
   const differenceTime = dayjs(dateTo).diff(dateFrom,'h', 'm');
   const differenceDays = dayjs(dateTo).diff(dateFrom,'d');
   const roundedMinutes = Math.ceil(Number(`${0}.${differenceTime.toString().split('.')[1]}`) * 60);
 
-  const createOfferElements = `${offers.reduce((prev, offer) =>
-    `${prev}<li class="event__offer">
-    <span class="event__offer-title">${offer.title}</span>
-    &plus;&euro;&nbsp;
-    <span class="event__offer-price">${offer.price}</span>
-    </li>`, '')
-  }`;
+  const createOfferElements = () => {
+    if (offers === undefined) {
+      return '';
+    }
+    return `${offers.reduce((prev, offer) =>
+      `${prev}<li class="event__offer">
+        <span class="event__offer-title">${offer.title}</span>
+        &plus;&euro;&nbsp;
+        <span class="event__offer-price">${offer.price}</span>
+        </li>`, '')}`;
+  };
 
   const getFormattedDate = (date, format) => {
     if (!date.toString().length) {
@@ -61,7 +65,7 @@ function createPointTemplate (point, pointDestination, pointOffers) {
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
-          ${createOfferElements}
+          ${createOfferElements()}
         </ul>
         <button class="event__favorite-btn${getFavorite()}" type="button">
           <span class="visually-hidden">Add to favorite</span>
