@@ -1,4 +1,4 @@
-import { render } from '../render';
+import { render } from '../framework/render';
 import EventsSortView from '../view/main-views/sort-view';
 import EventsListView from '../view/main-views/list-view';
 import PointView from '../view/main-views/point-view';

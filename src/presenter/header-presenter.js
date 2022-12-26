@@ -1,4 +1,4 @@
-import { render, RenderPosition } from '../render';
+import { render, RenderPosition } from '../framework/render';
 import InfoView from '../view/header-views/info-view';
 import FiltersView from '../view/header-views/filters-view';
 
