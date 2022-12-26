@@ -1,4 +1,4 @@
-import { createElement } from '../../render';
+import AbstractView from '../../framework/view/abstract-view';
 
 function createPointOffersTemplate () {
   return (
@@ -153,21 +153,8 @@ function createPointOffersTemplate () {
   );
 }
 
-export default class CreatePointOffersView {
-  #element = null;
-
+export default class CreatePointOffersView extends AbstractView {
   get template() {
     return createPointOffersTemplate();
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-    return this.#element;
-  }
-
-  removeElement () {
-    this.#element = null;
   }
 }

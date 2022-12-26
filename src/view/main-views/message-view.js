@@ -1,4 +1,4 @@
-import { createElement } from '../../render';
+import AbstractView from '../../framework/view/abstract-view';
 
 function createEventsMessageTemplate () {
   return (
@@ -8,21 +8,8 @@ function createEventsMessageTemplate () {
   );
 }
 
-export default class EventsMessage {
-  #element = null;
-
+export default class EventsMessage extends AbstractView {
   get template() {
     return createEventsMessageTemplate();
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-    return this.#element;
-  }
-
-  removeElement () {
-    this.#element = null;
   }
 }
