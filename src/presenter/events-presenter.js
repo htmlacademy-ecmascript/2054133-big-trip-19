@@ -35,7 +35,7 @@ export default class EventsPresenter {
       destination,
       offers,
       {
-        onFormSubmit: () => {
+        onButtonClick: () => {
           replacePointToForm.call(this);
           document.addEventListener('keydown', onEscKeydown);
         }
