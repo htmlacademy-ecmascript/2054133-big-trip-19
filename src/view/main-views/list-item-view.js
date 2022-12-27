@@ -1,4 +1,5 @@
-import { createElement } from '../../render';
+import AbstractView from '../../framework/view/abstract-view';
+
 
 function createTripListItemTemplate () {
   return (
@@ -7,21 +8,8 @@ function createTripListItemTemplate () {
   );
 }
 
-export default class TripListItem {
-  #element = null;
-
+export default class TripListItem extends AbstractView {
   get template() {
     return createTripListItemTemplate();
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-    return this.#element;
-  }
-
-  removeElement () {
-    this.#element = null;
   }
 }

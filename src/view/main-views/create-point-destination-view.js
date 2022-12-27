@@ -1,4 +1,4 @@
-import { createElement } from '../../render';
+import AbstractView from '../../framework/view/abstract-view';
 
 function createPointDestinationTemplate () {
   return (
@@ -117,21 +117,8 @@ function createPointDestinationTemplate () {
   );
 }
 
-export default class CreatePointDestinationView {
-  #element = null;
-
+export default class CreatePointDestinationView extends AbstractView {
   get template() {
     return createPointDestinationTemplate();
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-    return this.#element;
-  }
-
-  removeElement () {
-    this.#element = null;
   }
 }

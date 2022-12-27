@@ -1,21 +1,26 @@
-import { createElement } from '../../render';
+import AbstractView from '../../framework/view/abstract-view';
 import { humanizeDate, DATE_TIME_INPUT_FORMAT } from '../../utils';
 
 function createItemEditPointTemplate (point, pointDestination, pointOffers) {
   const {type, basePrice, dateFrom, dateTo} = point;
-  const {description, name} = pointDestination;
-  const {offers} = pointOffers;
+  const {description, name} = pointDestination || {};
+  const {offers} = pointOffers || {};
 
-  const createOfferElements = `${offers.reduce((prev, offer) =>
-    `${prev} <div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title.split(' ').pop()}" type="checkbox" name="event-offer-${offer.title.split(' ').pop()}">
-    <label class="event__offer-label" for="event-offer-${offer.title.split(' ').pop()}-1">
-      <span class="event__offer-title">${offer.title}</span>
-      &plus;&euro;&nbsp;
-      <span class="event__offer-price">${offer.price}</span>
-    </label>
-  </div>`, '')
-  }`;
+  const createOfferElements = () => {
+    if(offers === undefined) {
+      return '';
+    }
+    return `${offers.reduce((prev, offer) =>
+      `${prev} <div class="event__offer-selector">
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title.split(' ').pop()}" type="checkbox" name="event-offer-${offer.title.split(' ').pop()}">
+        <label class="event__offer-label" for="event-offer-${offer.title.split(' ').pop()}-1">
+          <span class="event__offer-title">${offer.title}</span>
+          &plus;&euro;&nbsp;
+          <span class="event__offer-price">${offer.price}</span>
+        </label>
+        </div>`, '')}`;
+  };
+
 
   return (
     `<li class="trip-events__item">
@@ -119,7 +124,7 @@ function createItemEditPointTemplate (point, pointDestination, pointOffers) {
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
         <div class="event__available-offers">
-        ${createOfferElements}
+        ${createOfferElements()}
         </div>
       </section>
 
@@ -133,30 +138,26 @@ function createItemEditPointTemplate (point, pointDestination, pointOffers) {
   );
 }
 
-export default class EditPointView {
+export default class EditPointView extends AbstractView {
   #point = null;
   #pointDestination = null;
   #pointOffers = null;
-  #element = null;
+  #onButtonClick = null;
+  #onFormSubmit = null;
 
-  constructor(point, destination, offers) {
+  constructor(point, destination, offers, {onButtonClick, onFormSubmit}) {
+    super();
     this.#point = point;
     this.#pointDestination = destination;
     this.#pointOffers = offers;
+    this.#onButtonClick = onButtonClick;
+    this.#onFormSubmit = onFormSubmit;
+
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onButtonClick);
+    this.element.querySelector('form').addEventListener('submit', this.#onFormSubmit);
   }
 
   get template() {
     return createItemEditPointTemplate(this.#point, this.#pointDestination, this.#pointOffers);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-    return this.#element;
-  }
-
-  removeElement () {
-    this.#element = null;
   }
 }
