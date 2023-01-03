@@ -3,7 +3,7 @@ import EventsSortView from '../view/main-views/sort-view';
 import EventsListView from '../view/main-views/list-view';
 import PointView from '../view/main-views/point-view';
 import EditPointView from '../view/main-views/edit-point-view';
-import { getRandomArrayElement, isEscapeKey } from '../utils';
+import { getRandomArrayElement, isEscapeKey } from '../utils/utils';
 import EventsMessage from '../view/main-views/message-view';
 
 export default class EventsPresenter {
@@ -26,7 +26,7 @@ export default class EventsPresenter {
     this.#destinations = [...this.#pointModel.destinations];
     this.#offers = [...this.#pointModel.offers];
 
-    this.#renderEvents();
+    this.#renderPoints();
   }
 
   #renderPoint(point, destination, offers) {
@@ -40,6 +40,7 @@ export default class EventsPresenter {
           document.addEventListener('keydown', onEscKeydown);
         }
       });
+
     const pointEditComponent = new EditPointView(point,
       destination,
       offers,
@@ -74,7 +75,7 @@ export default class EventsPresenter {
     render(pointComponent, this.#eventsListComponent.element);
   }
 
-  #renderEvents() {
+  #renderPoints() {
     const randomPoint = getRandomArrayElement(this.#points);
     const getDestination = (point) => this.#destinations.find((item) => item.id === point.destination ? item.id === point.destination : '');
     const getOffer = (point) => this.#offers.find((item) => item.type === point.type ? item.type === point.type : '');

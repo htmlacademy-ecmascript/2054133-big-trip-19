@@ -1,4 +1,4 @@
-import { humanizeDate, DATE_FORMAT, TIME_FORMAT, DATE_TIME_FORMAT } from '../../utils';
+import { humanizeDate, DATE_FORMAT, TIME_FORMAT, DATE_TIME_FORMAT } from '../../utils/utils';
 import dayjs from 'dayjs';
 import AbstractView from '../../framework/view/abstract-view';
 
