@@ -32,7 +32,14 @@ function createEventsSortTemplate () {
 }
 
 export default class EventsSortView extends AbstractView {
+  #sort = null;
+  constructor(sort) {
+    super();
+    this.#sort = sort;
+    // console.log(this.#sort);
+  }
+
   get template() {
-    return createEventsSortTemplate();
+    return createEventsSortTemplate(this.#sort);
   }
 }
