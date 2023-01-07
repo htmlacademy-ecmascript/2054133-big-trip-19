@@ -16,7 +16,7 @@ const filter = {
 
 const generateFilter = (points) => Object.entries(filter).map(([filterName, filterPoint]) => ({
   name: filterName,
-  points: filterPoint(points),
+  count: filterPoint(points).length,
 }));
 
 export { generateFilter };

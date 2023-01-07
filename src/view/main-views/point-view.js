@@ -12,7 +12,7 @@ function createPointTemplate (point, pointDestination, pointOffers) {
   const roundedMinutes = Math.ceil(Number(`${0}.${differenceTime.toString().split('.')[1]}`) * 60);
 
   const createOfferElements = () => {
-    if (offers === undefined) {
+    if (!offers) {
       return '';
     }
     return `${offers.reduce((prev, offer) =>
