@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 
+const DAY_FORMAT = 'DD';
 const DATE_FORMAT = 'MMM DD';
 const TIME_FORMAT = 'HH:mm';
 const DATE_TIME_FORMAT = 'YYYY-MM-DDTHH:mm';
@@ -42,6 +43,7 @@ export {
   isEscapeKey,
   isEqual,
   humanizeDate,
+  DAY_FORMAT,
   DATE_FORMAT,
   TIME_FORMAT,
   DATE_TIME_FORMAT,
