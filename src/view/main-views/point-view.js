@@ -1,4 +1,4 @@
-import { humanizeDate, DATE_FORMAT, TIME_FORMAT, DATE_TIME_FORMAT } from '../../utils';
+import { humanizeDate, DATE_FORMAT, TIME_FORMAT, DATE_TIME_FORMAT } from '../../utils/utils';
 import dayjs from 'dayjs';
 import AbstractView from '../../framework/view/abstract-view';
 
@@ -12,7 +12,7 @@ function createPointTemplate (point, pointDestination, pointOffers) {
   const roundedMinutes = Math.ceil(Number(`${0}.${differenceTime.toString().split('.')[1]}`) * 60);
 
   const createOfferElements = () => {
-    if (offers === undefined) {
+    if (!offers) {
       return '';
     }
     return `${offers.reduce((prev, offer) =>
