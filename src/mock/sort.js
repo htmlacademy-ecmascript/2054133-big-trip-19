@@ -10,11 +10,11 @@ const SortType = {
 };
 
 const sort = {
+  [SortType.DAY]: (points) => points.sort((a, b) => dayjs(b.dateFrom).format(DAY_FORMAT) - dayjs(a.dateFrom).format(DAY_FORMAT)),
   [SortType.EVENTS]: (points) => points,
-  [SortType.TIME]: (points) => points.sort((a, b) => dayjs(a.dateFrom).format(TIME_FORMAT) - dayjs(b.dateFrom).format(TIME_FORMAT)),
-  [SortType.PRICE]: (points) => points.sort((a, b) => a.basePrice - b.basePrice),
+  [SortType.TIME]: (points) => points.sort((a, b) => dayjs(b.dateFrom).format(TIME_FORMAT) - dayjs(a.dateFrom).format(TIME_FORMAT)),
+  [SortType.PRICE]: (points) => points.sort((a, b) => b.basePrice - a.basePrice),
   [SortType.OFFERS]: (points) => points,
-  [SortType.DAY]: (points) => points.sort((a, b) => dayjs(a.dateFrom).format(DAY_FORMAT) - dayjs(b.dateFrom).format(DAY_FORMAT)),
 };
 
 const generateSort = (points) => Object.entries(sort).map(([sortName, sortPoint]) => ({

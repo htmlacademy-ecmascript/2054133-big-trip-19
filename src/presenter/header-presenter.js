@@ -18,9 +18,9 @@ export default class HeaderPresenter {
 
   init() {
     this.#points = [...this.#pointModel.points];
-    const filters = generateFilter(this.#points);
+    const filteredPoints = generateFilter(this.#points);
 
     render(new InfoView(), this.#mainContainer, RenderPosition.AFTERBEGIN);
-    render(new FiltersView(filters), this.#filtersContainer);
+    render(new FiltersView(filteredPoints), this.#filtersContainer);
   }
 }

@@ -19,9 +19,9 @@ const createEventsSortTemplate = (sorting) =>
 export default class EventsSortView extends AbstractView {
   #sorting = null;
 
-  constructor (sorting) {
+  constructor (sorteredPoints) {
     super();
-    this.#sorting = sorting;
+    this.#sorting = sorteredPoints;
 
   }
 
