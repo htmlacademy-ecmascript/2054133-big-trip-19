@@ -40,7 +40,9 @@ export default class PointPresenter {
           replacePointToForm.call(this);
           document.addEventListener('keydown', onEscKeydown);
         }
-      });
+      },
+      onFavoriteClick
+    );
 
     const pointEditElement = new EditPointView(point,
       destination,
@@ -62,6 +64,10 @@ export default class PointPresenter {
 
     function replacePointToCard() {
       this.#eventsListElement.element.replaceChild(pointElement.element, pointEditElement.element);
+    }
+
+    function onFavoriteClick() {
+
     }
 
     render(pointElement, this.#eventsListElement.element);
