@@ -1,24 +1,33 @@
-import { render } from '../framework/render';
+import { render, RenderPosition } from '../framework/render';
+import InfoView from '../view/header-views/info-view';
+import FiltersView from '../view/header-views/filters-view';
 import EventsSortView from '../view/main-views/sort-view';
 import EventsListView from '../view/main-views/list-view';
 import PointView from '../view/main-views/point-view';
 import EditPointView from '../view/main-views/edit-point-view';
 import { getRandomArrayElement, isEscapeKey } from '../utils/utils';
 import EventsMessage from '../view/main-views/message-view';
-import { SORT_TYPE } from '../utils/const';
+import { TYPES_OF_SORT } from '../utils/const';
+import { generateFilter } from '../mock/filter';
 
 export default class EventsPresenter {
   #eventsElement = null;
   #pointModel = null;
+  #mainElement = null;
+  #filtersElement = null;
 
   #points = [];
   #destinations = [];
   #offers = [];
 
-  #eventsListComponent = new EventsListView();
+  #eventsListElement = new EventsListView();
+  #eventMessageElement = new EventsMessage();
+  #eventsInfoElement = new InfoView();
 
-  constructor(eventsElement, pointModel) {
+  constructor(eventsElement, mainElement, filtersElement, pointModel) {
     this.#eventsElement = eventsElement;
+    this.#mainElement = mainElement;
+    this.#filtersElement = filtersElement;
     this.#pointModel = pointModel;
   }
 
@@ -27,11 +36,13 @@ export default class EventsPresenter {
     this.#destinations = [...this.#pointModel.destinations];
     this.#offers = [...this.#pointModel.offers];
 
-    this.#renderEvents(this.#points);
+    this.#renderInfo();
+    this.#renderFilter(this.#points);
+    this.#renderPoints(this.#points);
   }
 
   #renderPoint(point, destination, offers) {
-    const pointComponent = new PointView(
+    const pointElement = new PointView(
       point,
       destination,
       offers,
@@ -41,7 +52,7 @@ export default class EventsPresenter {
           document.addEventListener('keydown', onEscKeydown);
         }
       });
-    const pointEditComponent = new EditPointView(point,
+    const pointEditElement = new EditPointView(point,
       destination,
       offers,
       {
@@ -57,11 +68,11 @@ export default class EventsPresenter {
       });
 
     function replacePointToForm() {
-      this.#eventsListComponent.element.replaceChild(pointEditComponent.element, pointComponent.element);
+      this.#eventsListElement.element.replaceChild(pointEditElement.element, pointElement.element);
     }
 
     function replacePointToCard() {
-      this.#eventsListComponent.element.replaceChild(pointComponent.element, pointEditComponent.element);
+      this.#eventsListElement.element.replaceChild(pointElement.element, pointEditElement.element);
     }
 
     function onEscKeydown(evt) {
@@ -72,22 +83,44 @@ export default class EventsPresenter {
       }
     }
 
-    render(pointComponent, this.#eventsListComponent.element);
+    render(pointElement, this.#eventsListElement.element);
   }
 
-  #renderEvents(points) {
+  #renderPoints(points) {
     const randomPoint = () => getRandomArrayElement(points);
     const getDestination = (point) => this.#destinations.find((item) => item.id === point.destination ? item.id === point.destination : '');
     const getOffer = (point) => this.#offers.find((item) => item.type === point.type ? item.type === point.type : '');
 
     if (points.length <= 0) {
-      render (new EventsMessage(), this.#eventsElement);
+      this.#renderMessage();
       return;
     }
-    render(new EventsSortView(SORT_TYPE), this.#eventsElement);
-    render(this.#eventsListComponent, this.#eventsElement);
-    for (let i = 0; i < points.length; i++) {
-      this.#renderPoint(points[i], getDestination(points[i]), getOffer(randomPoint()));
+    this.#renderSort(TYPES_OF_SORT);
+    this.#renderList();
+    for (const point of points) {
+      this.#renderPoint(point, getDestination(point), getOffer(randomPoint()));
     }
+  }
+
+  #renderMessage() {
+    render(this.#eventMessageElement, this.#eventsElement);
+  }
+
+  #renderSort(sortTypes) {
+    const eventsSortElement = new EventsSortView(sortTypes);
+    render(eventsSortElement, this.#eventsElement);
+  }
+
+  #renderList() {
+    render(this.#eventsListElement, this.#eventsElement);
+  }
+
+  #renderInfo() {
+    render(this.#eventsInfoElement, this.#mainElement, RenderPosition.AFTERBEGIN);
+  }
+
+  #renderFilter(points) {
+    const eventFilterElement = new FiltersView(generateFilter(points));
+    render(eventFilterElement, this.#filtersElement);
   }
 }

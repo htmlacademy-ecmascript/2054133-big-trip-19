@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { DAY_FORMAT, TIME_FORMAT } from '../utils/utils';
+import { DAY_FORMAT, TIME_FORMAT } from '../utils/date';
 
 const SortType = {
   DAY: 'day',
@@ -21,3 +21,5 @@ const generateSort = (points) => Object.entries(sort).map(([sortName, sortPoint]
   name: sortName,
   points: sortPoint(points),
 }));
+
+export { generateSort };
