@@ -5,7 +5,7 @@ import PointView from '../view/main-views/point-view';
 import EditPointView from '../view/main-views/edit-point-view';
 import { getRandomArrayElement, isEscapeKey } from '../utils/utils';
 import EventsMessage from '../view/main-views/message-view';
-import { generateSort } from '../mock/sort';
+import { SORT_TYPE } from '../utils/const';
 
 export default class EventsPresenter {
   #eventsElement = null;
@@ -80,13 +80,11 @@ export default class EventsPresenter {
     const getDestination = (point) => this.#destinations.find((item) => item.id === point.destination ? item.id === point.destination : '');
     const getOffer = (point) => this.#offers.find((item) => item.type === point.type ? item.type === point.type : '');
 
-    const sorteredPoints = generateSort(points);
-
     if (points.length <= 0) {
       render (new EventsMessage(), this.#eventsElement);
       return;
     }
-    render(new EventsSortView(sorteredPoints), this.#eventsElement);
+    render(new EventsSortView(SORT_TYPE), this.#eventsElement);
     render(this.#eventsListComponent, this.#eventsElement);
     for (let i = 0; i < points.length; i++) {
       this.#renderPoint(points[i], getDestination(points[i]), getOffer(randomPoint()));

@@ -1,6 +1,7 @@
-import { humanizeDate, DATE_FORMAT, TIME_FORMAT, DATE_TIME_FORMAT } from '../../utils/utils';
+import { humanizeDate } from '../../utils/utils';
 import dayjs from 'dayjs';
 import AbstractView from '../../framework/view/abstract-view';
+import { DATE_FORMAT, DATE_TIME_FORMAT, TIME_FORMAT } from '../../utils/date';
 
 function createPointTemplate (point, pointDestination, pointOffers) {
   const {type, basePrice, dateFrom, dateTo, isFavorite} = point;

@@ -1,16 +1,5 @@
+import { POINT_PRICE, TYPES_OF_TRANSPORT } from '../utils/const';
 import { getRandomArrayElement, getRandomIntInclusive, isEqual } from '../utils/utils';
-
-const POINT_PRICE = {
-  min: 100,
-  max: 2000,
-};
-
-const TYPES_OF_TRANSPORT = [
-  'taxi',
-  'bus',
-  'train',
-  'flight',
-];
 
 const Destinations = [
   {

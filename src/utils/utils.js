@@ -1,12 +1,6 @@
 import dayjs from 'dayjs';
+import { PRESENT_DATE } from './date';
 
-const DAY_FORMAT = 'DD';
-const DATE_FORMAT = 'MMM DD';
-const TIME_FORMAT = 'HH:mm';
-const DATE_TIME_FORMAT = 'YYYY-MM-DDTHH:mm';
-const DATE_TIME_INPUT_FORMAT = 'DD/MM/YY HH:mm';
-
-const PRESENT_DATE = new Date();
 
 function isPointFuture(dueDate) {
   return dayjs(dueDate).isAfter(PRESENT_DATE, 'D');
@@ -43,8 +37,4 @@ export {
   isEscapeKey,
   isEqual,
   humanizeDate,
-  DAY_FORMAT,
-  DATE_FORMAT,
-  TIME_FORMAT,
-  DATE_TIME_FORMAT,
-  DATE_TIME_INPUT_FORMAT };
+};
