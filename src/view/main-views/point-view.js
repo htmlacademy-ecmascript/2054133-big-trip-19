@@ -38,12 +38,7 @@ function createPointTemplate (point, pointDestination, pointOffers) {
 
   const timeDuration = `${getFormattedDate(differenceDays, 'D')} ${getFormattedDate(Math.trunc(differenceTime), 'H')} ${getFormattedDate(roundedMinutes, 'M')}`;
 
-  const getFavorite = () => {
-    if (isFavorite) {
-      return ' event__favorite-btn--active';
-    }
-    return '';
-  };
+  const getFavorite = () => isFavorite ? ' event__favorite-btn--active' : '';
 
   return (
     `<li class="trip-events__item">
@@ -87,21 +82,19 @@ export default class PointView extends AbstractView {
   #pointDestination = null;
   #pointOffers = null;
   #onButtonClick = null;
+  #onFavoriteClick = null;
 
-  constructor(point, destination, offers, {onButtonClick}) {
+  constructor(point, destination, offers, {onButtonClick}, {onFavoriteClick}) {
     super();
     this.#point = point;
     this.#pointDestination = destination;
     this.#pointOffers = offers;
     this.#onButtonClick = onButtonClick;
+    this.#onFavoriteClick = onFavoriteClick;
 
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onButtonClick);
 
-    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#favoritClickHandler);
-  }
-
-  #favoritClickHandler() {
-    this.classList.toggle('event__favorite-btn--active');
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#onFavoriteClick);
   }
 
   get template() {

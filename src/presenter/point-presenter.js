@@ -1,75 +1,94 @@
-import { render } from '../framework/render';
+import { remove, render, replace } from '../framework/render';
 import PointView from '../view/main-views/point-view';
 import EditPointView from '../view/main-views/edit-point-view';
 import { isEscapeKey } from '../utils/utils';
 export default class PointPresenter {
 
-  #point = null;
-  #destination = null;
-  #offers = null;
-
   #eventsListElement = null;
+  #pointElement = null;
+  #pointEditElement = null;
+
+  #point = null;
 
   constructor(eventsListElement) {
     this.#eventsListElement = eventsListElement;
   }
 
   init(point, destination, offers) {
+
     this.#point = point;
-    this.#destination = destination;
-    this.#offers = offers;
 
-    this.#renderPoint(this.#point, this.#destination, this.#offers);
-  }
+    const prevPointElement = this.#pointElement;
+    const prevPointEditElement = this.#pointEditElement;
 
-  #renderPoint(point, destination, offers) {
 
-    const onEscKeydown = (evt) => {
-      if (isEscapeKey(evt)) {
-        replacePointToCard.call(this);
-        document.removeEventListener('keydown', onEscKeydown);
-      }
-    };
-
-    const pointElement = new PointView(
-      point,
+    this.#pointElement = new PointView(
+      this.#point,
       destination,
       offers,
       {
         onButtonClick: () => {
-          replacePointToForm.call(this);
-          document.addEventListener('keydown', onEscKeydown);
+          this.#replacePointToForm();
+          document.addEventListener('keydown', this.#onEscKeydown);
         }
       },
-      onFavoriteClick
+      {
+        onFavoriteClick: this.#onFavoritClick
+      }
     );
 
-    const pointEditElement = new EditPointView(point,
+    this.#pointEditElement = new EditPointView(
+      this.#point,
       destination,
       offers,
       {
         onButtonClick: () => {
-          replacePointToCard.call(this);
-          document.removeEventListener('keydown', onEscKeydown);
+          this.#replacePointToCard();
+          document.removeEventListener('keydown', this.#onEscKeydown);
         },
         onFormSubmit() {
-          replacePointToCard.call(this);
-          document.removeEventListener('keydown', onEscKeydown);
+          this.#replacePointToCard();
+          document.removeEventListener('keydown', this.#onEscKeydown);
         }
       });
 
-    function replacePointToForm() {
-      this.#eventsListElement.element.replaceChild(pointEditElement.element, pointElement.element);
+    if (prevPointElement === null || prevPointEditElement === null) {
+      render(this.#pointElement, this.#eventsListElement.element);
+      return;
     }
 
-    function replacePointToCard() {
-      this.#eventsListElement.element.replaceChild(pointElement.element, pointEditElement.element);
+    if (this.#eventsListElement.contains(prevPointElement)) {
+      replace(this.#pointElement, prevPointElement);
     }
 
-    function onFavoriteClick() {
-
+    if (this.#eventsListElement.contains(prevPointEditElement)) {
+      replace(this.#pointEditElement, prevPointEditElement);
     }
 
-    render(pointElement, this.#eventsListElement.element);
+    remove(prevPointElement);
+    remove(prevPointEditElement);
   }
+
+  #onEscKeydown = (evt) => {
+    if (isEscapeKey(evt)) {
+      this.#replacePointToCard();
+      document.removeEventListener('keydown', this.#onEscKeydown);
+    }
+  };
+
+  #replacePointToForm() {
+    replace(this.#pointEditElement, this.#pointElement);
+  }
+
+  #replacePointToCard() {
+    replace(this.#pointElement, this.#pointEditElement);
+  }
+
+  #onFavoritClick = () => {
+    if (this.#point.isFavorit) {
+      this.#point.isFavorit = false;
+    } else {
+      this.#point.isFavorit = true;
+    }
+  };
 }
