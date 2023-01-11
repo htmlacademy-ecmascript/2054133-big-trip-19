@@ -5,22 +5,20 @@ import { isEscapeKey } from '../utils/utils';
 export default class PointPresenter {
 
   #eventsListElement = null;
+  #onPointChange = null;
   #pointElement = null;
   #pointEditElement = null;
-
   #point = null;
 
-  constructor(eventsListElement) {
+  constructor(eventsListElement, onPointChange) {
     this.#eventsListElement = eventsListElement;
+    this.#onPointChange = onPointChange;
   }
 
   init(point, destination, offers) {
-
     this.#point = point;
-
     const prevPointElement = this.#pointElement;
     const prevPointEditElement = this.#pointEditElement;
-
 
     this.#pointElement = new PointView(
       this.#point,
@@ -33,7 +31,9 @@ export default class PointPresenter {
         }
       },
       {
-        onFavoriteClick: this.#onFavoritClick
+        onFavoriteClick: () => {
+          this.#onFavoritClick();
+        }
       }
     );
 
@@ -57,16 +57,21 @@ export default class PointPresenter {
       return;
     }
 
-    if (this.#eventsListElement.contains(prevPointElement)) {
+    if (this.#eventsListElement.element.contains(prevPointElement.element)) {
       replace(this.#pointElement, prevPointElement);
     }
 
-    if (this.#eventsListElement.contains(prevPointEditElement)) {
+    if (this.#eventsListElement.element.contains(prevPointEditElement.element)) {
       replace(this.#pointEditElement, prevPointEditElement);
     }
 
     remove(prevPointElement);
     remove(prevPointEditElement);
+  }
+
+  destroy() {
+    remove(this.#pointElement);
+    remove(this.#pointEditElement);
   }
 
   #onEscKeydown = (evt) => {
@@ -85,10 +90,6 @@ export default class PointPresenter {
   }
 
   #onFavoritClick = () => {
-    if (this.#point.isFavorit) {
-      this.#point.isFavorit = false;
-    } else {
-      this.#point.isFavorit = true;
-    }
+    this.#onPointChange({...this.#point, isFavorite: !this.#point.isFavorite});
   };
 }

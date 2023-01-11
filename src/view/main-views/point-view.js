@@ -4,6 +4,7 @@ import AbstractView from '../../framework/view/abstract-view';
 import { DATE_FORMAT, DATE_TIME_FORMAT, TIME_FORMAT } from '../../utils/date';
 
 function createPointTemplate (point, pointDestination, pointOffers) {
+
   const {type, basePrice, dateFrom, dateTo, isFavorite} = point;
   const {name} = pointDestination || {};
   const {offers} = pointOffers || {};
@@ -94,10 +95,15 @@ export default class PointView extends AbstractView {
 
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onButtonClick);
 
-    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#onFavoriteClick);
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#click);
   }
 
   get template() {
     return createPointTemplate(this.#point, this.#pointDestination, this.#pointOffers);
   }
+
+  #click = (evt) => {
+    evt.preventDefault();
+    this.#onFavoriteClick();
+  };
 }

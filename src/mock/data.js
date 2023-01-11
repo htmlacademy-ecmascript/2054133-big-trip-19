@@ -132,7 +132,7 @@ const generatePoint = () => ({
   destination: getRandomArrayElement(Destinations).id,
   id: '0',
   isFavorite: isEqual(getRandomIntInclusive(0, 1), 1),
-  offers: getRandomArrayElement(Offers).offers,
+  offers: getRandomArrayElement(Offers).offers.map((offer) => offer.id) ,
   type: getRandomArrayElement(TYPES_OF_TRANSPORT),
 });
 

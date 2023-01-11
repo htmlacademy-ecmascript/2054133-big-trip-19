@@ -5,6 +5,7 @@ import EventsSortView from '../view/main-views/sort-view';
 import EventsListView from '../view/main-views/list-view';
 import EventsMessage from '../view/main-views/message-view';
 import { TYPES_OF_SORT } from '../utils/const';
+import { updateItem, getDestination, getOffer } from '../utils/utils';
 import { generateFilter } from '../mock/filter';
 import PointPresenter from './point-presenter';
 
@@ -17,6 +18,8 @@ export default class EventsPresenter {
   #points = [];
   #destinations = [];
   #offers = [];
+
+  #pointsPresenter = new Map();
 
   #eventsListElement = new EventsListView();
   #eventMessageElement = new EventsMessage();
@@ -35,6 +38,7 @@ export default class EventsPresenter {
     this.#destinations = [...this.#pointModel.destinations];
     this.#offers = [...this.#pointModel.offers];
 
+
     this.#renderInfo();
     this.#renderFilter(this.#points);
     this.#renderSort(TYPES_OF_SORT);
@@ -42,8 +46,6 @@ export default class EventsPresenter {
   }
 
   #renderPoints(points) {
-    const getDestination = (point) => this.#destinations.find((item) => item.id === point.destination ? item.id === point.destination : '');
-    const getOffer = (point) => this.#offers.find((item) => item.type === point.type ? item.type === point.type : '');
 
     if (!points.length) {
       this.#renderMessage();
@@ -51,9 +53,17 @@ export default class EventsPresenter {
     }
 
     for (const point of points) {
-      new PointPresenter(this.#eventsListElement).init(point, getDestination(point), getOffer(point));
+      const pointPresenter = new PointPresenter(this.#eventsListElement, this.#onPointChange);
+      this.#pointsPresenter.set(point.id, pointPresenter);
+
+      pointPresenter.init(point, getDestination(point, this.#destinations), getOffer(point, this.#offers));
     }
   }
+
+  #onPointChange = (updatedPoint) => {
+    this.#points = updateItem(this.#points, updatedPoint);
+    this.#pointsPresenter.get(updatedPoint.id).init(updatedPoint, getDestination(updatedPoint, this.#destinations), getOffer(updatedPoint, this.#offers));
+  };
 
   #renderMessage() {
     render(this.#eventMessageElement, this.#eventsElement);
