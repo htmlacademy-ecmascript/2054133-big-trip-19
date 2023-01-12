@@ -1,12 +1,6 @@
 import dayjs from 'dayjs';
+import { PRESENT_DATE } from './date';
 
-const DAY_FORMAT = 'DD';
-const DATE_FORMAT = 'MMM DD';
-const TIME_FORMAT = 'HH:mm';
-const DATE_TIME_FORMAT = 'YYYY-MM-DDTHH:mm';
-const DATE_TIME_INPUT_FORMAT = 'DD/MM/YY HH:mm';
-
-const PRESENT_DATE = new Date();
 
 function isPointFuture(dueDate) {
   return dayjs(dueDate).isAfter(PRESENT_DATE, 'D');
@@ -34,6 +28,11 @@ const isEscapeKey = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
 const isEqual = (firstValue, secondValue) => firstValue === secondValue;
 
+const updateItem = (points, update) => points.map((point) => point.id === update.id ? update : point);
+
+const getDestination = (point, dest) => dest.find((item) => item.id === point.destination);
+const getOffer = (point, offers) => offers.find((item) => item.type === point.type);
+
 export {
   isPointPast,
   isPointPresent,
@@ -43,8 +42,7 @@ export {
   isEscapeKey,
   isEqual,
   humanizeDate,
-  DAY_FORMAT,
-  DATE_FORMAT,
-  TIME_FORMAT,
-  DATE_TIME_FORMAT,
-  DATE_TIME_INPUT_FORMAT };
+  updateItem,
+  getDestination,
+  getOffer
+};
