@@ -38,26 +38,20 @@ export default class EventsPresenter {
     this.#destinations = [...this.#pointModel.destinations];
     this.#offers = [...this.#pointModel.offers];
 
-
     this.#renderInfo();
     this.#renderFilter(this.#points);
     this.#renderSort(TYPES_OF_SORT);
-    this.#renderList(this.#points);
+    this.#renderList();
   }
 
-  #renderPoints(points) {
+  #renderPoint(point) {
+    const pointPresenter = new PointPresenter(this.#eventsListElement, this.#onPointChange);
+    pointPresenter.init(point, getDestination(point, this.#destinations), getOffer(point, this.#offers));
+    this.#pointsPresenter.set(point.id, pointPresenter);
+  }
 
-    if (!points.length) {
-      this.#renderMessage();
-      return;
-    }
-
-    for (const point of points) {
-      const pointPresenter = new PointPresenter(this.#eventsListElement, this.#onPointChange);
-      this.#pointsPresenter.set(point.id, pointPresenter);
-
-      pointPresenter.init(point, getDestination(point, this.#destinations), getOffer(point, this.#offers));
-    }
+  #renderPoints() {
+    this.#points.forEach((point) => this.#renderPoint(point));
   }
 
   #onPointChange = (updatedPoint) => {
@@ -74,9 +68,15 @@ export default class EventsPresenter {
     render(eventsSortElement, this.#eventsElement);
   }
 
-  #renderList(points) {
+  #renderList() {
     render(this.#eventsListElement, this.#eventsElement);
-    this.#renderPoints(points);
+
+    if (!this.#points.length) {
+      this.#renderMessage();
+      return;
+    }
+
+    this.#renderPoints();
   }
 
   #renderInfo() {
