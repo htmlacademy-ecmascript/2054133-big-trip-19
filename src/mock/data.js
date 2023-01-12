@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import { POINT_PRICE, TYPES_OF_TRANSPORT } from '../utils/const';
 import { getRandomArrayElement, getRandomIntInclusive, isEqual } from '../utils/utils';
 
@@ -128,10 +127,10 @@ const Offers = [
 
 const generatePoint = () => ({
   basePrice: getRandomIntInclusive(POINT_PRICE.min, POINT_PRICE.max),
-  dateFrom: '2022-07-29T08:25:00.845Z',
-  dateTo: '2022-07-30T16:26:01.375Z',
+  dateFrom: '2022-07-29T07:55:10.845Z',
+  dateTo: '2022-07-30T16:25:13.375Z',
   destination: getRandomArrayElement(Destinations).id,
-  id: nanoid(),
+  id: '0',
   isFavorite: isEqual(getRandomIntInclusive(0, 1), 1),
   offers: getRandomArrayElement(Offers).offers.map((offer) => offer.id) ,
   type: getRandomArrayElement(TYPES_OF_TRANSPORT),
