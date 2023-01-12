@@ -10,6 +10,7 @@ import { generateFilter } from '../mock/filter';
 import PointPresenter from './point-presenter';
 
 export default class EventsPresenter {
+
   #eventsElement = null;
   #pointModel = null;
   #mainElement = null;
@@ -25,7 +26,6 @@ export default class EventsPresenter {
   #eventMessageElement = new EventsMessage();
   #eventsInfoElement = new InfoView();
 
-
   constructor(eventsElement, mainElement, filtersElement, pointModel) {
     this.#eventsElement = eventsElement;
     this.#mainElement = mainElement;
@@ -39,13 +39,13 @@ export default class EventsPresenter {
     this.#offers = [...this.#pointModel.offers];
 
     this.#renderInfo();
-    this.#renderFilter(this.#points);
+    this.#renderFilter();
     this.#renderSort(TYPES_OF_SORT);
     this.#renderList();
   }
 
   #renderPoint(point) {
-    const pointPresenter = new PointPresenter(this.#eventsListElement, this.#onPointChange);
+    const pointPresenter = new PointPresenter(this.#eventsListElement, this.#onPointChange, this.#onModeChange);
     pointPresenter.init(point, getDestination(point, this.#destinations), getOffer(point, this.#offers));
     this.#pointsPresenter.set(point.id, pointPresenter);
   }
@@ -57,6 +57,10 @@ export default class EventsPresenter {
   #onPointChange = (updatedPoint) => {
     this.#points = updateItem(this.#points, updatedPoint);
     this.#pointsPresenter.get(updatedPoint.id).init(updatedPoint, getDestination(updatedPoint, this.#destinations), getOffer(updatedPoint, this.#offers));
+  };
+
+  #onModeChange = () => {
+    this.#pointsPresenter.forEach((presenter) => presenter.resetView());
   };
 
   #renderMessage() {
@@ -83,8 +87,8 @@ export default class EventsPresenter {
     render(this.#eventsInfoElement, this.#mainElement, RenderPosition.AFTERBEGIN);
   }
 
-  #renderFilter(points) {
-    const eventFilterElement = new FiltersView(generateFilter(points));
+  #renderFilter() {
+    const eventFilterElement = new FiltersView(generateFilter(this.#points));
     render(eventFilterElement, this.#filtersElement);
   }
 }

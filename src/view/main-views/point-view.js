@@ -9,9 +9,10 @@ function createPointTemplate (point, pointDestination, pointOffers) {
   const {name} = pointDestination || {};
   const {offers} = pointOffers || {};
 
-  const differenceTime = dayjs(dateTo).diff(dateFrom,'h', 'm');
+  const differenceTime = dayjs(dateTo).diff(dateFrom,'h');
+  const differenceMinutes = dayjs(dateTo).diff(dateFrom,'m') / 60;
   const differenceDays = dayjs(dateTo).diff(dateFrom,'d');
-  const roundedMinutes = Math.ceil(Number(`${0}.${differenceTime.toString().split('.')[1]}`) * 60);
+  const roundedMinutes = Math.ceil(Number(`${0}.${differenceMinutes.toString().split('.')[1]}`));
 
   const createOfferElements = () => {
     if (!offers) {
@@ -85,7 +86,7 @@ export default class PointView extends AbstractView {
   #onButtonClick = null;
   #onFavoriteClick = null;
 
-  constructor(point, destination, offers, {onButtonClick}, {onFavoriteClick}) {
+  constructor(point, destination, offers, {onButtonClick, onFavoriteClick}) {
     super();
     this.#point = point;
     this.#pointDestination = destination;
@@ -102,8 +103,7 @@ export default class PointView extends AbstractView {
     return createPointTemplate(this.#point, this.#pointDestination, this.#pointOffers);
   }
 
-  #favoriteClickHandler = (evt) => {
-    evt.preventDefault();
+  #favoriteClickHandler = () => {
     this.#onFavoriteClick(this.#point.isFavorite);
   };
 }
