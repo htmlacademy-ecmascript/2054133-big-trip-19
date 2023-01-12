@@ -79,7 +79,7 @@ export default class PointPresenter {
   }
 
   resetView() {
-    if (this.#pointMode !== PointMode.DEFAULT) {
+    if (this.#pointMode === PointMode.EDITING) {
       this.#replacePointToCard();
     }
   }
