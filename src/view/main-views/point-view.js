@@ -1,15 +1,18 @@
-import { humanizeDate, DATE_FORMAT, TIME_FORMAT, DATE_TIME_FORMAT } from '../../utils/utils';
+import { humanizeDate } from '../../utils/utils';
 import dayjs from 'dayjs';
 import AbstractView from '../../framework/view/abstract-view';
+import { DATE_FORMAT, DATE_TIME_FORMAT, TIME_FORMAT } from '../../utils/date';
 
 function createPointTemplate (point, pointDestination, pointOffers) {
+
   const {type, basePrice, dateFrom, dateTo, isFavorite} = point;
   const {name} = pointDestination || {};
   const {offers} = pointOffers || {};
 
-  const differenceTime = dayjs(dateTo).diff(dateFrom,'h', 'm');
   const differenceDays = dayjs(dateTo).diff(dateFrom,'d');
-  const roundedMinutes = Math.ceil(Number(`${0}.${differenceTime.toString().split('.')[1]}`) * 60);
+  const differenceHours = dayjs(dateTo).diff(dateFrom,'h');
+  const differenceMinutes = dayjs(dateTo).diff(dateFrom,'m') / 60;
+  const roundedMinutes = Math.round(Number(`${0}.${differenceMinutes.toString().split('.')[1]}`) * 60);
 
   const createOfferElements = () => {
     if (!offers) {
@@ -35,14 +38,9 @@ function createPointTemplate (point, pointDestination, pointOffers) {
     return `${date}${format}`;
   };
 
-  const timeDuration = `${getFormattedDate(differenceDays, 'D')} ${getFormattedDate(Math.trunc(differenceTime), 'H')} ${getFormattedDate(roundedMinutes, 'M')}`;
+  const timeDuration = `${getFormattedDate(differenceDays, 'D')} ${getFormattedDate((differenceHours), 'H')} ${getFormattedDate(roundedMinutes, 'M')}`;
 
-  const getFavorite = () => {
-    if (isFavorite) {
-      return ' event__favorite-btn--active';
-    }
-    return '';
-  };
+  const getFavorite = () => isFavorite ? ' event__favorite-btn--active' : '';
 
   return (
     `<li class="trip-events__item">
@@ -86,18 +84,26 @@ export default class PointView extends AbstractView {
   #pointDestination = null;
   #pointOffers = null;
   #onButtonClick = null;
+  #onFavoriteClick = null;
 
-  constructor(point, destination, offers, {onButtonClick}) {
+  constructor(point, destination, offers, {onButtonClick, onFavoriteClick}) {
     super();
     this.#point = point;
     this.#pointDestination = destination;
     this.#pointOffers = offers;
     this.#onButtonClick = onButtonClick;
+    this.#favoriteClickHandler = onFavoriteClick;
 
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onButtonClick);
+
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#favoriteClickHandler);
   }
 
   get template() {
     return createPointTemplate(this.#point, this.#pointDestination, this.#pointOffers);
   }
+
+  #favoriteClickHandler = () => {
+    this.#onFavoriteClick(this.#point.isFavorite);
+  };
 }
