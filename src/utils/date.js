@@ -1,9 +1,11 @@
-const DAY_FORMAT = 'DD';
-const DATE_FORMAT = 'MMM DD';
-const TIME_FORMAT = 'HH:mm';
-const DATE_TIME_FORMAT = 'YYYY-MM-DDTHH:mm';
-const DATE_TIME_INPUT_FORMAT = 'DD/MM/YY HH:mm';
+const DateFormat = {
+  DAY: 'DD',
+  DATE: 'MMM DD',
+  TIME: 'HH:mm',
+  DATE_TIME: 'YYYY-MM-DDTHH:mm',
+  DATE_TIME_INPUT: 'DD/MM/YY HH:mm'
+};
 
 const PRESENT_DATE = new Date();
 
-export {DAY_FORMAT, DATE_FORMAT, TIME_FORMAT, DATE_TIME_FORMAT, DATE_TIME_INPUT_FORMAT, PRESENT_DATE};
+export { DateFormat, PRESENT_DATE };

@@ -1,7 +1,7 @@
 import { humanizeDate } from '../../utils/utils';
 import dayjs from 'dayjs';
 import AbstractView from '../../framework/view/abstract-view';
-import { DATE_FORMAT, DATE_TIME_FORMAT, TIME_FORMAT } from '../../utils/date';
+import { DateFormat } from '../../utils/date';
 
 function createPointTemplate (point, pointDestination, pointOffers) {
 
@@ -45,16 +45,16 @@ function createPointTemplate (point, pointDestination, pointOffers) {
   return (
     `<li class="trip-events__item">
       <div class="event">
-        <time class="event__date" datetime="${humanizeDate(dateFrom, DATE_TIME_FORMAT)}">${humanizeDate(dateFrom, DATE_FORMAT)}</time>
+        <time class="event__date" datetime="${humanizeDate(dateFrom, DateFormat.DATE_TIME)}">${humanizeDate(dateFrom, DateFormat.DATE)}</time>
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
         <h3 class="event__title">${type} ${name}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="${humanizeDate(dateFrom, DATE_TIME_FORMAT)}">${humanizeDate(dateFrom.slice(0,-1), TIME_FORMAT)}</time>
+            <time class="event__start-time" datetime="${humanizeDate(dateFrom, DateFormat.DATE_TIME)}">${humanizeDate(dateFrom.slice(0,-1), DateFormat.TIME)}</time>
             &mdash;
-            <time class="event__end-time" datetime="${humanizeDate(dateTo, DATE_TIME_FORMAT)}">${humanizeDate(dateTo.slice(0,-1), TIME_FORMAT)}</time>
+            <time class="event__end-time" datetime="${humanizeDate(dateTo, DateFormat.DATE_TIME)}">${humanizeDate(dateTo.slice(0,-1), DateFormat.TIME)}</time>
           </p>
           <p class="event__duration">${timeDuration}</p>
         </div>

@@ -138,4 +138,3 @@ const generatePoint = () => ({
 });
 
 export { Destinations, Offers, generatePoint };
-
