@@ -8,9 +8,9 @@ const createSortItemTemplate = (sortName) =>
     <label class="trip-sort__btn" for="sort-${sortName}">${sortName}</label>
   </div>`;
 
-const createEventsSortTemplate = (sortType, currentSortType) =>
+const createEventsSortTemplate = (sortType) =>
   `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-    ${Object.values(sortType).reduce((prev, sortName) => `${prev}${createSortItemTemplate(sortName, currentSortType)}`, '')}
+    ${Object.values(sortType).reduce((prev, sortName) => `${prev}${createSortItemTemplate(sortName)}`, '')}
   </form>`;
 
 export default class EventsSortView extends AbstractView {
