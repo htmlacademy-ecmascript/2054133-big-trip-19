@@ -1,4 +1,4 @@
-import { isPointFuture, isPointPast, isPointPresent } from '../utils/utils';
+import { isPointFuture, isPointPast, isPointPresent } from '../utils/date';
 
 const FilterType = {
   EVERYTHING: 'everything',

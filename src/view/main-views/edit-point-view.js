@@ -1,6 +1,5 @@
 import AbstractView from '../../framework/view/abstract-view';
-import { DateFormat, DATE_TIME_INPUT_FORMAT } from '../../utils/date';
-import { humanizeDate } from '../../utils/utils';
+import { DateFormat, humanizeDate } from '../../utils/date';
 
 function createItemEditPointTemplate (point, pointDestination, pointOffers) {
   const {type, basePrice, dateFrom, dateTo} = point;

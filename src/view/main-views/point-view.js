@@ -1,7 +1,6 @@
-import { humanizeDate } from '../../utils/utils';
 import dayjs from 'dayjs';
 import AbstractView from '../../framework/view/abstract-view';
-import { DateFormat } from '../../utils/date';
+import { DateFormat, humanizeDate } from '../../utils/date';
 
 function createPointTemplate (point, pointDestination, pointOffers) {
 
