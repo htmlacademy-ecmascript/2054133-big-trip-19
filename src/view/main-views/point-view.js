@@ -8,10 +8,9 @@ function createPointTemplate (point, pointDestination, pointOffers) {
   const {name} = pointDestination || {};
   const {offers} = pointOffers || {};
 
-  const differenceDays = dayjs(dateTo).diff(dateFrom,'d');
-  const differenceHours = dayjs(dateTo).diff(dateFrom,'h');
-  const differenceMinutes = dayjs(dateTo).diff(dateFrom,'m') / 60;
-  const roundedMinutes = Math.round(Number(`${0}.${differenceMinutes.toString().split('.')[1]}`) * 60);
+  const differenceDays = dayjs(dateTo).diff(dateFrom, 'd');
+  const differenceHours = dayjs(dateTo).diff(dateFrom, 'h') % 24;
+  const differenceMinutes = dayjs(dateTo).diff(dateFrom,'m') % 60;
 
   const createOfferElements = () => {
     if (!offers) {
@@ -37,7 +36,7 @@ function createPointTemplate (point, pointDestination, pointOffers) {
     return `${date}${format}`;
   };
 
-  const timeDuration = `${getFormattedDate(differenceDays, 'D')} ${getFormattedDate((differenceHours), 'H')} ${getFormattedDate(roundedMinutes, 'M')}`;
+  const timeDuration = `${getFormattedDate(differenceDays, 'D')} ${getFormattedDate((differenceHours), 'H')} ${getFormattedDate(differenceMinutes, 'M')}`;
 
   const getFavorite = () => isFavorite ? ' event__favorite-btn--active' : '';
 
