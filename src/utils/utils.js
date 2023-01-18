@@ -1,21 +1,3 @@
-import dayjs from 'dayjs';
-import { PRESENT_DATE } from './date';
-
-
-function isPointFuture(dueDate) {
-  return dayjs(dueDate).isAfter(PRESENT_DATE, 'D');
-}
-
-function isPointPresent(dueDate) {
-  return dayjs(dueDate).isSame(PRESENT_DATE, 'D');
-}
-
-function isPointPast(dueDate) {
-  return dayjs(dueDate).isBefore(PRESENT_DATE, 'D');
-}
-
-const humanizeDate = (dueDate, dateFormat) => dueDate ? dayjs(dueDate).format(dateFormat) : '';
-
 const getRandomArrayElement = (items) => items[Math.floor(Math.random() * items.length)];
 
 const getRandomIntInclusive = (min, max) => {
@@ -34,14 +16,10 @@ const getDestination = (point, dest) => dest.find((item) => item.id === point.de
 const getOffer = (point, offers) => offers.find((item) => item.type === point.type);
 
 export {
-  isPointPast,
-  isPointPresent,
-  isPointFuture,
   getRandomArrayElement,
   getRandomIntInclusive,
   isEscapeKey,
   isEqual,
-  humanizeDate,
   updateItem,
   getDestination,
   getOffer

@@ -1,4 +1,10 @@
-const TYPES_OF_SORT = ['day', 'event', 'time', 'price', 'offer'];
+const SortType = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFERS: 'offer'
+};
 
 const POINT_PRICE = {
   min: 100,
@@ -7,4 +13,4 @@ const POINT_PRICE = {
 
 const TYPES_OF_TRANSPORT = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
-export { TYPES_OF_SORT, POINT_PRICE, TYPES_OF_TRANSPORT };
+export { SortType, POINT_PRICE, TYPES_OF_TRANSPORT };
