@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { POINT_PRICE, TYPES_OF_TRANSPORT } from '../utils/const';
+import { POINT_PRICE, TYPES_OF_POINT } from '../utils/const';
 import { getRandomArrayElement, getRandomIntInclusive, isEqual } from '../utils/utils';
 
 const Destinations = [
@@ -50,7 +50,7 @@ const Offers = [
       price: 120,
     },
     {
-      id: 4,
+      id: 2,
       title: 'Order by yandex',
       price: 20,
     }],
@@ -58,17 +58,17 @@ const Offers = [
   {
     type: 'bus',
     offers: [{
-      id: 3,
+      id: 1,
       title: 'Choose seats',
       price: 5,
     },
     {
-      id: 6,
+      id: 2,
       title: 'Book tickets',
       price: 40,
     },
     {
-      id: 2,
+      id: 3,
       title: 'Add luggage',
       price: 50,
     }],
@@ -91,12 +91,12 @@ const Offers = [
       price: 5,
     },
     {
-      id: 5,
+      id: 4,
       title: 'add lunch',
       price: 20,
     },
     {
-      id: 6,
+      id: 5,
       title: 'Book tickets',
       price: 40,
     }],
@@ -104,6 +104,65 @@ const Offers = [
   {
     type: 'train',
     offers: [{
+      id: 1,
+      title: 'Add luggage',
+      price: 50,
+    },
+    {
+      id: 2,
+      title: 'Choose seats',
+      price: 5,
+    },
+    {
+      id: 3,
+      title: 'add lunch',
+      price: 20,
+    },
+    {
+      id: 4,
+      title: 'Book tickets',
+      price: 40,
+    }],
+  },
+  {
+    type: 'drive',
+    offers: [{
+      id: 1,
+      title: 'Upgrade to a business class',
+      price: 120,
+    },
+    {
+      id: 2,
+      title: 'Order by yandex',
+      price: 20,
+    }],
+  },
+  {
+    type: 'check-in',
+    offers: [{
+      id: 1,
+      title: 'Choose seats',
+      price: 5,
+    },
+    {
+      id: 2,
+      title: 'Book tickets',
+      price: 40,
+    },
+    {
+      id: 3,
+      title: 'Add luggage',
+      price: 50,
+    }],
+  },
+  {
+    type: 'sightseeing',
+    offers: [{
+      id: 1,
+      title: 'Upgrade to a business class',
+      price: 120,
+    },
+    {
       id: 2,
       title: 'Add luggage',
       price: 50,
@@ -114,12 +173,58 @@ const Offers = [
       price: 5,
     },
     {
-      id: 5,
+      id: 4,
       title: 'add lunch',
       price: 20,
     },
     {
-      id: 6,
+      id: 5,
+      title: 'Book tickets',
+      price: 40,
+    }],
+  },
+  {
+    type: 'restaurant',
+    offers: [{
+      id: 1,
+      title: 'Add luggage',
+      price: 50,
+    },
+    {
+      id: 2,
+      title: 'Choose seats',
+      price: 5,
+    },
+    {
+      id: 3,
+      title: 'add lunch',
+      price: 20,
+    },
+    {
+      id: 4,
+      title: 'Book tickets',
+      price: 40,
+    }],
+  },
+  {
+    type: 'ship',
+    offers: [{
+      id: 1,
+      title: 'Add luggage',
+      price: 50,
+    },
+    {
+      id: 2,
+      title: 'Choose seats',
+      price: 5,
+    },
+    {
+      id: 3,
+      title: 'add lunch',
+      price: 20,
+    },
+    {
+      id: 4,
       title: 'Book tickets',
       price: 40,
     }],
@@ -134,7 +239,7 @@ const generatePoint = () => ({
   id: nanoid(),
   isFavorite: isEqual(getRandomIntInclusive(0, 1), 1),
   offers: getRandomArrayElement(Offers).offers.map((offer) => offer.id) ,
-  type: getRandomArrayElement(TYPES_OF_TRANSPORT),
+  type: getRandomArrayElement(TYPES_OF_POINT),
 });
 
 export { Destinations, Offers, generatePoint };

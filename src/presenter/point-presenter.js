@@ -17,16 +17,18 @@ export default class PointPresenter {
   #point = null;
   #destination = null;
   #offers = null;
+  #types = null;
 
   #pointElement = null;
   #pointEditElement = null;
 
   #pointMode = PointMode.DEFAULT;
 
-  constructor(eventsListElement, onPointChange, onModeChange) {
+  constructor(eventsListElement, onPointChange, onModeChange, typesOfPoints) {
     this.#eventsListElement = eventsListElement;
     this.#onPointChange = onPointChange;
     this.#onModeChange = onModeChange;
+    this.#types = typesOfPoints;
   }
 
   init(point, destination, offers) {
@@ -51,6 +53,7 @@ export default class PointPresenter {
       this.#point,
       this.#destination,
       this.#offers,
+      this.#types,
       {
         onButtonClick: () => this.#replacePointToCard(),
         onFormSubmit: () => this.#replacePointToCard()

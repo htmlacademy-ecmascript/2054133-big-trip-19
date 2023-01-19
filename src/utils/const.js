@@ -11,6 +11,6 @@ const POINT_PRICE = {
   max: 2000,
 };
 
-const TYPES_OF_TRANSPORT = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+const TYPES_OF_POINT = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
-export { SortType, POINT_PRICE, TYPES_OF_TRANSPORT };
+export { SortType, POINT_PRICE, TYPES_OF_POINT };
