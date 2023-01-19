@@ -1,4 +1,4 @@
-import AbstractStatefulView from '../../framework/view/abstract-view';
+import AbstractView from '../../framework/view/abstract-view';
 import { DATE_TIME_INPUT_FORMAT } from '../../utils/date';
 import { humanizeDate } from '../../utils/utils';
 
@@ -100,10 +100,10 @@ function createItemEditPointTemplate (point, pointDestination, pointOffers) {
 
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time-1">From</label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeDate(dateFrom, DATE_TIME_INPUT_FORMAT)}">
+        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeDate(dateFrom, DateFormat.DATE_TIME_INPUT)}">
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">To</label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeDate(dateTo, DATE_TIME_INPUT_FORMAT)}">
+        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeDate(dateTo, DateFormat.DATE_TIME_INPUT)}">
       </div>
 
       <div class="event__field-group  event__field-group--price">

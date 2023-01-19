@@ -56,7 +56,7 @@ export default class PointPresenter {
         onFormSubmit: () => this.#replacePointToCard()
       });
 
-    if (prevPointElement === null || prevPointEditElement === null) {
+    if (!prevPointElement || !prevPointEditElement) {
       render(this.#pointElement, this.#eventsListElement.element);
       return;
     }
