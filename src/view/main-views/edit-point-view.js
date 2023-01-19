@@ -5,7 +5,7 @@ import { getDestination, getOffer } from '../../utils/utils';
 function createItemEditPointTemplate (point, pointDestination, pointOffers, types) {
   const {type, basePrice, dateFrom, dateTo} = point;
   const {offers} = getOffer(point, pointOffers);
-  const {description, name} = getDestination(point, pointDestination);
+  const {description, name, pictures} = getDestination(point, pointDestination);
 
   const createOfferElements = () => {
     if(!offers) {
@@ -22,12 +22,20 @@ function createItemEditPointTemplate (point, pointDestination, pointOffers, type
         </div>`, '')}`;
   };
 
-  const createPointsTypes = () =>
+  const createPointsTypeElements = () =>
     `${types.reduce((prev, typeOfPoint) =>
       `${prev} <div class="event__type-item">
       <input id="event-type-${typeOfPoint}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${typeOfPoint}">
       <label class="event__type-label  event__type-label--${typeOfPoint}" for="event-type-${typeOfPoint}-1">${typeOfPoint}</label>
     </div>`, '')}`;
+
+  const createPrictureElements = () =>
+    `${pictures.reduce((prev, picture) =>
+      `${prev} <img class="event__photo" src="${picture.src}" alt="Event photo">`, '')}`;
+
+  const offerElements = createOfferElements();
+  const pointsTypeElements = createPointsTypeElements();
+  const prictureElements = createPrictureElements();
 
   return (
     `<li class="trip-events__item">
@@ -43,7 +51,7 @@ function createItemEditPointTemplate (point, pointDestination, pointOffers, type
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
-            ${createPointsTypes()}
+            ${pointsTypeElements}
           </fieldset>
         </div>
       </div>
@@ -85,15 +93,20 @@ function createItemEditPointTemplate (point, pointDestination, pointOffers, type
     <section class="event__details">
       <section class="event__section  event__section--offers">
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-
         <div class="event__available-offers">
-        ${createOfferElements()}
+          ${offerElements}
         </div>
       </section>
 
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${description}</p>
+
+        <div class="event__photos-container">
+          <div class="event__photos-tape">
+            ${prictureElements}
+          </div>
+        </div>
       </section>
     </section>
   </form>

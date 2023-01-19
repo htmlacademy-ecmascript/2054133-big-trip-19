@@ -40,8 +40,8 @@ function createPointTemplate (point, pointDestination, pointOffers) {
     return `${date}${format}`;
   };
 
+  const offerElements = createOfferElements();
   const timeDuration = `${getFormattedDate(differenceDays, 'D')} ${getFormattedDate((differenceHours), 'H')} ${getFormattedDate(differenceMinutes, 'M')}`;
-
   const getFavorite = () => isFavorite ? ' event__favorite-btn--active' : '';
 
   return (
@@ -65,7 +65,7 @@ function createPointTemplate (point, pointDestination, pointOffers) {
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
-          ${createOfferElements()}
+          ${offerElements}
         </ul>
         <button class="event__favorite-btn${getFavorite()}" type="button">
           <span class="visually-hidden">Add to favorite</span>

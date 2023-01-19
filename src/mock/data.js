@@ -13,6 +13,14 @@ const Destinations = [
         src: 'http://picsum.photos/300/200?r=0.0762563005163317',
         description: 'Chamonix parliament building',
       },
+      {
+        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+        description: 'Chamonix parliament building',
+      },
+      {
+        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+        description: 'Chamonix parliament building',
+      },
     ],
   },
   {
@@ -25,6 +33,14 @@ const Destinations = [
         src: 'http://picsum.photos/300/200?r=0.0762563005163317',
         description: 'Geneva city park',
       },
+      {
+        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+        description: 'Geneva city park',
+      },
+      {
+        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+        description: 'Geneva city park',
+      },
     ],
   },
   {
@@ -33,6 +49,14 @@ const Destinations = [
       'Amsterdam is the capital and largest city of the Netherlands. It has been the capital of the kingdom since 1814. It is located in the province of North Holland in the west of the country at the mouth of the rivers Amstel and IJ. Amsterdam is connected by the Nordsee Canal to the North Sea.',
     name: 'Amsterdam',
     pictures: [
+      {
+        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+        description: 'Amsterdam tropical museum',
+      },
+      {
+        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+        description: 'Amsterdam tropical museum',
+      },
       {
         src: 'http://picsum.photos/300/200?r=0.0762563005163317',
         description: 'Amsterdam tropical museum',
