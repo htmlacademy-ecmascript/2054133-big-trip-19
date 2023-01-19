@@ -1,4 +1,4 @@
-import AbstractView from '../../framework/view/abstract-view';
+import AbstractStatefulView from '../../framework/view/abstract-view';
 import { DATE_TIME_INPUT_FORMAT } from '../../utils/date';
 import { humanizeDate } from '../../utils/utils';
 
@@ -139,7 +139,7 @@ function createItemEditPointTemplate (point, pointDestination, pointOffers) {
   );
 }
 
-export default class EditPointView extends AbstractView {
+export default class EditPointView extends AbstractStatefulView {
   #point = null;
   #pointDestination = null;
   #pointOffers = null;
