@@ -17,16 +17,18 @@ export default class PointPresenter {
   #point = null;
   #destination = null;
   #offers = null;
+  #types = null;
 
   #pointElement = null;
   #pointEditElement = null;
 
   #pointMode = PointMode.DEFAULT;
 
-  constructor(eventsListElement, onPointChange, onModeChange) {
+  constructor(eventsListElement, onPointChange, onModeChange, typesOfPoints) {
     this.#eventsListElement = eventsListElement;
     this.#onPointChange = onPointChange;
     this.#onModeChange = onModeChange;
+    this.#types = typesOfPoints;
   }
 
   init(point, destination, offers) {
@@ -51,8 +53,12 @@ export default class PointPresenter {
       this.#point,
       this.#destination,
       this.#offers,
+      this.#types,
       {
-        onButtonClick: () => this.#replacePointToCard(),
+        onButtonClick: () => {
+          this.#pointEditElement.reset(this.#point);
+          this.#replacePointToCard();
+        },
         onFormSubmit: () => this.#replacePointToCard()
       });
 
@@ -79,15 +85,15 @@ export default class PointPresenter {
   }
 
   resetView() {
-    if (this.#pointMode === PointMode.EDITING) {
+    if (this.#pointMode !== PointMode.DEFAULT) {
       this.#replacePointToCard();
     }
   }
 
   #replacePointToForm() {
     replace(this.#pointEditElement, this.#pointElement);
-    document.addEventListener('keydown', this.#onEscKeydown);
     this.#onModeChange();
+    document.addEventListener('keydown', this.#onEscKeydown);
     this.#pointMode = PointMode.EDITING;
   }
 
@@ -103,6 +109,7 @@ export default class PointPresenter {
 
   #onEscKeydown = (evt) => {
     if (isEscapeKey(evt)) {
+      this.#pointEditElement.reset(this.#point);
       this.#replacePointToCard();
     }
   };

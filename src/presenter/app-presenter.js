@@ -4,7 +4,7 @@ import FiltersView from '../view/header-views/filters-view';
 import EventsSortView from '../view/main-views/sort-view';
 import EventsListView from '../view/main-views/list-view';
 import EventsMessage from '../view/main-views/message-view';
-import { updateItem, getDestination, getOffer } from '../utils/utils';
+import { updateItem } from '../utils/utils';
 import { generateFilter } from '../mock/filter';
 import PointPresenter from './point-presenter';
 import { SortType } from '../utils/const';
@@ -20,6 +20,7 @@ export default class EventsPresenter {
   #points = [];
   #destinations = [];
   #offers = [];
+  #typesOfPoints = null;
 
   #currentSortType = null;
   #defaultPointSort = [];
@@ -41,6 +42,7 @@ export default class EventsPresenter {
     this.#points = defaultSort([...this.#pointModel.points]);
     this.#destinations = [...this.#pointModel.destinations];
     this.#offers = [...this.#pointModel.offers];
+    this.#typesOfPoints = [...this.#pointModel.typesOfPoints];
 
     this.#defaultPointSort = defaultSort([...this.#pointModel.points]);
 
@@ -51,8 +53,8 @@ export default class EventsPresenter {
   }
 
   #renderPoint(point) {
-    const pointPresenter = new PointPresenter(this.#eventsListElement, this.#onPointChange, this.#onModeChange);
-    pointPresenter.init(point, getDestination(point, this.#destinations), getOffer(point, this.#offers));
+    const pointPresenter = new PointPresenter(this.#eventsListElement, this.#onPointChange, this.#onModeChange, this.#typesOfPoints);
+    pointPresenter.init(point, this.#destinations, this.#offers);
     this.#pointsPresenter.set(point.id, pointPresenter);
   }
 
@@ -63,7 +65,7 @@ export default class EventsPresenter {
   #onPointChange = (updatedPoint) => {
     this.#points = updateItem(this.#points, updatedPoint);
     this.#defaultPointSort = updateItem(this.#defaultPointSort, updatedPoint);
-    this.#pointsPresenter.get(updatedPoint.id).init(updatedPoint, getDestination(updatedPoint, this.#destinations), getOffer(updatedPoint, this.#offers));
+    this.#pointsPresenter.get(updatedPoint.id).init(updatedPoint, this.#destinations, this.#offers);
   };
 
   #onModeChange = () => {
@@ -80,7 +82,6 @@ export default class EventsPresenter {
   }
 
   #onSortChange = (target) => {
-
     if (target === this.#currentSortType) {
       return;
     }

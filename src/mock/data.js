@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { POINT_PRICE, TYPES_OF_TRANSPORT } from '../utils/const';
+import { POINT_PRICE, TYPES_OF_POINT } from '../utils/const';
 import { getRandomArrayElement, getRandomIntInclusive, isEqual } from '../utils/utils';
 
 const Destinations = [
@@ -13,6 +13,14 @@ const Destinations = [
         src: 'http://picsum.photos/300/200?r=0.0762563005163317',
         description: 'Chamonix parliament building',
       },
+      {
+        src: 'http://picsum.photos/300/200?r=0.0762563005163316',
+        description: 'Chamonix parliament building',
+      },
+      {
+        src: 'http://picsum.photos/300/200?r=0.0762563005163318',
+        description: 'Chamonix parliament building',
+      },
     ],
   },
   {
@@ -22,7 +30,15 @@ const Destinations = [
     name: 'Geneva',
     pictures: [
       {
-        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+        src: 'http://picsum.photos/300/200?r=0.0762563005163319',
+        description: 'Geneva city park',
+      },
+      {
+        src: 'http://picsum.photos/300/200?r=0.0762563005163315',
+        description: 'Geneva city park',
+      },
+      {
+        src: 'http://picsum.photos/300/200?r=0.0762563005163314',
         description: 'Geneva city park',
       },
     ],
@@ -34,7 +50,15 @@ const Destinations = [
     name: 'Amsterdam',
     pictures: [
       {
-        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+        src: 'http://picsum.photos/300/200?r=0.0762563005163313',
+        description: 'Amsterdam tropical museum',
+      },
+      {
+        src: 'http://picsum.photos/300/200?r=0.0762563005163312',
+        description: 'Amsterdam tropical museum',
+      },
+      {
+        src: 'http://picsum.photos/300/200?r=0.0762563005163311',
         description: 'Amsterdam tropical museum',
       },
     ],
@@ -50,7 +74,7 @@ const Offers = [
       price: 120,
     },
     {
-      id: 4,
+      id: 2,
       title: 'Order by yandex',
       price: 20,
     }],
@@ -58,17 +82,17 @@ const Offers = [
   {
     type: 'bus',
     offers: [{
-      id: 3,
+      id: 1,
       title: 'Choose seats',
       price: 5,
     },
     {
-      id: 6,
+      id: 2,
       title: 'Book tickets',
       price: 40,
     },
     {
-      id: 2,
+      id: 3,
       title: 'Add luggage',
       price: 50,
     }],
@@ -91,12 +115,12 @@ const Offers = [
       price: 5,
     },
     {
-      id: 5,
+      id: 4,
       title: 'add lunch',
       price: 20,
     },
     {
-      id: 6,
+      id: 5,
       title: 'Book tickets',
       price: 40,
     }],
@@ -104,6 +128,65 @@ const Offers = [
   {
     type: 'train',
     offers: [{
+      id: 1,
+      title: 'Add luggage',
+      price: 50,
+    },
+    {
+      id: 2,
+      title: 'Choose seats',
+      price: 5,
+    },
+    {
+      id: 3,
+      title: 'add lunch',
+      price: 20,
+    },
+    {
+      id: 4,
+      title: 'Book tickets',
+      price: 40,
+    }],
+  },
+  {
+    type: 'drive',
+    offers: [{
+      id: 1,
+      title: 'Upgrade to a business class',
+      price: 120,
+    },
+    {
+      id: 2,
+      title: 'Order by yandex',
+      price: 20,
+    }],
+  },
+  {
+    type: 'check-in',
+    offers: [{
+      id: 1,
+      title: 'Choose seats',
+      price: 5,
+    },
+    {
+      id: 2,
+      title: 'Book tickets',
+      price: 40,
+    },
+    {
+      id: 3,
+      title: 'Add luggage',
+      price: 50,
+    }],
+  },
+  {
+    type: 'sightseeing',
+    offers: [{
+      id: 1,
+      title: 'Upgrade to a business class',
+      price: 120,
+    },
+    {
       id: 2,
       title: 'Add luggage',
       price: 50,
@@ -114,12 +197,58 @@ const Offers = [
       price: 5,
     },
     {
-      id: 5,
+      id: 4,
       title: 'add lunch',
       price: 20,
     },
     {
-      id: 6,
+      id: 5,
+      title: 'Book tickets',
+      price: 40,
+    }],
+  },
+  {
+    type: 'restaurant',
+    offers: [{
+      id: 1,
+      title: 'Add luggage',
+      price: 50,
+    },
+    {
+      id: 2,
+      title: 'Choose seats',
+      price: 5,
+    },
+    {
+      id: 3,
+      title: 'add lunch',
+      price: 20,
+    },
+    {
+      id: 4,
+      title: 'Book tickets',
+      price: 40,
+    }],
+  },
+  {
+    type: 'ship',
+    offers: [{
+      id: 1,
+      title: 'Add luggage',
+      price: 50,
+    },
+    {
+      id: 2,
+      title: 'Choose seats',
+      price: 5,
+    },
+    {
+      id: 3,
+      title: 'add lunch',
+      price: 20,
+    },
+    {
+      id: 4,
       title: 'Book tickets',
       price: 40,
     }],
@@ -134,7 +263,7 @@ const generatePoint = () => ({
   id: nanoid(),
   isFavorite: isEqual(getRandomIntInclusive(0, 1), 1),
   offers: getRandomArrayElement(Offers).offers.map((offer) => offer.id) ,
-  type: getRandomArrayElement(TYPES_OF_TRANSPORT),
+  type: getRandomArrayElement(TYPES_OF_POINT),
 });
 
 export { Destinations, Offers, generatePoint };

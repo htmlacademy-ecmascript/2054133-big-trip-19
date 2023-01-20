@@ -15,6 +15,8 @@ const updateItem = (points, update) => points.map((point) => point.id === update
 const getDestination = (point, dest) => dest.find((item) => item.id === point.destination);
 const getOffer = (point, offers) => offers.find((item) => item.type === point.type);
 
+const isContainsCity = (destinations, target) => destinations.find((destination) => destination.name === target.value);
+
 export {
   getRandomArrayElement,
   getRandomIntInclusive,
@@ -22,5 +24,6 @@ export {
   isEqual,
   updateItem,
   getDestination,
-  getOffer
+  getOffer,
+  isContainsCity
 };

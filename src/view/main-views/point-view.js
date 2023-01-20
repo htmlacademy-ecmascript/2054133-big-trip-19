@@ -1,16 +1,20 @@
 import dayjs from 'dayjs';
 import AbstractView from '../../framework/view/abstract-view';
 import { DateFormat, humanizeDate } from '../../utils/date';
+import { getDestination, getOffer } from '../../utils/utils';
 
 function createPointTemplate (point, pointDestination, pointOffers) {
 
   const {type, basePrice, dateFrom, dateTo, isFavorite} = point;
-  const {name} = pointDestination || {};
-  const {offers} = pointOffers || {};
+  const {name} = getDestination(point, pointDestination);
+  const {offers} = getOffer(point, pointOffers);
+
+  const hoursInDay = 24;
+  const miutesInHour = 60;
 
   const differenceDays = dayjs(dateTo).diff(dateFrom, 'd');
-  const differenceHours = dayjs(dateTo).diff(dateFrom, 'h') % 24;
-  const differenceMinutes = dayjs(dateTo).diff(dateFrom,'m') % 60;
+  const differenceHours = dayjs(dateTo).diff(dateFrom, 'h') % hoursInDay;
+  const differenceMinutes = dayjs(dateTo).diff(dateFrom,'m') % miutesInHour;
 
   const createOfferElements = () => {
     if (!offers) {
@@ -36,8 +40,8 @@ function createPointTemplate (point, pointDestination, pointOffers) {
     return `${date}${format}`;
   };
 
+  const offerElements = createOfferElements();
   const timeDuration = `${getFormattedDate(differenceDays, 'D')} ${getFormattedDate((differenceHours), 'H')} ${getFormattedDate(differenceMinutes, 'M')}`;
-
   const getFavorite = () => isFavorite ? ' event__favorite-btn--active' : '';
 
   return (
@@ -61,7 +65,7 @@ function createPointTemplate (point, pointDestination, pointOffers) {
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
-          ${createOfferElements()}
+          ${offerElements}
         </ul>
         <button class="event__favorite-btn${getFavorite()}" type="button">
           <span class="visually-hidden">Add to favorite</span>
@@ -93,7 +97,6 @@ export default class PointView extends AbstractView {
     this.#favoriteClickHandler = onFavoriteClick;
 
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onButtonClick);
-
     this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#favoriteClickHandler);
   }
 
