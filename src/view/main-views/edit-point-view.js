@@ -1,6 +1,6 @@
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view';
 import { DateFormat, humanizeDate } from '../../utils/date';
-import { getDestination, getOffer } from '../../utils/utils';
+import { getDestination, getOffer, isContainsCity } from '../../utils/utils';
 
 function createItemEditPointTemplate (point, pointDestination, pointOffers, types) {
   const {type, basePrice, dateFrom, dateTo} = point;
@@ -144,17 +144,35 @@ export default class EditPointView extends AbstractStatefulView {
     return {...point};
   }
 
+  static parseStateToPoint(point) {
+    return {...point};
+  }
+
   _restoreHandlers() {
-    this.element.querySelector('form').addEventListener('submit', this.#onFormSubmit);
+    this.element.querySelector('form').addEventListener('submit', this.#onSubmitButton);
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onButtonClick);
     this.element.querySelector('.event__type-group').addEventListener('click', this.#onTypeClick);
+    this.element.querySelector('.event__input--destination').addEventListener('input', this.#onInputChange);
   }
+
+  #onSubmitButton = (evt) => {
+    evt.preventDefault();
+    this.#onFormSubmit();
+  };
 
   #onTypeClick = (evt) => {
     if (evt.target.tagName !== 'INPUT') {
       return;
     }
     this.updateElement({type: evt.target.value});
+  };
+
+  #onInputChange = (evt) => {
+    const currentCity = isContainsCity(this.#pointDestination, evt.target);
+    if (!currentCity) {
+      return;
+    }
+    this.updateElement({destination: currentCity.id});
   };
 
   reset(point) {

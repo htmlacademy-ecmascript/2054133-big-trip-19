@@ -55,7 +55,10 @@ export default class PointPresenter {
       this.#offers,
       this.#types,
       {
-        onButtonClick: () => this.#replacePointToCard(),
+        onButtonClick: () => {
+          this.#pointEditElement.reset(this.#point);
+          this.#replacePointToCard();
+        },
         onFormSubmit: () => this.#replacePointToCard()
       });
 
@@ -82,15 +85,15 @@ export default class PointPresenter {
   }
 
   resetView() {
-    if (this.#pointMode === PointMode.EDITING) {
+    if (this.#pointMode !== PointMode.DEFAULT) {
       this.#replacePointToCard();
     }
   }
 
   #replacePointToForm() {
     replace(this.#pointEditElement, this.#pointElement);
-    document.addEventListener('keydown', this.#onEscKeydown);
     this.#onModeChange();
+    document.addEventListener('keydown', this.#onEscKeydown);
     this.#pointMode = PointMode.EDITING;
   }
 
@@ -106,6 +109,7 @@ export default class PointPresenter {
 
   #onEscKeydown = (evt) => {
     if (isEscapeKey(evt)) {
+      this.#pointEditElement.reset(this.#point);
       this.#replacePointToCard();
     }
   };
