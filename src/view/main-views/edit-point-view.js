@@ -33,9 +33,14 @@ function createItemEditPointTemplate (point, pointDestination, pointOffers, type
     `${pictures.reduce((prev, picture) =>
       `${prev} <img class="event__photo" src="${picture.src}" alt="Event photo">`, '')}`;
 
+  const createDataCityList = () =>
+    `${pointDestination.reduce((prev, destintation) =>
+      `${prev} <option value="${destintation.name}""></option>`, '')}`;
+
   const offerElements = createOfferElements();
   const pointsTypeElements = createPointsTypeElements();
   const prictureElements = createPrictureElements();
+  const cityDataList = createDataCityList();
 
   return (
     `<li class="trip-events__item">
@@ -62,9 +67,7 @@ function createItemEditPointTemplate (point, pointDestination, pointOffers, type
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
         <datalist id="destination-list-1">
-          <option value="Amsterdam"></option>
-          <option value="Geneva"></option>
-          <option value="Chamonix"></option>
+          ${cityDataList}
         </datalist>
       </div>
 
@@ -122,7 +125,7 @@ export default class EditPointView extends AbstractStatefulView {
   #onButtonClick = null;
   #onFormSubmit = null;
 
-  constructor(point, destination, offers, typesOfPoints, {onButtonClick, onFormSubmit}) {
+  constructor(point, destination, offers, typesOfPoints, onFormSubmit, {onButtonClick}) {
     super();
 
     this._state = EditPointView.parsePointToState(point);
@@ -157,7 +160,7 @@ export default class EditPointView extends AbstractStatefulView {
 
   #onSubmitButton = (evt) => {
     evt.preventDefault();
-    this.#onFormSubmit();
+    this.#onFormSubmit(this._state);
   };
 
   #onTypeClick = (evt) => {

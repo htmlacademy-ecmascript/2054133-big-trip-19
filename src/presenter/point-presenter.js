@@ -54,13 +54,14 @@ export default class PointPresenter {
       this.#destination,
       this.#offers,
       this.#types,
+      this.#onFormSubmit,
       {
         onButtonClick: () => {
           this.#pointEditElement.reset(this.#point);
           this.#replacePointToCard();
-        },
-        onFormSubmit: () => this.#replacePointToCard()
-      });
+        }
+      },
+    );
 
     if (!prevPointElement || !prevPointEditElement) {
       render(this.#pointElement, this.#eventsListElement.element);
@@ -89,6 +90,11 @@ export default class PointPresenter {
       this.#replacePointToCard();
     }
   }
+
+  #onFormSubmit = (point) => {
+    this.#onPointChange({...this.#point, type: point.type, destination: point.destination});
+    this.#replacePointToCard();
+  };
 
   #replacePointToForm() {
     replace(this.#pointEditElement, this.#pointElement);
