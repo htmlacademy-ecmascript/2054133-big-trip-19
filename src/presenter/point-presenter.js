@@ -92,7 +92,15 @@ export default class PointPresenter {
   }
 
   #onFormSubmit = (point) => {
-    this.#onPointChange({...this.#point, type: point.type, destination: point.destination});
+    this.#onPointChange(
+      {
+        ...this.#point,
+        type: point.type,
+        destination: point.destination,
+        dateFrom: point.dateFrom,
+        dateTo: point.dateTo
+      }
+    );
     this.#replacePointToCard();
   };
 

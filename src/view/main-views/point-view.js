@@ -56,9 +56,9 @@ function createPointTemplate (point, pointDestination, pointOffers) {
         <h3 class="event__title">${type} ${name}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="${humanizeDate(dateFrom, DateFormat.DATE_TIME)}">${humanizeDate(dateFrom.slice(0,-1), DateFormat.TIME)}</time>
+            <time class="event__start-time" datetime="${humanizeDate(dateFrom, DateFormat.DATE_TIME)}">${humanizeDate(dateFrom, DateFormat.TIME)}</time>
             &mdash;
-            <time class="event__end-time" datetime="${humanizeDate(dateTo, DateFormat.DATE_TIME)}">${humanizeDate(dateTo.slice(0,-1), DateFormat.TIME)}</time>
+            <time class="event__end-time" datetime="${humanizeDate(dateTo, DateFormat.DATE_TIME)}">${humanizeDate(dateTo, DateFormat.TIME)}</time>
           </p>
           <p class="event__duration">${timeDuration}</p>
         </div>

@@ -1,7 +1,7 @@
 import { generatePoint, Destinations, Offers } from '../mock/data';
 import { TYPES_OF_POINT } from '../utils/const';
 
-const POINTS_COUNT = 2;
+const POINTS_COUNT = 1;
 
 export default class PointModel {
   #points = null;

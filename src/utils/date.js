@@ -22,6 +22,13 @@ function isPointPast(dueDate) {
   return dayjs(dueDate).isBefore(PRESENT_DATE, 'D');
 }
 
+function isDateLess(firstDate, secondDate) {
+  if(dayjs(firstDate) > dayjs(secondDate)) {
+    return firstDate;
+  }
+  return secondDate;
+}
+
 const humanizeDate = (dueDate, dateFormat) => dueDate ? dayjs(dueDate).format(dateFormat) : '';
 
-export { DateFormat, PRESENT_DATE, isPointFuture, isPointPresent, isPointPast, humanizeDate };
+export { DateFormat, PRESENT_DATE, isPointFuture, isPointPresent, isPointPast, isDateLess, humanizeDate };
