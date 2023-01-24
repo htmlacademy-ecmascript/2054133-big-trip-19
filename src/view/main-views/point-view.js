@@ -9,12 +9,14 @@ function createPointTemplate (point, pointDestination, pointOffers) {
   const {name} = getDestination(point, pointDestination);
   const {offers} = getOffer(point, pointOffers);
 
-  const hoursInDay = 24;
-  const miutesInHour = 60;
+  const Time = {
+    HOURS_IN_DAY: 24,
+    MINUTES_IN_HOUR: 60
+  };
 
   const differenceDays = dayjs(dateTo).diff(dateFrom, 'd');
-  const differenceHours = dayjs(dateTo).diff(dateFrom, 'h') % hoursInDay;
-  const differenceMinutes = dayjs(dateTo).diff(dateFrom,'m') % miutesInHour;
+  const differenceHours = dayjs(dateTo).diff(dateFrom, 'h') % Time.HOURS_IN_DAY;
+  const differenceMinutes = dayjs(dateTo).diff(dateFrom,'m') % Time.MINUTES_IN_HOUR;
 
   const createOfferElements = () => {
     if (!offers) {
@@ -54,9 +56,9 @@ function createPointTemplate (point, pointDestination, pointOffers) {
         <h3 class="event__title">${type} ${name}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="${humanizeDate(dateFrom, DateFormat.DATE_TIME)}">${humanizeDate(dateFrom.slice(0,-1), DateFormat.TIME)}</time>
+            <time class="event__start-time" datetime="${humanizeDate(dateFrom, DateFormat.DATE_TIME)}">${humanizeDate(dateFrom, DateFormat.TIME)}</time>
             &mdash;
-            <time class="event__end-time" datetime="${humanizeDate(dateTo, DateFormat.DATE_TIME)}">${humanizeDate(dateTo.slice(0,-1), DateFormat.TIME)}</time>
+            <time class="event__end-time" datetime="${humanizeDate(dateTo, DateFormat.DATE_TIME)}">${humanizeDate(dateTo, DateFormat.TIME)}</time>
           </p>
           <p class="event__duration">${timeDuration}</p>
         </div>

@@ -257,8 +257,8 @@ const Offers = [
 
 const generatePoint = () => ({
   basePrice: getRandomIntInclusive(POINT_PRICE.min, POINT_PRICE.max),
-  dateFrom: `2022-07-${getRandomIntInclusive(25, 30)}T${getRandomIntInclusive(10, 20)}:${getRandomIntInclusive(10, 59)}:10.845Z`,
-  dateTo: '2022-07-30T20:59:13.375Z',
+  dateFrom: `2022-07-${getRandomIntInclusive(25, 29)}T${getRandomIntInclusive(10, 20)}:${getRandomIntInclusive(10, 59)}:10.845Z`,
+  dateTo: '2022-07-30T18:59:13.375Z',
   destination: getRandomArrayElement(Destinations).id,
   id: nanoid(),
   isFavorite: isEqual(getRandomIntInclusive(0, 1), 1),
