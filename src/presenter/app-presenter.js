@@ -38,6 +38,10 @@ export default class EventsPresenter {
     this.#pointModel = pointModel;
   }
 
+  get points() {
+    return this.#pointModel.points;
+  }
+
   init() {
     this.#points = defaultSort([...this.#pointModel.points]);
     this.#destinations = [...this.#pointModel.destinations];

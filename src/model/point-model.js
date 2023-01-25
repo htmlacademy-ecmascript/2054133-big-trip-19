@@ -1,9 +1,10 @@
+import Observable from '../framework/observable';
 import { generatePoint, Destinations, Offers } from '../mock/data';
 import { TYPES_OF_POINT } from '../utils/const';
 
-const POINTS_COUNT = 1;
+const POINTS_COUNT = 2;
 
-export default class PointModel {
+export default class PointModel extends Observable {
   #points = null;
   #destinations = null;
   #offers = null;
