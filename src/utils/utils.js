@@ -10,8 +10,6 @@ const isEscapeKey = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
 const isEqual = (firstValue, secondValue) => firstValue === secondValue;
 
-const updateItem = (points, update) => points.map((point) => point.id === update.id ? update : point);
-
 const getDestination = (point, dest) => dest.find((item) => item.id === point.destination);
 const getOffer = (point, offers) => offers.find((item) => item.type === point.type);
 
@@ -22,7 +20,6 @@ export {
   getRandomIntInclusive,
   isEscapeKey,
   isEqual,
-  updateItem,
   getDestination,
   getOffer,
   isContainsCity

@@ -2,6 +2,7 @@ import { remove, render, replace } from '../framework/render';
 import PointView from '../view/main-views/point-view';
 import EditPointView from '../view/main-views/edit-point-view';
 import { isEscapeKey } from '../utils/utils';
+import { UpdateTask, UserAction } from '../utils/const';
 
 const PointMode = {
   DEFAULT: 'DEFALUT',
@@ -11,7 +12,7 @@ const PointMode = {
 export default class PointPresenter {
 
   #eventsListElement = null;
-  #onPointChange = null;
+  #onPointDataChange = null;
   #onModeChange = null;
 
   #point = null;
@@ -24,9 +25,9 @@ export default class PointPresenter {
 
   #pointMode = PointMode.DEFAULT;
 
-  constructor(eventsListElement, onPointChange, onModeChange, typesOfPoints) {
+  constructor(eventsListElement, onPointDataChange, onModeChange, typesOfPoints) {
     this.#eventsListElement = eventsListElement;
-    this.#onPointChange = onPointChange;
+    this.#onPointDataChange = onPointDataChange;
     this.#onModeChange = onModeChange;
     this.#types = typesOfPoints;
   }
@@ -43,9 +44,9 @@ export default class PointPresenter {
       this.#point,
       this.#destination,
       this.#offers,
+      this.#onFavoritClick,
       {
         onButtonClick: () => this.#replacePointToForm(),
-        onFavoriteClick: () => this.#onFavoritClick()
       }
     );
 
@@ -80,19 +81,10 @@ export default class PointPresenter {
     remove(prevPointEditElement);
   }
 
-  destroy() {
-    remove(this.#pointElement);
-    remove(this.#pointEditElement);
-  }
-
-  resetView() {
-    if (this.#pointMode !== PointMode.DEFAULT) {
-      this.#replacePointToCard();
-    }
-  }
-
   #onFormSubmit = (point) => {
-    this.#onPointChange(
+    this.#onPointDataChange(
+      UserAction.UPDATE_TASK,
+      UpdateTask.MEDIUM,
       {
         ...this.#point,
         type: point.type,
@@ -102,6 +94,20 @@ export default class PointPresenter {
       }
     );
     this.#replacePointToCard();
+  };
+
+  #onFavoritClick = () => {
+    this.#onPointDataChange(
+      UserAction.UPDATE_TASK,
+      UpdateTask.LOW,
+      {...this.#point, isFavorite: !this.#point.isFavorite});
+  };
+
+  #onEscKeydown = (evt) => {
+    if (isEscapeKey(evt)) {
+      this.#pointEditElement.reset(this.#point);
+      this.#replacePointToCard();
+    }
   };
 
   #replacePointToForm() {
@@ -117,14 +123,14 @@ export default class PointPresenter {
     this.#pointMode = PointMode.DEFAULT;
   }
 
-  #onFavoritClick = () => {
-    this.#onPointChange({...this.#point, isFavorite: !this.#point.isFavorite});
-  };
-
-  #onEscKeydown = (evt) => {
-    if (isEscapeKey(evt)) {
-      this.#pointEditElement.reset(this.#point);
+  resetView() {
+    if (this.#pointMode !== PointMode.DEFAULT) {
       this.#replacePointToCard();
     }
-  };
+  }
+
+  destroy() {
+    remove(this.#pointElement);
+    remove(this.#pointEditElement);
+  }
 }

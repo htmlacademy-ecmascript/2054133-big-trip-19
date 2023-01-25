@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import AbstractView from '../../framework/view/abstract-view';
+import { Time } from '../../utils/const';
 import { DateFormat, humanizeDate } from '../../utils/date';
 import { getDestination, getOffer } from '../../utils/utils';
 
@@ -8,11 +9,6 @@ function createPointTemplate (point, pointDestination, pointOffers) {
   const {type, basePrice, dateFrom, dateTo, isFavorite} = point;
   const {name} = getDestination(point, pointDestination);
   const {offers} = getOffer(point, pointOffers);
-
-  const Time = {
-    HOURS_IN_DAY: 24,
-    MINUTES_IN_HOUR: 60
-  };
 
   const differenceDays = dayjs(dateTo).diff(dateFrom, 'd');
   const differenceHours = dayjs(dateTo).diff(dateFrom, 'h') % Time.HOURS_IN_DAY;
@@ -90,7 +86,7 @@ export default class PointView extends AbstractView {
   #onButtonClick = null;
   #onFavoriteClick = null;
 
-  constructor(point, destination, offers, {onButtonClick, onFavoriteClick}) {
+  constructor(point, destination, offers, onFavoriteClick, {onButtonClick}) {
     super();
     this.#point = point;
     this.#pointDestination = destination;

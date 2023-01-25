@@ -8,6 +8,7 @@ import { generateFilter } from '../mock/filter';
 import PointPresenter from './point-presenter';
 import { SortType } from '../utils/const';
 import { sortDay, sortPrice, sortTime, defaultSort } from '../utils/sort';
+import Observable from '../framework/observable';
 
 export default class EventsPresenter {
 
@@ -33,10 +34,12 @@ export default class EventsPresenter {
     this.#mainElement = mainElement;
     this.#filtersElement = filtersElement;
     this.#pointModel = pointModel;
+
+    this.#pointModel.addObserver(this.#onModelEvent);
   }
 
   get points() {
-    const defaultPointSort = defaultSort([...this.#pointModel.points]);
+    const defaultPointsSort = defaultSort([...this.#pointModel.points]);
 
     switch (this.#currentSortType) {
       case SortType.PRICE:
@@ -49,7 +52,7 @@ export default class EventsPresenter {
         return sortDay([...this.#pointModel.points]);
     }
 
-    return defaultPointSort;
+    return defaultPointsSort;
   }
 
   init() {
@@ -64,7 +67,7 @@ export default class EventsPresenter {
   }
 
   #renderPoint(point) {
-    const pointPresenter = new PointPresenter(this.#eventsListElement, this.#onPointChange, this.#onModeChange, this.#typesOfPoints);
+    const pointPresenter = new PointPresenter(this.#eventsListElement, this.#onViewAction, this.#onModeChange, this.#typesOfPoints);
     pointPresenter.init(point, this.#destinations, this.#offers);
     this.#pointsPresenter.set(point.id, pointPresenter);
   }
@@ -73,8 +76,12 @@ export default class EventsPresenter {
     this.points.forEach((point) => this.#renderPoint(point));
   }
 
-  #onPointChange = (updatedPoint) => {
-    this.#pointsPresenter.get(updatedPoint.id).init(updatedPoint, this.#destinations, this.#offers);
+  #onViewAction = (updateType, data) => {
+    console.log(updateType, data);
+  };
+
+  #onModelEvent = (updateType, data) => {
+    console.log(updateType, data);
   };
 
   #onModeChange = () => {
