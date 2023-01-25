@@ -4,7 +4,6 @@ import FiltersView from '../view/header-views/filters-view';
 import EventsSortView from '../view/main-views/sort-view';
 import EventsListView from '../view/main-views/list-view';
 import EventsMessage from '../view/main-views/message-view';
-import { updateItem } from '../utils/utils';
 import { generateFilter } from '../mock/filter';
 import PointPresenter from './point-presenter';
 import { SortType } from '../utils/const';
@@ -17,13 +16,11 @@ export default class EventsPresenter {
   #mainElement = null;
   #filtersElement = null;
 
-  #points = [];
   #destinations = [];
   #offers = [];
   #typesOfPoints = null;
 
   #currentSortType = null;
-  #defaultPointSort = [];
 
   #pointsPresenter = new Map();
 
@@ -39,16 +36,26 @@ export default class EventsPresenter {
   }
 
   get points() {
-    return this.#pointModel.points;
+    const defaultPointSort = defaultSort([...this.#pointModel.points]);
+
+    switch (this.#currentSortType) {
+      case SortType.PRICE:
+        return sortPrice([...this.#pointModel.points]);
+
+      case SortType.TIME:
+        return sortTime([...this.#pointModel.points]);
+
+      case SortType.DAY:
+        return sortDay([...this.#pointModel.points]);
+    }
+
+    return defaultPointSort;
   }
 
   init() {
-    this.#points = defaultSort([...this.#pointModel.points]);
     this.#destinations = [...this.#pointModel.destinations];
     this.#offers = [...this.#pointModel.offers];
     this.#typesOfPoints = [...this.#pointModel.typesOfPoints];
-
-    this.#defaultPointSort = defaultSort([...this.#pointModel.points]);
 
     this.#renderInfo();
     this.#renderFilter();
@@ -63,12 +70,10 @@ export default class EventsPresenter {
   }
 
   #renderPoints() {
-    this.#points.forEach((point) => this.#renderPoint(point));
+    this.points.forEach((point) => this.#renderPoint(point));
   }
 
   #onPointChange = (updatedPoint) => {
-    this.#points = updateItem(this.#points, updatedPoint);
-    this.#defaultPointSort = updateItem(this.#defaultPointSort, updatedPoint);
     this.#pointsPresenter.get(updatedPoint.id).init(updatedPoint, this.#destinations, this.#offers);
   };
 
@@ -89,35 +94,15 @@ export default class EventsPresenter {
     if (target === this.#currentSortType) {
       return;
     }
-    this.#sortPoints(target);
+    this.#currentSortType = target;
     this.#clearPointsList();
     this.#renderPointsList();
   };
 
-  #sortPoints(target) {
-    switch (target) {
-      case SortType.PRICE:
-        sortPrice(this.#points);
-        break;
-
-      case SortType.TIME:
-        sortTime(this.#points);
-        break;
-
-      case SortType.DAY:
-        sortDay(this.#points);
-        break;
-
-      default:
-        this.#points = this.#defaultPointSort;
-    }
-    this.#currentSortType = target;
-  }
-
   #renderPointsList() {
     render(this.#eventsListElement, this.#eventsElement);
 
-    if (!this.#points.length) {
+    if (!this.points.length) {
       this.#renderMessage();
       return;
     }
@@ -134,7 +119,7 @@ export default class EventsPresenter {
   }
 
   #renderFilter() {
-    const eventFilterElement = new FiltersView(generateFilter(this.#points));
+    const eventFilterElement = new FiltersView(generateFilter(this.points));
     render(eventFilterElement, this.#filtersElement);
   }
 }
