@@ -2,7 +2,7 @@ import { remove, render, replace } from '../framework/render';
 import PointView from '../view/main-views/point-view';
 import EditPointView from '../view/main-views/edit-point-view';
 import { isEscapeKey } from '../utils/utils';
-import { UpdateTask, UserAction } from '../utils/const';
+import { UpdatePoint, UserAction } from '../utils/const';
 
 const PointMode = {
   DEFAULT: 'DEFALUT',
@@ -56,12 +56,8 @@ export default class PointPresenter {
       this.#offers,
       this.#types,
       this.#onFormSubmit,
-      {
-        onButtonClick: () => {
-          this.#pointEditElement.reset(this.#point);
-          this.#replacePointToCard();
-        }
-      },
+      this.#onArrowClick,
+      this.#onPointDelete
     );
 
     if (!prevPointElement || !prevPointEditElement) {
@@ -81,10 +77,24 @@ export default class PointPresenter {
     remove(prevPointEditElement);
   }
 
+  #onArrowClick = () => {
+    this.#pointEditElement.reset(this.#point);
+    this.#replacePointToCard();
+  };
+
+  #onPointDelete = () => {
+    this.#onPointDataChange(
+      UserAction.DELETE_TASK,
+      UpdatePoint.MEDIUM,
+      this.#point
+    );
+  };
+
   #onFormSubmit = (point) => {
+    const whatUpdatePoint = point.dateFrom === this.#point.dateFrom ? UpdatePoint.LOW : UpdatePoint.MEDIUM;
     this.#onPointDataChange(
       UserAction.UPDATE_TASK,
-      UpdateTask.MEDIUM,
+      whatUpdatePoint,
       {
         ...this.#point,
         type: point.type,
@@ -99,7 +109,7 @@ export default class PointPresenter {
   #onFavoritClick = () => {
     this.#onPointDataChange(
       UserAction.UPDATE_TASK,
-      UpdateTask.LOW,
+      UpdatePoint.LOW,
       {...this.#point, isFavorite: !this.#point.isFavorite});
   };
 

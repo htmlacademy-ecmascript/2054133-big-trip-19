@@ -6,7 +6,7 @@ import EventsListView from '../view/main-views/list-view';
 import EventsMessage from '../view/main-views/message-view';
 import { generateFilter } from '../mock/filter';
 import PointPresenter from './point-presenter';
-import { SortType, UpdateTask, UserAction } from '../utils/const';
+import { SortType, UpdatePoint, UserAction } from '../utils/const';
 import { sortDay, sortPrice, sortTime, defaultSort } from '../utils/sort';
 
 export default class EventsPresenter {
@@ -83,15 +83,15 @@ export default class EventsPresenter {
 
   #onModelDataChange = (updateType, data) => {
     switch(updateType) {
-      case UpdateTask.LARGE:
+      case UpdatePoint.LARGE:
         this.#clearBoard({resetSortType: true});
         this.#renderBoard({resetSort: true});
         break;
-      case UpdateTask.MEDIUM:
+      case UpdatePoint.MEDIUM:
         this.#clearBoard();
         this.#renderBoard();
         break;
-      case UpdateTask.LOW:
+      case UpdatePoint.LOW:
         this.#pointsPresenter.get(data.id).init(data, this.#destinations, this.#offers);
         break;
     }
@@ -120,6 +120,7 @@ export default class EventsPresenter {
   #renderBoard(resetSort) {
     if (!this.points.length) {
       this.#renderMessage();
+      remove(this.#eventsSortElement);
       return;
     }
 

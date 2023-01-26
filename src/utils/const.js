@@ -22,7 +22,7 @@ const UserAction = {
   DELETE_TASK: 'DELETE_TASK'
 };
 
-const UpdateTask = {
+const UpdatePoint = {
   LARGE: 'LARGE',
   MEDIUM: 'MEDIUM',
   LOW: 'LOW'
@@ -30,4 +30,4 @@ const UpdateTask = {
 
 const TYPES_OF_POINT = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
-export { SortType, POINT_PRICE, Time, UserAction, UpdateTask, TYPES_OF_POINT };
+export { SortType, POINT_PRICE, Time, UserAction, UpdatePoint, TYPES_OF_POINT };
