@@ -12,7 +12,7 @@ const createEventsSortTemplate = (sortType) =>
     ${Object.values(sortType).reduce((prev, sortName) => `${prev}${createSortItemTemplate(sortName)}`, '')}
   </form>`;
 
-export default class EventsSortView extends AbstractView {
+export default class PointsSortView extends AbstractView {
   #sortType = null;
   #onSortClick = null;
 
