@@ -56,8 +56,8 @@ export default class PointPresenter {
       this.#offers,
       this.#types,
       this.#onFormSubmit,
+      this.#onPointDelete,
       this.#onArrowClick,
-      this.#onPointDelete
     );
 
     if (!prevPointElement || !prevPointEditElement) {
@@ -79,7 +79,7 @@ export default class PointPresenter {
 
   #onArrowClick = () => {
     this.#pointEditElement.reset(this.#point);
-    this.#replacePointToCard();
+    this.#replaceFormToPoint();
   };
 
   #onPointDelete = () => {
@@ -100,10 +100,11 @@ export default class PointPresenter {
         type: point.type,
         destination: point.destination,
         dateFrom: point.dateFrom,
-        dateTo: point.dateTo
+        dateTo: point.dateTo,
+        basePrice: point.basePrice
       }
     );
-    this.#replacePointToCard();
+    this.#replaceFormToPoint();
   };
 
   #onFavoritClick = () => {
@@ -116,18 +117,18 @@ export default class PointPresenter {
   #onEscKeydown = (evt) => {
     if (isEscapeKey(evt)) {
       this.#pointEditElement.reset(this.#point);
-      this.#replacePointToCard();
+      this.#replaceFormToPoint();
     }
   };
 
-  #replacePointToForm() {
+  #replacePointToForm = () => {
     replace(this.#pointEditElement, this.#pointElement);
     this.#onModeChange();
     document.addEventListener('keydown', this.#onEscKeydown);
     this.#pointMode = PointMode.EDITING;
-  }
+  };
 
-  #replacePointToCard() {
+  #replaceFormToPoint() {
     replace(this.#pointElement, this.#pointEditElement);
     document.removeEventListener('keydown', this.#onEscKeydown);
     this.#pointMode = PointMode.DEFAULT;
@@ -135,12 +136,14 @@ export default class PointPresenter {
 
   resetView() {
     if (this.#pointMode !== PointMode.DEFAULT) {
-      this.#replacePointToCard();
+      this.#replaceFormToPoint();
     }
   }
 
   destroy() {
     remove(this.#pointElement);
     remove(this.#pointEditElement);
+    this.#pointElement = null;
+    this.#pointEditElement = null;
   }
 }

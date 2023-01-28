@@ -1,8 +1,9 @@
+
 import Observable from '../framework/observable';
 import { generatePoint, Destinations, Offers } from '../mock/data';
 import { TYPES_OF_POINT } from '../utils/const';
 
-const POINTS_COUNT = 2;
+const POINTS_COUNT = 1;
 
 export default class PointModel extends Observable {
   #points = null;
@@ -34,52 +35,52 @@ export default class PointModel extends Observable {
   }
 
   updatePoint(updateType, update) {
-    const index = this.#points.findIndex((task) => task.id === update.id);
+    // const index = this.#points.findIndex((task) => task.id === update.id);
 
-    if (index === -1) {
-      throw new Error('Can\'t update unexisting point');
-    }
-
-    this.#points = [
-      ...this.#points.slice(0, index),
-      update,
-      ...this.#points.slice(index + 1),
-    ];
-
-    // if (!update) {
+    // if (index === -1) {
     //   throw new Error('Can\'t update unexisting point');
     // }
 
-    // this.#points = this.#points.map((point) => point.id === update.id ? update : point);
+    // this.#points = [
+    //   ...this.#points.slice(0, index),
+    //   update,
+    //   ...this.#points.slice(index + 1),
+    // ];
+
+    if (!update) {
+      throw new Error('Can\'t update unexisting point');
+    }
+
+    this.#points = this.#points.map((point) => point.id === update.id ? update : point);
 
     this._notify(updateType, update);
   }
 
   addPoint(updateType, update) {
-    this.#points = [update, this.#points];
+    // this.#points = [update, this.#points];
 
-    // this.#points.push(update);
+    this.#points.push(update);
 
     this._notify(updateType, update);
   }
 
   deletePoint(updateType, update) {
-    const index = this.#points.findIndex((task) => task.id === update.id);
+    // const index = this.#points.findIndex((task) => task.id === update.id);
 
-    if (index === -1) {
-      throw new Error('Can\'t update unexisting point');
-    }
-
-    this.#points = [
-      ...this.#points.slice(0, index),
-      ...this.#points.slice(index + 1),
-    ];
-
-    // if (!update) {
+    // if (index === -1) {
     //   throw new Error('Can\'t update unexisting point');
     // }
 
-    // this.#points = this.#points.filter((point) => point.id !== update.id);
+    // this.#points = [
+    //   ...this.#points.slice(0, index),
+    //   ...this.#points.slice(index + 1),
+    // ];
+
+    if (!update) {
+      throw new Error('Can\'t delete unexisting point');
+    }
+
+    this.#points = this.#points.filter((point) => point.id !== update.id);
 
     this._notify(updateType, update);
   }

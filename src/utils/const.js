@@ -28,6 +28,20 @@ const UpdatePoint = {
   LOW: 'LOW'
 };
 
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past'
+};
+
+const NoPointsMessage = {
+  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
+  [FilterType.PAST]: 'There are no past events now',
+  [FilterType.PRESENT]: 'There are no past events now',
+  [FilterType.FUTURE]: 'There are no future events now'
+};
+
 const TYPES_OF_POINT = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
-export { SortType, POINT_PRICE, Time, UserAction, UpdatePoint, TYPES_OF_POINT };
+export { SortType, POINT_PRICE, Time, UserAction, UpdatePoint, FilterType, TYPES_OF_POINT, NoPointsMessage };
