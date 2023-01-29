@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import { remove, render, RenderPosition } from '../framework/render';
-import { TypeOfPoint, UpdatePoint, UserAction } from '../utils/const';
+import { UpdatePoint, UserAction } from '../utils/const';
 import { isEscapeKey } from '../utils/utils';
 import EditPointView from '../view/main-views/edit-point-view';
 
@@ -27,7 +27,7 @@ export default class CreatePointPresenter {
 
   init() {
     this.#createPointElement = new EditPointView (
-      TypeOfPoint.ADD,
+      UserAction.ADD_TASK,
       this.#blankPoint,
       this.#destinations,
       this.#offers,

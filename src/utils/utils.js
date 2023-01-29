@@ -15,6 +15,8 @@ const getOffer = (point, offers) => offers.find((item) => item.type === point.ty
 
 const isContainsCity = (destinations, target) => destinations.find((destination) => destination.name === target.value);
 
+const changeSelectedOffers = (offers, target) => offers.filter((offer) => offer !== target);
+
 export {
   getRandomArrayElement,
   getRandomIntInclusive,
@@ -22,5 +24,6 @@ export {
   isEqual,
   getDestination,
   getOffer,
-  isContainsCity
+  isContainsCity,
+  changeSelectedOffers
 };

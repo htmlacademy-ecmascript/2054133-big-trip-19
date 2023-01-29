@@ -2,7 +2,7 @@ import { remove, render, replace } from '../framework/render';
 import PointView from '../view/main-views/point-view';
 import EditPointView from '../view/main-views/edit-point-view';
 import { isEscapeKey } from '../utils/utils';
-import { TypeOfPoint, UpdatePoint, UserAction } from '../utils/const';
+import { UpdatePoint, UserAction } from '../utils/const';
 
 const PointMode = {
   DEFAULT: 'DEFALUT',
@@ -51,7 +51,7 @@ export default class PointPresenter {
     );
 
     this.#pointEditElement = new EditPointView (
-      TypeOfPoint.EDIT,
+      UserAction.UPDATE_TASK,
       this.#point,
       this.#destination,
       this.#offers,
