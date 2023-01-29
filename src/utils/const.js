@@ -42,6 +42,11 @@ const NoPointsMessage = {
   [FilterType.FUTURE]: 'There are no future events now'
 };
 
-const TYPES_OF_POINT = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+const TypeOfPoint = {
+  EDIT: 'EDIT',
+  ADD: 'ADD'
+};
 
-export { SortType, POINT_PRICE, Time, UserAction, UpdatePoint, FilterType, TYPES_OF_POINT, NoPointsMessage };
+const TYPES_OF_POINT_EVENT = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+
+export { SortType, POINT_PRICE, Time, UserAction, UpdatePoint, FilterType, TYPES_OF_POINT_EVENT, TypeOfPoint, NoPointsMessage };

@@ -3,6 +3,7 @@ import { DateFormat, humanizeDate } from '../../utils/date';
 import { getDestination, getOffer, isContainsCity, } from '../../utils/utils';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import { TypeOfPoint } from '../../utils/const';
 
 const BLANK_POINT = {
   basePrice: 0,
@@ -15,11 +16,26 @@ const BLANK_POINT = {
   type: 'taxi',
 };
 
-function createItemEditPointTemplate (point, pointDestination, pointOffers, types) {
+function createItemEditPointTemplate (typeOfPoint, point, pointDestination, pointOffers, types) {
 
   const {type, basePrice, dateFrom, dateTo} = point;
   const {offers} = getOffer(point, pointOffers);
   const {description, name, pictures} = getDestination(point, pointDestination);
+
+  const createArrowElement = () => {
+    if(typeOfPoint === TypeOfPoint.EDIT) {
+      return '<button class="event__rollup-btn" type="button"></button>';
+    }
+    return '';
+  };
+
+  const createTypeOfButtonReset = () => {
+    if(typeOfPoint === TypeOfPoint.EDIT) {
+      return 'Delete';
+    }
+    return 'Cancel';
+  };
+
 
   const createOfferElements = () => {
 
@@ -41,10 +57,10 @@ function createItemEditPointTemplate (point, pointDestination, pointOffers, type
   };
 
   const createPointsTypeElements = () =>
-    `${types.reduce((prev, typeOfPoint) =>
+    `${types.reduce((prev, pointType) =>
       `${prev} <div class="event__type-item">
-      <input id="event-type-${typeOfPoint}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${typeOfPoint}" ${typeOfPoint === type ? 'checked' : ''}>
-      <label class="event__type-label  event__type-label--${typeOfPoint}" for="event-type-${typeOfPoint}-1" >${typeOfPoint}</label>
+      <input id="event-type-${pointType}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${pointType}" ${pointType === type ? 'checked' : ''}>
+      <label class="event__type-label  event__type-label--${pointType}" for="event-type-${pointType}-1" >${pointType}</label>
     </div>`, '')}`;
 
   const createPrictureElements = () =>
@@ -59,6 +75,8 @@ function createItemEditPointTemplate (point, pointDestination, pointOffers, type
   const pointsTypeElements = createPointsTypeElements();
   const prictureElements = createPrictureElements();
   const cityDataList = createDataCityList();
+  const arrowElement = createArrowElement();
+  const typeOfButtonReset = createTypeOfButtonReset();
 
   return (
     `<li class="trip-events__item">
@@ -81,7 +99,7 @@ function createItemEditPointTemplate (point, pointDestination, pointOffers, type
 
       <div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-1">
-        ${type}
+          ${type}
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
         <datalist id="destination-list-1">
@@ -106,8 +124,8 @@ function createItemEditPointTemplate (point, pointDestination, pointOffers, type
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">Delete</button>
-      <button class="event__rollup-btn" type="button"></button>
+      <button class="event__reset-btn" type="reset">${typeOfButtonReset}</button>
+        ${arrowElement}
         <span class="visually-hidden">Open event</span>
       </button>
     </header>
@@ -137,6 +155,7 @@ function createItemEditPointTemplate (point, pointDestination, pointOffers, type
 
 export default class EditPointView extends AbstractStatefulView {
 
+  #typeOfPoint = null;
   #pointDestination = null;
   #pointOffers = null;
   #types = null;
@@ -146,12 +165,13 @@ export default class EditPointView extends AbstractStatefulView {
   #datepickerEnd = null;
   #onPointDelete = null;
 
-  constructor(point, destination, offers, typesOfPoints, onFormSubmit, onPointDelete, onArrowClick) {
+  constructor(typeOfPoint, point, destination, offers, typesOfPoints, onFormSubmit, onPointDelete, onArrowClick) {
     super();
 
     if(!point) {
       point = BLANK_POINT;
     }
+    this.#typeOfPoint = typeOfPoint;
     this._state = EditPointView.parsePointToState(point);
     this.#pointDestination = destination;
     this.#pointOffers = offers;
@@ -163,7 +183,7 @@ export default class EditPointView extends AbstractStatefulView {
   }
 
   get template() {
-    return createItemEditPointTemplate(this._state, this.#pointDestination, this.#pointOffers, this.#types);
+    return createItemEditPointTemplate(this.#typeOfPoint, this._state, this.#pointDestination, this.#pointOffers, this.#types);
   }
 
   static parsePointToState(point) {
@@ -226,9 +246,11 @@ export default class EditPointView extends AbstractStatefulView {
 
   _restoreHandlers() {
     this.element.querySelector('form').addEventListener('submit', this.#onSubmitButton);
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onArrowClick);
+    if (this.#typeOfPoint === TypeOfPoint.EDIT) {
+      this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onArrowClick);
+    }
     this.element.querySelector('.event__type-group').addEventListener('click', this.#onTypeClick);
-    this.element.querySelector('.event__input--destination').addEventListener('change', this.#onInputChange);
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#onCityChange);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#onPriceChange);
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#onPointDelete);
     this.element.querySelector('.event__available-offers').addEventListener('click', this.#onOfferClick);
@@ -265,7 +287,7 @@ export default class EditPointView extends AbstractStatefulView {
     this.updateElement({type: evt.target.value});
   };
 
-  #onInputChange = (evt) => {
+  #onCityChange = (evt) => {
     const currentCity = isContainsCity(this.#pointDestination, evt.target);
     if (!currentCity) {
       return;

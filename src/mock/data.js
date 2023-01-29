@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { POINT_PRICE, TYPES_OF_POINT } from '../utils/const';
+import { POINT_PRICE, TYPES_OF_POINT_EVENT } from '../utils/const';
 import { getRandomArrayElement, getRandomIntInclusive, isEqual } from '../utils/utils';
 
 const Destinations = [
@@ -263,7 +263,7 @@ const generatePoint = () => ({
   id: nanoid(),
   isFavorite: isEqual(getRandomIntInclusive(0, 1), 1),
   offers: [1,2],
-  type: getRandomArrayElement(TYPES_OF_POINT),
+  type: getRandomArrayElement(TYPES_OF_POINT_EVENT),
 });
 
 export { Destinations, Offers, generatePoint };

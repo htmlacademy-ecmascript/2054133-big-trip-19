@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import { remove, render, RenderPosition } from '../framework/render';
-import { UpdatePoint, UserAction } from '../utils/const';
+import { TypeOfPoint, UpdatePoint, UserAction } from '../utils/const';
 import { isEscapeKey } from '../utils/utils';
 import EditPointView from '../view/main-views/edit-point-view';
 
@@ -26,7 +26,15 @@ export default class CreatePointPresenter {
   }
 
   init() {
-    this.#createPointElement = new EditPointView(this.#blankPoint, this.#destinations, this.#offers, this.#typesOfPoints, this.#onFormSubmit, this.#onPointDelete);
+    this.#createPointElement = new EditPointView (
+      TypeOfPoint.ADD,
+      this.#blankPoint,
+      this.#destinations,
+      this.#offers,
+      this.#typesOfPoints,
+      this.#onFormSubmit,
+      this.#onPointDelete
+    );
     render(this.#createPointElement, this.#eventsListElement.element, RenderPosition.AFTERBEGIN);
     document.addEventListener('keydown', this.#onEscKeydown);
   }

@@ -1,7 +1,7 @@
 
 import Observable from '../framework/observable';
 import { generatePoint, Destinations, Offers } from '../mock/data';
-import { TYPES_OF_POINT } from '../utils/const';
+import { TYPES_OF_POINT_EVENT } from '../utils/const';
 
 const POINTS_COUNT = 1;
 
@@ -15,7 +15,7 @@ export default class PointModel extends Observable {
     this.#points = Array.from({length: POINTS_COUNT}, generatePoint);
     this.#destinations = Destinations;
     this.#offers = Offers;
-    this.#types = TYPES_OF_POINT;
+    this.#types = TYPES_OF_POINT_EVENT;
   }
 
   get typesOfPoints() {
