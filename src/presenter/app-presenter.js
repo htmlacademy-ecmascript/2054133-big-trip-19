@@ -169,7 +169,9 @@ export default class AppPresenter {
   };
 
   #onModeChange = () => {
-    this.#createNewPointElement.destroy();
+    if (this.#createNewPointElement) {
+      this.#createNewPointElement.destroy();
+    }
     this.#pointsPresenter.forEach((presenter) => presenter.resetView());
   };
 

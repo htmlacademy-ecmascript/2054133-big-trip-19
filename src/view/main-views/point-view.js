@@ -7,8 +7,8 @@ import { getDestination, getOffer } from '../../utils/utils';
 function createPointTemplate (point, pointDestination, pointOffers) {
 
   const {type, basePrice, dateFrom, dateTo, isFavorite} = point;
-  const {name} = getDestination(point, pointDestination); // Так можно или костыль? На случай если не приходят оферы?
-  const {offers} = getOffer(point, pointOffers); // Так можно или костыль? На случай если не приходят оферы?
+  const {name} = getDestination(point, pointDestination);
+  const {offers} = getOffer(point, pointOffers);
 
   const differenceDays = dayjs(dateTo).diff(dateFrom, 'd');
   const differenceHours = dayjs(dateTo).diff(dateFrom, 'h') % Time.HOURS_IN_DAY;

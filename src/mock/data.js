@@ -262,7 +262,7 @@ const generatePoint = () => ({
   destination: getRandomArrayElement(Destinations).id,
   id: nanoid(),
   isFavorite: isEqual(getRandomIntInclusive(0, 1), 1),
-  offers: getRandomArrayElement(Offers).offers.map((offer) => offer.id),
+  offers: [1,2],
   type: getRandomArrayElement(TYPES_OF_POINT),
 });
 

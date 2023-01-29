@@ -91,17 +91,18 @@ export default class PointPresenter {
   };
 
   #onFormSubmit = (point) => {
-    const whatUpdatePoint = point.dateFrom === this.#point.dateFrom ? UpdatePoint.LOW : UpdatePoint.MEDIUM;
+    const howUpdatePoint = point.dateFrom === this.#point.dateFrom ? UpdatePoint.LOW : UpdatePoint.MEDIUM;
     this.#onPointDataChange(
       UserAction.UPDATE_TASK,
-      whatUpdatePoint,
+      howUpdatePoint,
       {
         ...this.#point,
         type: point.type,
         destination: point.destination,
         dateFrom: point.dateFrom,
         dateTo: point.dateTo,
-        basePrice: point.basePrice
+        basePrice: point.basePrice,
+        offers: point.offers
       }
     );
     this.#replaceFormToPoint();

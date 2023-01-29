@@ -29,9 +29,9 @@ function createItemEditPointTemplate (point, pointDestination, pointOffers, type
     return `${offers.reduce((prev, offer) => {
       const isCheckedOffers = point.offers.includes(offer.id);
       return `${prev} <div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title.split(' ').pop()}-1"
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title.split(' ').pop()}-${offer.id}"
         type="checkbox" name="event-offer-${offer.title.split(' ').pop()}" ${isCheckedOffers ? 'checked' : ''}>
-        <label class="event__offer-label" for="event-offer-${offer.title.split(' ').pop()}-1">
+        <label class="event__offer-label" for="event-offer-${offer.title.split(' ').pop()}-${offer.id}">
           <span class="event__offer-title">${offer.title}</span>
           &plus;&euro;&nbsp;
           <span class="event__offer-price">${offer.price}</span>
@@ -153,7 +153,6 @@ export default class EditPointView extends AbstractStatefulView {
       point = BLANK_POINT;
     }
     this._state = EditPointView.parsePointToState(point);
-
     this.#pointDestination = destination;
     this.#pointOffers = offers;
     this.#types = typesOfPoints;
@@ -164,7 +163,6 @@ export default class EditPointView extends AbstractStatefulView {
   }
 
   get template() {
-
     return createItemEditPointTemplate(this._state, this.#pointDestination, this.#pointOffers, this.#types);
   }
 
@@ -204,10 +202,12 @@ export default class EditPointView extends AbstractStatefulView {
   }
 
   #onDateChangeStart = ([userDateStart]) => {
+    // this._state = {...this._state, dateFrom: userDateStart} почему я не могу исользовать такой вариант, чтобы не перерисовывать точку? Кидает ошибку функция replace()
     this.updateElement({...this._state, dateFrom: userDateStart});
   };
 
   #onDateChangeEnd = ([userDateEnd]) => {
+    // this._state = {...this._state, dateFrom: userDateEnd} почему я не могу исользовать такой вариант, чтобы не перерисовывать точку? Кидает ошибку функция replace()
     this.updateElement({...this._state, dateTo: userDateEnd});
   };
 
@@ -235,8 +235,22 @@ export default class EditPointView extends AbstractStatefulView {
     this.#setDatepicker();
   }
 
-  #onOfferClick = () => {
+  #onOfferClick = (evt) => {
+    if (evt.target.tagName !== 'INPUT') {
+      return;
+    }
+    const target = Number(evt.target.id.split('-').pop());
 
+    let selectedOffers = [...this._state.offers];
+
+    if (evt.target.checked && !selectedOffers.includes(target)) {
+      selectedOffers.push(target);
+    }
+    if(!evt.target.checked && selectedOffers.includes(target)) {
+      selectedOffers = selectedOffers.filter((offer) => offer !== target);
+    }
+
+    this._state = {...this._state, offers: selectedOffers};
   };
 
   #onSubmitButton = (evt) => {
