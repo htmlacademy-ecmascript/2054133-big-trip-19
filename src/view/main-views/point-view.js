@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import AbstractView from '../../framework/view/abstract-view';
+import { Time } from '../../utils/const';
 import { DateFormat, humanizeDate } from '../../utils/date';
 import { getDestination, getOffer } from '../../utils/utils';
 
@@ -9,11 +10,6 @@ function createPointTemplate (point, pointDestination, pointOffers) {
   const {name} = getDestination(point, pointDestination);
   const {offers} = getOffer(point, pointOffers);
 
-  const Time = {
-    HOURS_IN_DAY: 24,
-    MINUTES_IN_HOUR: 60
-  };
-
   const differenceDays = dayjs(dateTo).diff(dateFrom, 'd');
   const differenceHours = dayjs(dateTo).diff(dateFrom, 'h') % Time.HOURS_IN_DAY;
   const differenceMinutes = dayjs(dateTo).diff(dateFrom,'m') % Time.MINUTES_IN_HOUR;
@@ -22,12 +18,17 @@ function createPointTemplate (point, pointDestination, pointOffers) {
     if (!offers) {
       return '';
     }
-    return `${offers.reduce((prev, offer) =>
-      `${prev}<li class="event__offer">
+    return `${offers.reduce((prev, offer) => {
+      const isCheckedOffers = point.offers.includes(offer.id);
+
+      return `${prev}${ isCheckedOffers ?
+        `<li class="event__offer">
         <span class="event__offer-title">${offer.title}</span>
         &plus;&euro;&nbsp;
         <span class="event__offer-price">${offer.price}</span>
-        </li>`, '')}`;
+        </li>`
+        : ''}`;
+    }, '')}`;
   };
 
   const getFormattedDate = (date, format) => {
@@ -90,7 +91,7 @@ export default class PointView extends AbstractView {
   #onButtonClick = null;
   #onFavoriteClick = null;
 
-  constructor(point, destination, offers, {onButtonClick, onFavoriteClick}) {
+  constructor(point, destination, offers, onFavoriteClick, {onButtonClick}) {
     super();
     this.#point = point;
     this.#pointDestination = destination;

@@ -2,6 +2,7 @@ import { remove, render, replace } from '../framework/render';
 import PointView from '../view/main-views/point-view';
 import EditPointView from '../view/main-views/edit-point-view';
 import { isEscapeKey } from '../utils/utils';
+import { UpdatePoint, UserAction } from '../utils/const';
 
 const PointMode = {
   DEFAULT: 'DEFALUT',
@@ -11,7 +12,7 @@ const PointMode = {
 export default class PointPresenter {
 
   #eventsListElement = null;
-  #onPointChange = null;
+  #onPointDataChange = null;
   #onModeChange = null;
 
   #point = null;
@@ -24,9 +25,9 @@ export default class PointPresenter {
 
   #pointMode = PointMode.DEFAULT;
 
-  constructor(eventsListElement, onPointChange, onModeChange, typesOfPoints) {
+  constructor(eventsListElement, onPointDataChange, onModeChange, typesOfPoints) {
     this.#eventsListElement = eventsListElement;
-    this.#onPointChange = onPointChange;
+    this.#onPointDataChange = onPointDataChange;
     this.#onModeChange = onModeChange;
     this.#types = typesOfPoints;
   }
@@ -39,28 +40,25 @@ export default class PointPresenter {
     const prevPointElement = this.#pointElement;
     const prevPointEditElement = this.#pointEditElement;
 
-    this.#pointElement = new PointView(
+    this.#pointElement = new PointView (
       this.#point,
       this.#destination,
       this.#offers,
+      this.#onFavoritClick,
       {
         onButtonClick: () => this.#replacePointToForm(),
-        onFavoriteClick: () => this.#onFavoritClick()
       }
     );
 
-    this.#pointEditElement = new EditPointView(
+    this.#pointEditElement = new EditPointView (
+      UserAction.UPDATE_TASK,
       this.#point,
       this.#destination,
       this.#offers,
       this.#types,
       this.#onFormSubmit,
-      {
-        onButtonClick: () => {
-          this.#pointEditElement.reset(this.#point);
-          this.#replacePointToCard();
-        }
-      },
+      this.#onPointDelete,
+      this.#onArrowClick,
     );
 
     if (!prevPointElement || !prevPointEditElement) {
@@ -80,51 +78,74 @@ export default class PointPresenter {
     remove(prevPointEditElement);
   }
 
-  destroy() {
-    remove(this.#pointElement);
-    remove(this.#pointEditElement);
-  }
+  #onArrowClick = () => {
+    this.#pointEditElement.reset(this.#point);
+    this.#replaceFormToPoint();
+  };
 
-  resetView() {
-    if (this.#pointMode !== PointMode.DEFAULT) {
-      this.#replacePointToCard();
-    }
-  }
+  #onPointDelete = () => {
+    this.#onPointDataChange(
+      UserAction.DELETE_TASK,
+      UpdatePoint.MEDIUM,
+      this.#point
+    );
+  };
 
   #onFormSubmit = (point) => {
-    this.#onPointChange(
+    const howUpdatePoint = point.dateFrom === this.#point.dateFrom ? UpdatePoint.LOW : UpdatePoint.MEDIUM;
+    this.#onPointDataChange(
+      UserAction.UPDATE_TASK,
+      howUpdatePoint,
       {
         ...this.#point,
         type: point.type,
         destination: point.destination,
         dateFrom: point.dateFrom,
-        dateTo: point.dateTo
+        dateTo: point.dateTo,
+        basePrice: point.basePrice,
+        offers: point.offers
       }
     );
-    this.#replacePointToCard();
+    this.#replaceFormToPoint();
   };
 
-  #replacePointToForm() {
-    replace(this.#pointEditElement, this.#pointElement);
-    this.#onModeChange();
-    document.addEventListener('keydown', this.#onEscKeydown);
-    this.#pointMode = PointMode.EDITING;
-  }
-
-  #replacePointToCard() {
-    replace(this.#pointElement, this.#pointEditElement);
-    document.removeEventListener('keydown', this.#onEscKeydown);
-    this.#pointMode = PointMode.DEFAULT;
-  }
-
   #onFavoritClick = () => {
-    this.#onPointChange({...this.#point, isFavorite: !this.#point.isFavorite});
+    this.#onPointDataChange(
+      UserAction.UPDATE_TASK,
+      UpdatePoint.LOW,
+      {...this.#point, isFavorite: !this.#point.isFavorite});
   };
 
   #onEscKeydown = (evt) => {
     if (isEscapeKey(evt)) {
       this.#pointEditElement.reset(this.#point);
-      this.#replacePointToCard();
+      this.#replaceFormToPoint();
     }
   };
+
+  #replacePointToForm = () => {
+    replace(this.#pointEditElement, this.#pointElement);
+    this.#onModeChange();
+    document.addEventListener('keydown', this.#onEscKeydown);
+    this.#pointMode = PointMode.EDITING;
+  };
+
+  #replaceFormToPoint() {
+    replace(this.#pointElement, this.#pointEditElement);
+    document.removeEventListener('keydown', this.#onEscKeydown);
+    this.#pointMode = PointMode.DEFAULT;
+  }
+
+  resetView() {
+    if (this.#pointMode !== PointMode.DEFAULT) {
+      this.#replaceFormToPoint();
+    }
+  }
+
+  destroy() {
+    remove(this.#pointElement);
+    remove(this.#pointEditElement);
+    this.#pointElement = null;
+    this.#pointEditElement = null;
+  }
 }
