@@ -134,7 +134,7 @@ export default class AppPresenter {
       remove(this.#eventsSortElement);
     }
     if (this.#eventMessageElement) {
-      remove(this.#eventMessageElement); // нужна проверка?
+      remove(this.#eventMessageElement);
     }
     this.#destroyNewPoint();
   }

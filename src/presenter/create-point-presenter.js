@@ -73,7 +73,7 @@ export default class CreatePointPresenter {
     }
 
     remove(this.#createPointElement);
-    this.#createPointElement = null; // зачем обнулять, если мы уже удалили элемент, но через консоль я вижу что элемент есть, это как?
+    this.#createPointElement = null;
 
     this.#destroyNewPoint();
 

@@ -92,10 +92,10 @@ export default class PointPresenter {
   };
 
   #onFormSubmit = (point) => {
-    const howUpdatePoint = point.dateFrom === this.#point.dateFrom ? UpdatePoint.LOW : UpdatePoint.MEDIUM;
+    const pointUpdateMethod = point.dateFrom === this.#point.dateFrom ? UpdatePoint.LOW : UpdatePoint.MEDIUM;
     this.#onPointDataChange(
       UserAction.UPDATE_TASK,
-      howUpdatePoint,
+      pointUpdateMethod,
       {
         ...this.#point,
         type: point.type,
