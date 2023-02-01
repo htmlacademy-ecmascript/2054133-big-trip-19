@@ -25,7 +25,8 @@ const UserAction = {
 const UpdatePoint = {
   LARGE: 'LARGE',
   MEDIUM: 'MEDIUM',
-  LOW: 'LOW'
+  LOW: 'LOW',
+  INIT: 'INIT'
 };
 
 const FilterType = {
