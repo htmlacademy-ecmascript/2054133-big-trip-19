@@ -222,15 +222,15 @@ export default class EditPointView extends AbstractStatefulView {
   }
 
   #onDateChangeStart = ([userDateStart]) => {
-    // this._state = {...this._state, dateFrom: userDateStart};
-    // this.#setDatepicker();
-    this.updateElement({dateFrom: userDateStart});
+    this._state = {...this._state, dateFrom: userDateStart};
+    this.#setDatepicker();
+    // this.updateElement({...this._state, dateFrom: userDateStart});
   };
 
   #onDateChangeEnd = ([userDateEnd]) => {
-    // this._state = {...this._state, dateFrom: userDateEnd};
-    // this.#setDatepicker();
-    this.updateElement({dateTo: userDateEnd});
+    this._state = {...this._state, dateFrom: userDateEnd};
+    this.#setDatepicker();
+    // this.updateElement({...this._state, dateTo: userDateEnd});
   };
 
   removeElement() {

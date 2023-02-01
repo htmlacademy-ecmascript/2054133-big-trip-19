@@ -9,8 +9,6 @@ export default class PointModel extends Observable {
   constructor(pointsApiService) {
     super();
     this.#pointsApiService = pointsApiService;
-
-    // this.#pointsApiService.destinations.then((points) => console.log(points.map((point) => point)));
   }
 
   #points = [];
@@ -18,13 +16,9 @@ export default class PointModel extends Observable {
   #offers = [];
   #types = [];
 
+
   async init() {
-    try {
-      const points = await this.#pointsApiService.points;
-      this.#points = points.map(this.#adaptToClient);
-    } catch(err) {
-      this.#points = [];
-    }
+    this.#points = await this.#pointsApiService.points();
 
     try {
       const destinations = await this.#pointsApiService.destinations;
@@ -43,6 +37,7 @@ export default class PointModel extends Observable {
     this.#types = TYPES_OF_POINT_EVENT;
 
     this._notify(UpdatePoint.INIT);
+
   }
 
   updatePoint(updateType, update) {
@@ -70,23 +65,6 @@ export default class PointModel extends Observable {
     this.#points = this.#points.filter((point) => point.id !== update.id);
 
     this._notify(updateType, update);
-  }
-
-  #adaptToClient(point) {
-    const adaptedPoint = {
-      ...point,
-      basePrice: point['base_price'],
-      dateFrom: point['date_from'],
-      dateTo: point['date_from'],
-      isFavorite: point['is_favorite']
-    };
-
-    delete adaptedPoint['base_price'];
-    delete adaptedPoint['date_from'];
-    delete adaptedPoint['date_to'];
-    delete adaptedPoint['is_favorite'];
-
-    return adaptedPoint;
   }
 
   get typesOfPoints() {

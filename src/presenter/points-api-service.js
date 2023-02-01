@@ -2,9 +2,17 @@ import ApiService from '../framework/api-service';
 import { Method } from '../utils/network';
 
 export default class PointsApiService extends ApiService {
+  #points = [];
 
-  get points() {
-    return this._load({url: 'points'}).then(ApiService.parseResponse);
+  async points() {
+
+    try {
+      const points = await this._load({url: 'points'}).then(ApiService.parseResponse);
+      this.#points = points.map(this.#adaptToClient);
+    } catch(err) {
+      this.#points = [];
+    }
+    return this.#points;
   }
 
   get destinations() {
@@ -22,6 +30,23 @@ export default class PointsApiService extends ApiService {
       body: JSON.stringify(this.#adaptToServer(point)),
       headers: new Headers({'Content-type': 'application/json'})
     }).then(ApiService.parseResponse);
+  }
+
+  #adaptToClient(point) {
+    const adaptedPoint = {
+      ...point,
+      basePrice: point['base_price'],
+      dateFrom: point['date_from'],
+      dateTo: point['date_from'],
+      isFavorite: point['is_favorite']
+    };
+
+    delete adaptedPoint['base_price'];
+    delete adaptedPoint['date_from'];
+    delete adaptedPoint['date_to'];
+    delete adaptedPoint['is_favorite'];
+
+    return adaptedPoint;
   }
 
   #adaptToServer(point) {
