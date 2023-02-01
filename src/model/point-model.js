@@ -1,21 +1,70 @@
 
 import Observable from '../framework/observable';
-import { generatePoint, Destinations, Offers } from '../mock/data';
-import { TYPES_OF_POINT_EVENT } from '../utils/const';
-
-const POINTS_COUNT = 1;
+import { TYPES_OF_POINT_EVENT, UpdatePoint } from '../utils/const';
 
 export default class PointModel extends Observable {
-  #points = null;
-  #destinations = null;
-  #offers = null;
-  #types = null;
 
-  init() {
-    this.#points = Array.from({length: POINTS_COUNT}, generatePoint);
-    this.#destinations = Destinations;
-    this.#offers = Offers;
+  #pointsApiService = null;
+
+  constructor(pointsApiService) {
+    super();
+    this.#pointsApiService = pointsApiService;
+  }
+
+  #points = [];
+  #destinations = [];
+  #offers = [];
+  #types = [];
+
+
+  async init() {
+    this.#points = await this.#pointsApiService.points();
+
+    try {
+      const destinations = await this.#pointsApiService.destinations;
+      this.#destinations = destinations.map((destination) => destination);
+    } catch(err) {
+      this.#destinations = [];
+    }
+
+    try {
+      const offers = await this.#pointsApiService.offers;
+      this.#offers = offers.map((offer) => offer);
+    } catch(err) {
+      this.#offers = [];
+    }
+
     this.#types = TYPES_OF_POINT_EVENT;
+
+    this._notify(UpdatePoint.INIT);
+
+  }
+
+  updatePoint(updateType, update) {
+    if (!update.id) {
+      throw new Error('Can\'t update unexisting point');
+    }
+    this.#pointsApiService.updatePoint(update);
+
+    this.#points = this.#points.map((point) => point.id === update.id ? update : point);
+
+    this._notify(updateType, update);
+  }
+
+  addPoint(updateType, update) {
+    this.#points.push(update);
+
+    this._notify(updateType, update);
+  }
+
+  deletePoint(updateType, update) {
+    if (!update.id) {
+      throw new Error('Can\'t delete unexisting point');
+    }
+
+    this.#points = this.#points.filter((point) => point.id !== update.id);
+
+    this._notify(updateType, update);
   }
 
   get typesOfPoints() {
@@ -32,56 +81,5 @@ export default class PointModel extends Observable {
 
   get offers() {
     return this.#offers;
-  }
-
-  updatePoint(updateType, update) {
-    // const index = this.#points.findIndex((task) => task.id === update.id);
-
-    // if (index === -1) {
-    //   throw new Error('Can\'t update unexisting point');
-    // }
-
-    // this.#points = [
-    //   ...this.#points.slice(0, index),
-    //   update,
-    //   ...this.#points.slice(index + 1),
-    // ];
-
-    if (!update) {
-      throw new Error('Can\'t update unexisting point');
-    }
-
-    this.#points = this.#points.map((point) => point.id === update.id ? update : point);
-
-    this._notify(updateType, update);
-  }
-
-  addPoint(updateType, update) {
-    // this.#points = [update, this.#points];
-
-    this.#points.push(update);
-
-    this._notify(updateType, update);
-  }
-
-  deletePoint(updateType, update) {
-    // const index = this.#points.findIndex((task) => task.id === update.id);
-
-    // if (index === -1) {
-    //   throw new Error('Can\'t update unexisting point');
-    // }
-
-    // this.#points = [
-    //   ...this.#points.slice(0, index),
-    //   ...this.#points.slice(index + 1),
-    // ];
-
-    if (!update) {
-      throw new Error('Can\'t delete unexisting point');
-    }
-
-    this.#points = this.#points.filter((point) => point.id !== update.id);
-
-    this._notify(updateType, update);
   }
 }

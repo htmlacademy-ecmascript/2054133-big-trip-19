@@ -4,9 +4,9 @@ import { UpdatePoint, UserAction } from '../utils/const';
 import { isEscapeKey } from '../utils/utils';
 import EditPointView from '../view/main-views/edit-point-view';
 
-export default class CreatePointPresenter {
+export default class AddPointPresenter {
 
-  #createPointElement = null;
+  #addPointElement = null;
   #eventsListElement = null;
   #destinations = null;
   #offers = null;
@@ -26,7 +26,7 @@ export default class CreatePointPresenter {
   }
 
   init() {
-    this.#createPointElement = new EditPointView (
+    this.#addPointElement = new EditPointView (
       UserAction.ADD_TASK,
       this.#blankPoint,
       this.#destinations,
@@ -35,7 +35,7 @@ export default class CreatePointPresenter {
       this.#onFormSubmit,
       this.#onPointDelete
     );
-    render(this.#createPointElement, this.#eventsListElement.element, RenderPosition.AFTERBEGIN);
+    render(this.#addPointElement, this.#eventsListElement.element, RenderPosition.AFTERBEGIN);
     document.addEventListener('keydown', this.#onEscKeydown);
   }
 
@@ -68,12 +68,12 @@ export default class CreatePointPresenter {
   };
 
   destroy() {
-    if (!this.#createPointElement) {
+    if (!this.#addPointElement) {
       return;
     }
 
-    remove(this.#createPointElement);
-    this.#createPointElement = null; // зачем обнулять, если мы уже удалили элемент, но через консоль я вижу что элемент есть, это как?
+    remove(this.#addPointElement);
+    this.#addPointElement = null;
 
     this.#destroyNewPoint();
 
