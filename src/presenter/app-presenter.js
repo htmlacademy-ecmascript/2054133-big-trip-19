@@ -54,7 +54,6 @@ export default class AppPresenter {
 
   get points() {
     this.#points = [...this.#pointModel.points];
-    console.log(this.#points)
     const filteredPoints = filter[this.#filterModel.currentFilter](this.#points);
 
     switch (this.#currentSortType) {
