@@ -185,6 +185,9 @@ export default class AppPresenter {
     if (target === this.#currentSortType) {
       return;
     }
+    if (this.#addNewPointElement) {
+      this.#addNewPointElement.destroy();
+    }
     this.#currentSortType = target;
     this.#clearBoard();
     this.#renderBoard();

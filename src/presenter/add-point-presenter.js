@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import { remove, render, RenderPosition } from '../framework/render';
 import { UpdatePoint, UserAction } from '../utils/const';
 import { isEscapeKey } from '../utils/utils';
@@ -43,15 +42,7 @@ export default class AddPointPresenter {
     this.#onPointDataChange(
       UserAction.ADD_TASK,
       UpdatePoint.LARGE,
-      {
-        ...point,
-        type: point.type,
-        destination: point.destination,
-        dateFrom: point.dateFrom,
-        dateTo: point.dateTo,
-        basePrice: point.basePrice,
-        id: nanoid()
-      }
+      point
     );
 
     this.destroy();
