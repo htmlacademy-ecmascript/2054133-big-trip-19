@@ -1,7 +1,8 @@
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
-  PATCH: 'PATCH'
+  POST : 'POST',
+  DELETE: 'DELETE'
 };
 
 const AUTHORIZATION = 'Basic hfdks72mfp50k';
