@@ -19,20 +19,8 @@ export default class PointModel extends Observable {
 
   async init() {
     this.#points = await this.#pointsApiService.points();
-
-    try {
-      const destinations = await this.#pointsApiService.destinations;
-      this.#destinations = destinations.map((destination) => destination);
-    } catch(err) {
-      this.#destinations = [];
-    }
-
-    try {
-      const offers = await this.#pointsApiService.offers;
-      this.#offers = offers.map((offer) => offer);
-    } catch(err) {
-      this.#offers = [];
-    }
+    this.#destinations = await this.#pointsApiService.destinations();
+    this.#offers = await this.#pointsApiService.offers();
 
     this.#types = TYPES_OF_POINT_EVENT;
 
