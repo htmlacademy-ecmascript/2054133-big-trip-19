@@ -222,11 +222,11 @@ export default class EditPointView extends AbstractStatefulView {
   }
 
   #onDateChangeStart = ([userDateStart]) => {
-    this.updateElement({dateTo: userDateStart});
+    this.updateElement(EditPointView.parseStateToPoint({dateFrom: userDateStart}));
   };
 
   #onDateChangeEnd = ([userDateEnd]) => {
-    this.updateElement({dateTo: userDateEnd});
+    this.updateElement(EditPointView.parseStateToPoint({dateTo: userDateEnd}));
   };
 
   removeElement() {
