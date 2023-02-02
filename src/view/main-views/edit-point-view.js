@@ -6,13 +6,13 @@ import 'flatpickr/dist/flatpickr.min.css';
 import { UserAction } from '../../utils/const';
 
 const BLANK_POINT = {
-  basePrice: 0,
+  basePrice: 1,
   dateFrom: new Date(2020, 4, 4, 5, 4, 4, 567),
   dateTo: new Date(2020, 4, 11, 5, 11, 4, 567),
   destination: 1,
   id: null,
   isFavorite: false,
-  offers: '',
+  offers: [],
   type: 'taxi',
 };
 
@@ -291,6 +291,10 @@ export default class EditPointView extends AbstractStatefulView {
     this.updateElement(EditPointView.parsePointToState(point));
   }
 
+  #onDeleteButtonClick = () => {
+    this.#onPointDelete();
+  };
+
   _restoreHandlers() {
     this.element.querySelector('form').addEventListener('submit', this.#onSubmitButton);
     if (this.#userAction === UserAction.UPDATE_TASK) {
@@ -299,7 +303,7 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelector('.event__type-group').addEventListener('click', this.#onTypeClick);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#onCityChange);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#onPriceChange);
-    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#onPointDelete);
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#onDeleteButtonClick);
     this.element.querySelector('.event__available-offers').addEventListener('click', this.#onOfferClick);
     this.#setDatepicker();
   }

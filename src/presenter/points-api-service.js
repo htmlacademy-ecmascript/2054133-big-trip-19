@@ -42,7 +42,7 @@ export default class PointsApiService extends ApiService {
       method: Method.PUT,
       body: JSON.stringify(this.#adaptToServer(point)),
       headers: new Headers({'Content-type': 'application/json'})
-    }).then(ApiService.parseResponse);
+    }).then(ApiService.parseResponse).then(this.#adaptToClient);
   }
 
   async addPoint(point) {
@@ -51,14 +51,14 @@ export default class PointsApiService extends ApiService {
       method: Method.POST,
       body: JSON.stringify(this.#adaptToServer(point)),
       headers: new Headers({'Content-type': 'application/json'})
-    }).then(ApiService.parseResponse);
+    }).then(ApiService.parseResponse).then(this.#adaptToClient);
   }
 
   async deletePoint(point) {
     return await this._load({
       url: `points/${point.id}`,
       method: Method.DELETE
-    }).then(ApiService.parseResponse);
+    });
   }
 
   #adaptToClient(point) {

@@ -32,7 +32,7 @@ export default class AddPointPresenter {
       this.#offers,
       this.#typesOfPoints,
       this.#onFormSubmit,
-      this.#onPointDelete
+      this.#onCancelButton
     );
     render(this.#addPointElement, this.#eventsListElement.element, RenderPosition.AFTERBEGIN);
     document.addEventListener('keydown', this.#onEscKeydown);
@@ -41,14 +41,14 @@ export default class AddPointPresenter {
   #onFormSubmit = (point) => {
     this.#onPointDataChange(
       UserAction.ADD_TASK,
-      UpdatePoint.LARGE,
+      UpdatePoint.MEDIUM,
       point
     );
 
     this.destroy();
   };
 
-  #onPointDelete = () => {
+  #onCancelButton = () => {
     this.destroy();
   };
 
