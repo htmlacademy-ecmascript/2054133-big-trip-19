@@ -18,28 +18,38 @@ const BLANK_POINT = {
 
 function createItemEditPointTemplate (userAction, point, pointDestination, pointOffers, types) {
 
-  const {type, basePrice, dateFrom, dateTo} = point;
+  const {type, basePrice, dateFrom, dateTo, isSaving, isDeleting} = point;
   const {offers} = getOffer(point, pointOffers);
   const {description, name, pictures} = getDestination(point, pointDestination);
 
   const createArrowElement = () => {
-    if(userAction === UserAction.UPDATE_POINT) {
+    if (userAction === UserAction.UPDATE_POINT) {
       return '<button class="event__rollup-btn" type="button"></button>';
     }
     return '';
   };
 
   const createTypeOfButtonReset = () => {
-    if(userAction === UserAction.UPDATE_POINT) {
+    if (isDeleting) {
+      return 'Deleting...';
+    }
+    if (userAction === UserAction.UPDATE_POINT) {
       return 'Delete';
     }
     return 'Cancel';
   };
 
+  const createSaveButton = () => {
+    if (isSaving) {
+      return 'Saving...';
+    }
+    return 'Save';
+  };
+
 
   const createOfferElements = () => {
 
-    if(!offers) {
+    if (!offers) {
       return '';
     }
     return `${offers.reduce((prev, offer) => {
@@ -77,6 +87,7 @@ function createItemEditPointTemplate (userAction, point, pointDestination, point
   const cityDataList = createDataCityList();
   const arrowElement = createArrowElement();
   const typeOfButtonReset = createTypeOfButtonReset();
+  const saveButton = createSaveButton();
 
   return (
     `<li class="trip-events__item">
@@ -123,7 +134,7 @@ function createItemEditPointTemplate (userAction, point, pointDestination, point
         <input class="event__input  event__input--price" id="event-price-1" type="number" min="1" name="event-price" value="${basePrice}">
       </div>
 
-      <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+      <button class="event__save-btn  btn  btn--blue" type="submit">${saveButton}</button>
       <button class="event__reset-btn" type="reset">${typeOfButtonReset}</button>
         ${arrowElement}
         <span class="visually-hidden">Open event</span>
@@ -187,11 +198,15 @@ export default class EditPointView extends AbstractStatefulView {
   }
 
   static parsePointToState(point) {
-    return {...point};
+    return {...point, isSaving: false, isDeleting: false};
   }
 
   static parseStateToPoint(state) {
     const point = {...state};
+
+    delete point.isSaving;
+    delete point.isDeleting;
+
     return point;
   }
 

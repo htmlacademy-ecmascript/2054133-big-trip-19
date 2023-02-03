@@ -37,7 +37,7 @@ export default class AppPresenter {
   #pointPresenter = null;
   #eventsSortElement = null;
   #filterPresenter = null;
-  #addNewPointElement = null;
+  #addNewPointPresenter = null;
   #buttonPresenter = null;
 
 
@@ -92,17 +92,21 @@ export default class AppPresenter {
     this.#renderInfo();
     this.#renderfilter();
     this.#renderButton();
+    this.#renderLoading();
   }
 
-  #onPointDataChange = (actionType, updateType, data) => {
+  #onViewDataChange = (actionType, updateType, data) => {
     switch(actionType) {
       case UserAction.ADD_POINT:
+        this.#addNewPointPresenter.setSaving();
         this.#pointModel.addPoint(updateType, data);
         break;
       case UserAction.UPDATE_POINT:
+        this.#pointsPresenter.get(data.id).setSaving();
         this.#pointModel.updatePoint(updateType, data);
         break;
       case UserAction.DELETE_POINT:
+        this.#pointsPresenter.get(data.id).setDeleting();
         this.#pointModel.deletePoint(updateType, data);
         break;
     }
@@ -117,11 +121,14 @@ export default class AppPresenter {
         break;
       case UpdatePoint.LARGE:
         this.#clearBoard({resetSortType: true});
-        this.#renderBoard({resetSort: true});
+        this.#renderBoard();
         break;
       case UpdatePoint.MEDIUM:
         this.#clearBoard();
         this.#renderBoard();
+        if (this.#addNewPointPresenter) {
+          this.#addNewPointPresenter.destroy(); // Нужен рефакторинг?
+        }
         break;
       case UpdatePoint.LOW:
         this.#pointsPresenter.get(data.id).init(data, this.destinations, this.offers);
@@ -130,7 +137,7 @@ export default class AppPresenter {
   };
 
   #renderPoint(point) {
-    this.#pointPresenter = new PointPresenter(this.#eventsListElement, this.#onPointDataChange, this.#onModeChange, this.typesOfPoints);
+    this.#pointPresenter = new PointPresenter(this.#eventsListElement, this.#onViewDataChange, this.#onModeChange, this.typesOfPoints);
     this.#pointPresenter.init(point, this.destinations, this.offers);
     this.#pointsPresenter.set(point.id, this.#pointPresenter);
   }
@@ -142,10 +149,10 @@ export default class AppPresenter {
   #clearBoard(resetSortType) {
     this.#pointsPresenter.forEach((presenter) => presenter.destroy());
     this.#pointsPresenter.clear();
+    remove(this.#eventsSortElement);
 
     if (resetSortType) {
       this.#currentSortType = SortType.DAY;
-      remove(this.#eventsSortElement);
     }
     if (this.#eventMessageElement) {
       remove(this.#eventMessageElement);
@@ -153,23 +160,16 @@ export default class AppPresenter {
     if (this.loadingElement) {
       remove(this.loadingElement);
     }
-    this.#destroyNewPoint();
   }
 
-  #renderBoard(resetSort) {
-    if (this.#isLoading) {
-      this.#renderLoading();
-      return;
-    }
+  #renderBoard() {
     if (!this.points.length) {
       this.#renderMessage();
       remove(this.#eventsSortElement);
       return;
     }
 
-    if (resetSort) {
-      this.#renderSort();
-    }
+    this.#renderSort();
 
     this.#renderPoints();
     render(this.#eventsListElement, this.#eventsElement);
@@ -184,8 +184,8 @@ export default class AppPresenter {
     if (target === this.#currentSortType) {
       return;
     }
-    if (this.#addNewPointElement) {
-      this.#addNewPointElement.destroy();
+    if (this.#addNewPointPresenter) {
+      this.#addNewPointPresenter.destroy();
     }
     this.#currentSortType = target;
     this.#clearBoard();
@@ -193,8 +193,8 @@ export default class AppPresenter {
   };
 
   #onModeChange = () => {
-    if (this.#addNewPointElement) {
-      this.#addNewPointElement.destroy();
+    if (this.#addNewPointPresenter) {
+      this.#addNewPointPresenter.destroy();
     }
     this.#pointsPresenter.forEach((presenter) => presenter.resetView());
   };
@@ -218,8 +218,8 @@ export default class AppPresenter {
   };
 
   #renderNewPoint() {
-    this.#addNewPointElement = new AddPointPresenter(this.#eventsListElement, this.#destinations, this.#offers, this.typesOfPoints, this.#onPointDataChange, this.#destroyNewPoint);
-    this.#addNewPointElement.init();
+    this.#addNewPointPresenter = new AddPointPresenter(this.#eventsListElement, this.#destinations, this.#offers, this.typesOfPoints, this.#onViewDataChange, this.#destroyNewPoint);
+    this.#addNewPointPresenter.init();
 
     this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdatePoint.LARGE, FilterType.EVERYTHING);

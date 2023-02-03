@@ -5,7 +5,7 @@ import { isEscapeKey } from '../utils/utils';
 import { UpdatePoint, UserAction } from '../utils/const';
 
 const PointMode = {
-  DEFAULT: 'DEFALUT',
+  DEFAULT: 'DEFAULT',
   EDITING: 'EDITING'
 };
 
@@ -143,6 +143,16 @@ export default class PointPresenter {
       this.#replaceFormToPoint();
     }
   }
+
+  setSaving = () => {
+    if (this.#pointMode === PointMode.EDITING) {
+      this.#pointEditElement.updateElement({isSaving: true});
+    }
+  };
+
+  setDeleting = () => {
+    this.#pointEditElement.updateElement({isDeleting: true});
+  };
 
   destroy() {
     remove(this.#pointElement);

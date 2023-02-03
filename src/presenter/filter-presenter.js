@@ -46,7 +46,6 @@ export default class FilterPresenter {
 
   #onFilterChange = (targetFilter) => {
     if (targetFilter === this.currentFilter) {
-
       return;
     }
     this.#filterModel.setFilter(UpdatePoint.LARGE, targetFilter);

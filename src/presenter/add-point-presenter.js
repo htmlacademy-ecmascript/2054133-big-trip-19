@@ -44,8 +44,6 @@ export default class AddPointPresenter {
       UpdatePoint.MEDIUM,
       point
     );
-
-    this.destroy();
   };
 
   #onCancelButton = () => {
@@ -56,6 +54,10 @@ export default class AddPointPresenter {
     if (isEscapeKey(evt)) {
       this.destroy();
     }
+  };
+
+  setSaving = () => {
+    this.#addPointElement.updateElement({isSaving: true});
   };
 
   destroy() {
