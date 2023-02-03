@@ -56,7 +56,7 @@ function createItemEditPointTemplate (userAction, point, pointDestination, point
       const isCheckedOffers = point.offers.includes(offer.id);
       return `${prev} <div class="event__offer-selector">
         <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title.split(' ').pop()}-${offer.id}"
-        type="checkbox" name="event-offer-${offer.title.split(' ').pop()}" ${isCheckedOffers ? 'checked' : ''}>
+        type="checkbox" name="event-offer-${offer.title.split(' ').pop()}" ${isCheckedOffers ? 'checked' : ''} ${isSaving || isDeleting ? 'disabled' : ''}>
         <label class="event__offer-label" for="event-offer-${offer.title.split(' ').pop()}-${offer.id}">
           <span class="event__offer-title">${offer.title}</span>
           &plus;&euro;&nbsp;
@@ -98,7 +98,7 @@ function createItemEditPointTemplate (userAction, point, pointDestination, point
           <span class="visually-hidden">Choose event type</span>
           <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
         </label>
-        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox" ${isSaving || isDeleting ? 'disabled' : ''}>
 
         <div class="event__type-list">
           <fieldset class="event__type-group">
@@ -112,7 +112,8 @@ function createItemEditPointTemplate (userAction, point, pointDestination, point
         <label class="event__label  event__type-output" for="event-destination-1">
           ${type}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1"
+        ${isSaving || isDeleting ? 'disabled' : ''}>
         <datalist id="destination-list-1">
           ${cityDataList}
         </datalist>
@@ -120,10 +121,12 @@ function createItemEditPointTemplate (userAction, point, pointDestination, point
 
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time-1">From</label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeDate(dateFrom, DateFormat.DATE_TIME_INPUT)}">
+        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeDate(dateFrom, DateFormat.DATE_TIME_INPUT)}"
+        ${isSaving || isDeleting ? 'disabled' : ''}>
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">To</label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeDate(dateTo, DateFormat.DATE_TIME_INPUT)}">
+        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeDate(dateTo, DateFormat.DATE_TIME_INPUT)}"
+        ${isSaving || isDeleting ? 'disabled' : ''}>
       </div>
 
       <div class="event__field-group  event__field-group--price">
@@ -131,7 +134,7 @@ function createItemEditPointTemplate (userAction, point, pointDestination, point
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="number" min="1" name="event-price" value="${basePrice}">
+        <input class="event__input  event__input--price" id="event-price-1" type="number" min="1" name="event-price" value="${basePrice}" ${isSaving || isDeleting ? 'disabled' : ''}>
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">${saveButton}</button>
