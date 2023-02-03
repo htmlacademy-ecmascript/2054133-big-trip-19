@@ -152,11 +152,11 @@ export default class AppPresenter {
       case UpdatePoint.MEDIUM:
         this.#clearBoard();
         this.#renderBoard();
-        this.#onModeChange(); // получается лишняя перерисовка?
+        this.#onModeChange();// получается перерисовка? Для того, что бы форма закрывалась после отправки данных
         break;
       case UpdatePoint.LOW:
         this.#pointsPresenter.get(data.id).init(data, this.destinations, this.offers);
-        this.#onModeChange(); // получается лишняя перерисовка?
+        this.#onModeChange(); // получается перерисовка? Для того, что бы форма закрывалась
         break;
     }
   };
