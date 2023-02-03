@@ -152,11 +152,11 @@ export default class AppPresenter {
       case UpdatePoint.MEDIUM:
         this.#clearBoard();
         this.#renderBoard();
-        this.#onModeChange();
+        this.#onModeChange(); // получается лишняя перерисовка?
         break;
       case UpdatePoint.LOW:
         this.#pointsPresenter.get(data.id).init(data, this.destinations, this.offers);
-        this.#onModeChange();
+        this.#onModeChange(); // получается лишняя перерисовка?
         break;
     }
   };
