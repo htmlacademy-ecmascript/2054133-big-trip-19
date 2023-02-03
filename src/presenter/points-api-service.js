@@ -66,7 +66,7 @@ export default class PointsApiService extends ApiService {
       ...point,
       basePrice: point['base_price'],
       dateFrom: point['date_from'],
-      dateTo: point['date_from'],
+      dateTo: point['date_to'],
       isFavorite: point['is_favorite']
     };
 

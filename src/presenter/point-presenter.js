@@ -92,7 +92,7 @@ export default class PointPresenter {
   };
 
   #onFormSubmit = (point) => {
-    const pointUpdateMethod = point.dateFrom !== this.#point.dateFrom || point.basePrice !== this.#point.basePrice ? UpdatePoint.MEDIUM : UpdatePoint.LOW;
+    const pointUpdateMethod = point.dateFrom !== this.#point.dateFrom || point.dateTo !== this.#point.dateTo || point.basePrice !== this.#point.basePrice ? UpdatePoint.MEDIUM : UpdatePoint.LOW;
     this.#onPointDataChange(
       UserAction.UPDATE_TASK,
       pointUpdateMethod,
@@ -106,9 +106,9 @@ export default class PointPresenter {
         offers: point.offers
       }
     );
-    // if(pointUpdateMethod === UpdatePoint.LOW) {
-    //   this.#replaceFormToPoint();
-    // }
+    if(pointUpdateMethod === UpdatePoint.LOW) {
+      this.#replaceFormToPoint();
+    }
   };
 
   #onFavoritClick = () => {

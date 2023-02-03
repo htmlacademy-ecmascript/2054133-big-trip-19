@@ -58,13 +58,16 @@ export default class AppPresenter {
 
     switch (this.#currentSortType) {
       case SortType.PRICE:
-        return sortPrice(filteredPoints);
+        return filteredPoints.sort(sortPrice);
+        // return sortPrice(filteredPoints);
 
       case SortType.TIME:
-        return sortTime(filteredPoints);
+        return filteredPoints.sort(sortTime);
+        // return sortTime(filteredPoints);
 
       case SortType.DAY:
-        return sortDay(filteredPoints);
+        return filteredPoints.sort(sortDay);
+        // return sortDay(filteredPoints);
     }
 
     return filteredPoints;
