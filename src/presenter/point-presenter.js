@@ -51,7 +51,7 @@ export default class PointPresenter {
     );
 
     this.#pointEditElement = new EditPointView (
-      UserAction.UPDATE_TASK,
+      UserAction.UPDATE_POINT,
       this.#point,
       this.#destination,
       this.#offers,
@@ -85,7 +85,7 @@ export default class PointPresenter {
 
   #onPointDelete = () => {
     this.#onPointDataChange(
-      UserAction.DELETE_TASK,
+      UserAction.DELETE_POINT,
       UpdatePoint.MEDIUM,
       this.#point
     );
@@ -94,7 +94,7 @@ export default class PointPresenter {
   #onFormSubmit = (point) => {
     const pointUpdateMethod = point.dateFrom !== this.#point.dateFrom || point.dateTo !== this.#point.dateTo || point.basePrice !== this.#point.basePrice ? UpdatePoint.MEDIUM : UpdatePoint.LOW;
     this.#onPointDataChange(
-      UserAction.UPDATE_TASK,
+      UserAction.UPDATE_POINT,
       pointUpdateMethod,
       {
         ...this.#point,
@@ -113,7 +113,7 @@ export default class PointPresenter {
 
   #onFavoritClick = () => {
     this.#onPointDataChange(
-      UserAction.UPDATE_TASK,
+      UserAction.UPDATE_POINT,
       UpdatePoint.LOW,
       {...this.#point, isFavorite: !this.#point.isFavorite});
   };

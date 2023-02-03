@@ -23,14 +23,14 @@ function createItemEditPointTemplate (userAction, point, pointDestination, point
   const {description, name, pictures} = getDestination(point, pointDestination);
 
   const createArrowElement = () => {
-    if(userAction === UserAction.UPDATE_TASK) {
+    if(userAction === UserAction.UPDATE_POINT) {
       return '<button class="event__rollup-btn" type="button"></button>';
     }
     return '';
   };
 
   const createTypeOfButtonReset = () => {
-    if(userAction === UserAction.UPDATE_TASK) {
+    if(userAction === UserAction.UPDATE_POINT) {
       return 'Delete';
     }
     return 'Cancel';
@@ -297,7 +297,7 @@ export default class EditPointView extends AbstractStatefulView {
 
   _restoreHandlers() {
     this.element.querySelector('form').addEventListener('submit', this.#onSubmitButton);
-    if (this.#userAction === UserAction.UPDATE_TASK) {
+    if (this.#userAction === UserAction.UPDATE_POINT) {
       this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onArrowClick);
     }
     this.element.querySelector('.event__type-group').addEventListener('click', this.#onTypeClick);

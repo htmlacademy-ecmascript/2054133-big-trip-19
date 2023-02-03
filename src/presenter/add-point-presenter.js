@@ -26,7 +26,7 @@ export default class AddPointPresenter {
 
   init() {
     this.#addPointElement = new EditPointView (
-      UserAction.ADD_TASK,
+      UserAction.ADD_POINT,
       this.#blankPoint,
       this.#destinations,
       this.#offers,
@@ -40,7 +40,7 @@ export default class AddPointPresenter {
 
   #onFormSubmit = (point) => {
     this.#onPointDataChange(
-      UserAction.ADD_TASK,
+      UserAction.ADD_POINT,
       UpdatePoint.MEDIUM,
       point
     );

@@ -16,7 +16,6 @@ export default class PointModel extends Observable {
   #offers = [];
   #types = [];
 
-
   async init() {
     this.#points = await this.#pointsApiService.points();
     this.#destinations = await this.#pointsApiService.destinations();
@@ -25,7 +24,6 @@ export default class PointModel extends Observable {
     this.#types = TYPES_OF_POINT_EVENT;
 
     this._notify(UpdatePoint.INIT);
-
   }
 
   async updatePoint(updateType, update) {
@@ -45,7 +43,6 @@ export default class PointModel extends Observable {
   }
 
   async addPoint(updateType, update) {
-
     try {
       const response = await this.#pointsApiService.addPoint(update);
 
@@ -75,6 +72,7 @@ export default class PointModel extends Observable {
   }
 
   get typesOfPoints() {
+
     return this.#types;
   }
 

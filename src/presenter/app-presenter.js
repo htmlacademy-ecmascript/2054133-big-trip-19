@@ -59,17 +59,13 @@ export default class AppPresenter {
     switch (this.#currentSortType) {
       case SortType.PRICE:
         return filteredPoints.sort(sortPrice);
-        // return sortPrice(filteredPoints);
 
       case SortType.TIME:
         return filteredPoints.sort(sortTime);
-        // return sortTime(filteredPoints);
 
       case SortType.DAY:
         return filteredPoints.sort(sortDay);
-        // return sortDay(filteredPoints);
     }
-
     return filteredPoints;
   }
 
@@ -84,7 +80,7 @@ export default class AppPresenter {
   }
 
   get typesOfPoints() {
-    this.#typesOfPoints = [...this.#pointModel.typesOfPoints]; // приходится заводит ьгеттер?
+    this.#typesOfPoints = [...this.#pointModel.typesOfPoints];
     return this.#typesOfPoints;
   }
 
@@ -100,13 +96,13 @@ export default class AppPresenter {
 
   #onPointDataChange = (actionType, updateType, data) => {
     switch(actionType) {
-      case UserAction.ADD_TASK:
+      case UserAction.ADD_POINT:
         this.#pointModel.addPoint(updateType, data);
         break;
-      case UserAction.UPDATE_TASK:
+      case UserAction.UPDATE_POINT:
         this.#pointModel.updatePoint(updateType, data);
         break;
-      case UserAction.DELETE_TASK:
+      case UserAction.DELETE_POINT:
         this.#pointModel.deletePoint(updateType, data);
         break;
     }
