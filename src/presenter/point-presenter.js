@@ -106,9 +106,6 @@ export default class PointPresenter {
         offers: point.offers
       }
     );
-    if(pointUpdateMethod === UpdatePoint.LOW) {
-      this.#replaceFormToPoint();
-    }
   };
 
   #onFavoritClick = () => {
@@ -153,6 +150,15 @@ export default class PointPresenter {
   setDeleting = () => {
     this.#pointEditElement.updateElement({isDeleting: true});
   };
+
+  setAborting() {
+    if (this.#pointMode === PointMode.DEFAULT) {
+      this.#pointElement.shake();
+      return;
+    }
+    const resetForm = () => this.#pointEditElement.updateElement({isSaving: false, isDeleting: false});
+    this.#pointEditElement.shake(resetForm);
+  }
 
   destroy() {
     remove(this.#pointElement);

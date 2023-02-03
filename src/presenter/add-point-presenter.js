@@ -60,6 +60,11 @@ export default class AddPointPresenter {
     this.#addPointElement.updateElement({isSaving: true});
   };
 
+  setAborting() {
+    const resetForm = () => this.#addPointElement.updateElement({isSaving: false, isDeleting: false});
+    this.#addPointElement.shake(resetForm);
+  }
+
   destroy() {
     if (!this.#addPointElement) {
       return;

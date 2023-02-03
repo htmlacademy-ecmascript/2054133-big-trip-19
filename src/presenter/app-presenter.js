@@ -11,6 +11,12 @@ import { filter } from '../utils/filter';
 import ButtonView from '../view/header-views/button-view';
 import AddPointPresenter from './add-point-presenter';
 import LoadingPresenter from '../view/main-views/loading-view';
+import UiBlocker from '../framework/ui-blocker/ui-blocker';
+
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
 
 export default class AppPresenter {
 
@@ -40,6 +46,7 @@ export default class AppPresenter {
   #addNewPointPresenter = null;
   #buttonPresenter = null;
 
+  #uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
 
   constructor(eventsElement, filtersElement, mainElement, pointModel, filterModel) {
     this.#eventsElement = eventsElement;
@@ -95,21 +102,40 @@ export default class AppPresenter {
     this.#renderLoading();
   }
 
-  #onViewDataChange = (actionType, updateType, data) => {
+  #onViewDataChange = async (actionType, updateType, data) => { //почему async после метода, в модели было до?
+    this.#uiBlocker.block();
+
     switch(actionType) {
       case UserAction.ADD_POINT:
         this.#addNewPointPresenter.setSaving();
-        this.#pointModel.addPoint(updateType, data);
+        try {
+          await this.#pointModel.addPoint(updateType, data);
+        }
+        catch(err) {
+          this.#addNewPointPresenter.setAborting();
+        }
         break;
       case UserAction.UPDATE_POINT:
         this.#pointsPresenter.get(data.id).setSaving();
-        this.#pointModel.updatePoint(updateType, data);
+        try {
+          await this.#pointModel.updatePoint(updateType, data);
+        }
+        catch(err) {
+          this.#pointsPresenter.get(data.id).setAborting();
+        }
         break;
       case UserAction.DELETE_POINT:
         this.#pointsPresenter.get(data.id).setDeleting();
-        this.#pointModel.deletePoint(updateType, data);
+        try {
+          await this.#pointModel.deletePoint(updateType, data);
+        }
+        catch(err) {
+          this.#pointsPresenter.get(data.id).setAborting();
+        }
         break;
     }
+
+    this.#uiBlocker.unblock();
   };
 
   #onModelDataChange = (updateType, data) => {
@@ -126,12 +152,11 @@ export default class AppPresenter {
       case UpdatePoint.MEDIUM:
         this.#clearBoard();
         this.#renderBoard();
-        if (this.#addNewPointPresenter) {
-          this.#addNewPointPresenter.destroy(); // Нужен рефакторинг?
-        }
+        this.#onModeChange();
         break;
       case UpdatePoint.LOW:
         this.#pointsPresenter.get(data.id).init(data, this.destinations, this.offers);
+        this.#onModeChange();
         break;
     }
   };
