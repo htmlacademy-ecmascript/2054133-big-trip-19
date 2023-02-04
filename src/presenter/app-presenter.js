@@ -39,7 +39,7 @@ export default class AppPresenter {
   #loadingElement = null;
   #eventsListElement = new EventsListView();
   #eventMessageElement = null;
-  #eventsInfoElement = new InfoView();
+  #eventsInfoElement = null;
   #pointPresenter = null;
   #eventsSortElement = null;
   #filterPresenter = null;
@@ -59,8 +59,9 @@ export default class AppPresenter {
     this.#filterModel.addObserver(this.#onModelDataChange);
   }
 
-  get points() {
+  get filteredPoints() {
     this.#points = [...this.#pointModel.points];
+
     const filteredPoints = filter[this.#filterModel.currentFilter](this.#points);
 
     switch (this.#currentSortType) {
@@ -96,7 +97,6 @@ export default class AppPresenter {
   }
 
   init() {
-    this.#renderInfo();
     this.#renderfilter();
     this.#renderButton();
     this.#renderLoading();
@@ -157,6 +157,8 @@ export default class AppPresenter {
       case UpdatePoint.LOW:
         this.#pointsPresenter.get(data.id).init(data, this.destinations, this.offers);
         this.#onModeChange(); // получается перерисовка? Для того, что бы форма закрывалась
+        remove(this.#eventsInfoElement);
+        this.#renderInfo();
         break;
     }
   };
@@ -168,7 +170,7 @@ export default class AppPresenter {
   }
 
   #renderPoints() {
-    this.points.forEach((point) => this.#renderPoint(point));
+    this.filteredPoints.forEach((point) => this.#renderPoint(point));
   }
 
   #clearBoard(resetSortType) {
@@ -185,10 +187,12 @@ export default class AppPresenter {
     if (this.loadingElement) {
       remove(this.loadingElement);
     }
+    remove(this.#eventsInfoElement);
   }
 
   #renderBoard() {
-    if (!this.points.length) {
+
+    if (!this.filteredPoints.length) {
       this.#renderMessage();
       remove(this.#eventsSortElement);
       return;
@@ -198,6 +202,7 @@ export default class AppPresenter {
 
     this.#renderPoints();
     render(this.#eventsListElement, this.#eventsElement);
+    this.#renderInfo();
   }
 
   #renderSort() {
@@ -230,6 +235,7 @@ export default class AppPresenter {
   }
 
   #renderInfo() {
+    this.#eventsInfoElement = new InfoView(this.#points, this.destinations);
     render(this.#eventsInfoElement, this.#mainElement, RenderPosition.AFTERBEGIN);
   }
 
