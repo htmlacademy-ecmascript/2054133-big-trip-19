@@ -155,10 +155,10 @@ export default class AppPresenter {
         this.#onModeChange();// получается перерисовка? Для того, что бы форма закрывалась после отправки данных
         break;
       case UpdatePoint.LOW:
-        this.#pointsPresenter.get(data.id).init(data, this.destinations, this.offers);
+        this.#pointsPresenter.get(data.id).init(data, this.destinations, this.offers); // не обновляются данные в this.#points при low апдейте
         this.#onModeChange(); // получается перерисовка? Для того, что бы форма закрывалась
         remove(this.#eventsInfoElement);
-        this.#renderInfo();
+        this.#renderInfo(data); // сделал такой вариант с обновлением
         break;
     }
   };
@@ -191,7 +191,6 @@ export default class AppPresenter {
   }
 
   #renderBoard() {
-
     if (!this.filteredPoints.length) {
       this.#renderMessage();
       remove(this.#eventsSortElement);
@@ -234,8 +233,8 @@ export default class AppPresenter {
     render(this.#eventMessageElement, this.#eventsElement);
   }
 
-  #renderInfo() {
-    this.#eventsInfoElement = new InfoView(this.#points, this.destinations);
+  #renderInfo(updateData) {
+    this.#eventsInfoElement = new InfoView(this.#points, this.destinations, this.offers, updateData);
     render(this.#eventsInfoElement, this.#mainElement, RenderPosition.AFTERBEGIN);
   }
 
