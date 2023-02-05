@@ -152,13 +152,11 @@ export default class AppPresenter {
       case UpdatePoint.MEDIUM:
         this.#clearBoard();
         this.#renderBoard();
-        this.#onModeChange();// получается перерисовка? Для того, что бы форма закрывалась после отправки данных
         break;
       case UpdatePoint.LOW:
-        this.#pointsPresenter.get(data.id).init(data, this.destinations, this.offers); // не обновляются данные в this.#points при low апдейте
-        this.#onModeChange(); // получается перерисовка? Для того, что бы форма закрывалась
+        this.#pointsPresenter.get(data.id).init(data, this.destinations, this.offers);
         remove(this.#eventsInfoElement);
-        this.#renderInfo(data); // сделал такой вариант с обновлением
+        this.#renderInfo(data); // не обновляются данные в this.#points при low апдейте, сделал такой вариант с обновлением информации
         break;
     }
   };
@@ -187,6 +185,11 @@ export default class AppPresenter {
     if (this.loadingElement) {
       remove(this.loadingElement);
     }
+
+    if (this.#addNewPointPresenter) {
+      this.#addNewPointPresenter.destroy();
+    }
+
     remove(this.#eventsInfoElement);
   }
 
@@ -196,7 +199,6 @@ export default class AppPresenter {
       remove(this.#eventsSortElement);
       return;
     }
-
     this.#renderSort();
 
     this.#renderPoints();
@@ -249,11 +251,14 @@ export default class AppPresenter {
 
   #renderNewPoint() {
     this.#addNewPointPresenter = new AddPointPresenter(this.#eventsListElement, this.#destinations, this.#offers, this.typesOfPoints, this.#onViewDataChange, this.#destroyNewPoint);
-    this.#addNewPointPresenter.init();
 
-    this.#currentSortType = SortType.DAY;
-    this.#filterModel.setFilter(UpdatePoint.LARGE, FilterType.EVERYTHING);
+    if (this.#filterModel.currentFilter !== FilterType.EVERYTHING) {
+      this.#filterModel.setFilter(UpdatePoint.LARGE, FilterType.EVERYTHING);
+    }
+    this.#onSortChange(SortType.DAY);
     this.#buttonPresenter.element.disabled = true;
+
+    this.#addNewPointPresenter.init();
   }
 
   #destroyNewPoint = () => {
