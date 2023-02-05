@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import { remove, render, RenderPosition } from '../framework/render';
 import { UpdatePoint, UserAction } from '../utils/const';
 import { isEscapeKey } from '../utils/utils';
@@ -27,13 +26,13 @@ export default class AddPointPresenter {
 
   init() {
     this.#addPointElement = new EditPointView (
-      UserAction.ADD_TASK,
+      UserAction.ADD_POINT,
       this.#blankPoint,
       this.#destinations,
       this.#offers,
       this.#typesOfPoints,
       this.#onFormSubmit,
-      this.#onPointDelete
+      this.#onCancelButton
     );
     render(this.#addPointElement, this.#eventsListElement.element, RenderPosition.AFTERBEGIN);
     document.addEventListener('keydown', this.#onEscKeydown);
@@ -41,23 +40,13 @@ export default class AddPointPresenter {
 
   #onFormSubmit = (point) => {
     this.#onPointDataChange(
-      UserAction.ADD_TASK,
-      UpdatePoint.LARGE,
-      {
-        ...point,
-        type: point.type,
-        destination: point.destination,
-        dateFrom: point.dateFrom,
-        dateTo: point.dateTo,
-        basePrice: point.basePrice,
-        id: nanoid()
-      }
+      UserAction.ADD_POINT,
+      UpdatePoint.MEDIUM,
+      point
     );
-
-    this.destroy();
   };
 
-  #onPointDelete = () => {
+  #onCancelButton = () => {
     this.destroy();
   };
 
@@ -66,6 +55,15 @@ export default class AddPointPresenter {
       this.destroy();
     }
   };
+
+  setSaving = () => {
+    this.#addPointElement.updateElement({isSaving: true});
+  };
+
+  setAborting() {
+    const resetForm = () => this.#addPointElement.updateElement({isSaving: false, isDeleting: false});
+    this.#addPointElement.shake(resetForm);
+  }
 
   destroy() {
     if (!this.#addPointElement) {

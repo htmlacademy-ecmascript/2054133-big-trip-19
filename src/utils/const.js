@@ -17,9 +17,9 @@ const Time = {
 };
 
 const UserAction = {
-  ADD_TASK: 'ADD_TASK',
-  UPDATE_TASK: 'UPDATE_TASK',
-  DELETE_TASK: 'DELETE_TASK'
+  ADD_POINT: 'ADD_POINT',
+  UPDATE_POINT: 'UPDATE_POINT',
+  DELETE_POINT: 'DELETE_POINT'
 };
 
 const UpdatePoint = {

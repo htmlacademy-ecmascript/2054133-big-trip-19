@@ -5,7 +5,7 @@ import { isEscapeKey } from '../utils/utils';
 import { UpdatePoint, UserAction } from '../utils/const';
 
 const PointMode = {
-  DEFAULT: 'DEFALUT',
+  DEFAULT: 'DEFAULT',
   EDITING: 'EDITING'
 };
 
@@ -51,7 +51,7 @@ export default class PointPresenter {
     );
 
     this.#pointEditElement = new EditPointView (
-      UserAction.UPDATE_TASK,
+      UserAction.UPDATE_POINT,
       this.#point,
       this.#destination,
       this.#offers,
@@ -85,16 +85,16 @@ export default class PointPresenter {
 
   #onPointDelete = () => {
     this.#onPointDataChange(
-      UserAction.DELETE_TASK,
+      UserAction.DELETE_POINT,
       UpdatePoint.MEDIUM,
       this.#point
     );
   };
 
   #onFormSubmit = (point) => {
-    const pointUpdateMethod = point.dateFrom === this.#point.dateFrom ? UpdatePoint.LOW : UpdatePoint.MEDIUM;
+    const pointUpdateMethod = point.dateFrom !== this.#point.dateFrom || point.dateTo !== this.#point.dateTo || point.basePrice !== this.#point.basePrice ? UpdatePoint.MEDIUM : UpdatePoint.LOW;
     this.#onPointDataChange(
-      UserAction.UPDATE_TASK,
+      UserAction.UPDATE_POINT,
       pointUpdateMethod,
       {
         ...this.#point,
@@ -106,12 +106,15 @@ export default class PointPresenter {
         offers: point.offers
       }
     );
-    this.#replaceFormToPoint();
+
+    if (pointUpdateMethod === UpdatePoint.LOW) {
+      this.#replaceFormToPoint();
+    }
   };
 
   #onFavoritClick = () => {
     this.#onPointDataChange(
-      UserAction.UPDATE_TASK,
+      UserAction.UPDATE_POINT,
       UpdatePoint.LOW,
       {...this.#point, isFavorite: !this.#point.isFavorite});
   };
@@ -140,6 +143,25 @@ export default class PointPresenter {
     if (this.#pointMode !== PointMode.DEFAULT) {
       this.#replaceFormToPoint();
     }
+  }
+
+  setSaving = () => {
+    if (this.#pointMode === PointMode.EDITING) {
+      this.#pointEditElement.updateElement({isSaving: true});
+    }
+  };
+
+  setDeleting = () => {
+    this.#pointEditElement.updateElement({isDeleting: true});
+  };
+
+  setAborting() {
+    if (this.#pointMode === PointMode.DEFAULT) {
+      this.#pointElement.shake();
+      return;
+    }
+    const resetForm = () => this.#pointEditElement.updateElement({isSaving: false, isDeleting: false});
+    this.#pointEditElement.shake(resetForm);
   }
 
   destroy() {

@@ -5,7 +5,7 @@ import { DateFormat, humanizeDate } from '../../utils/date';
 import { getDestination, getOffer } from '../../utils/utils';
 
 function createPointTemplate (point, pointDestination, pointOffers) {
-  // console.log(point)
+
   const {type, basePrice, dateFrom, dateTo, isFavorite} = point;
   const {name} = getDestination(point, pointDestination);
   const {offers} = getOffer(point, pointOffers);
