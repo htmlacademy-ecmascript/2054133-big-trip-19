@@ -106,6 +106,10 @@ export default class PointPresenter {
         offers: point.offers
       }
     );
+
+    if (pointUpdateMethod === UpdatePoint.LOW) {
+      this.#replaceFormToPoint();
+    }
   };
 
   #onFavoritClick = () => {
