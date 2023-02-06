@@ -276,7 +276,7 @@ export default class EditPointView extends AbstractStatefulView {
     if (evt.target.tagName !== 'INPUT') {
       return;
     }
-    this.updateElement({type: evt.target.value});
+    this.updateElement({type: evt.target.value, offers: []});
   };
 
   #onCityChange = (evt) => {
