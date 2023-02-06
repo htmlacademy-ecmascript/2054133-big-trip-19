@@ -19,15 +19,10 @@ const BLANK_POINT = {
 function createItemEditPointTemplate (userAction, point, pointDestination, pointOffers, types) {
 
   const {type, basePrice, dateFrom, dateTo, isSaving, isDeleting} = point;
-  const {offers} = getOffer(point, pointOffers);
-  const {description, name, pictures} = getDestination(point, pointDestination);
+  const {offers} = getOffer(point, pointOffers) ?? {};
+  const {description, name, pictures} = getDestination(point, pointDestination) ?? {};
 
-  const createArrowElement = () => {
-    if (userAction === UserAction.UPDATE_POINT) {
-      return '<button class="event__rollup-btn" type="button"></button>';
-    }
-    return '';
-  };
+  const createArrowElement = () => userAction === UserAction.UPDATE_POINT ? '<button class="event__rollup-btn" type="button"></button>' : '';
 
   const createTypeOfButtonReset = () => {
     if (isDeleting) {
@@ -39,13 +34,7 @@ function createItemEditPointTemplate (userAction, point, pointDestination, point
     return 'Cancel';
   };
 
-  const createSaveButton = () => {
-    if (isSaving) {
-      return 'Saving...';
-    }
-    return 'Save';
-  };
-
+  const createSaveButton = () => isSaving ? 'Saving...' : 'Save';
 
   const createOfferElements = () => {
 
@@ -271,7 +260,7 @@ export default class EditPointView extends AbstractStatefulView {
     if (evt.target.checked && !selectedOffers.includes(target)) {
       selectedOffers.push(target);
     }
-    if(!evt.target.checked && selectedOffers.includes(target)) {
+    if (!evt.target.checked && selectedOffers.includes(target)) {
       selectedOffers = changeSelectedOffers(selectedOffers, target);
     }
 

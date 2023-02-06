@@ -102,7 +102,7 @@ export default class AppPresenter {
     this.#renderLoading();
   }
 
-  #onViewDataChange = async (actionType, updateType, data) => { //почему async после метода, в модели было до?
+  #onViewDataChange = async (actionType, updateType, data) => {
     this.#uiBlocker.block();
 
     switch(actionType) {
@@ -156,7 +156,7 @@ export default class AppPresenter {
       case UpdatePoint.LOW:
         this.#pointsPresenter.get(data.id).init(data, this.destinations, this.offers);
         remove(this.#eventsInfoElement);
-        this.#renderInfo(data); // не обновляются данные в this.#points при low апдейте, сделал такой вариант с обновлением информации
+        this.#renderInfo(data);
         break;
     }
   };
