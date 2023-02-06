@@ -10,8 +10,8 @@ function createPointTemplate (point, pointDestination, pointOffers) {
   const {name} = getDestination(point, pointDestination) ?? {};
   const {offers} = getOffer(point, pointOffers) ?? {};
 
-  const differenceDays = dayjs(dateTo).diff(dateFrom, 'd');
-  const differenceHours = dayjs(dateTo).diff(dateFrom, 'h') % Time.HOURS_IN_DAY;
+  const differenceDays = dayjs(dateTo).diff(dateFrom, 'd') > 0 ? dayjs(dateTo).diff(dateFrom, 'd') : '';
+  const differenceHours = dayjs(dateTo).diff(dateFrom, 'h') % Time.HOURS_IN_DAY > 0 ? dayjs(dateTo).diff(dateFrom, 'h') % Time.HOURS_IN_DAY : '';
   const differenceMinutes = dayjs(dateTo).diff(dateFrom,'m') % Time.MINUTES_IN_HOUR;
 
   const createOfferElements = () => {
