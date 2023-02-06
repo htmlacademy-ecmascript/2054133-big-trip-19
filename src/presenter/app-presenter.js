@@ -97,8 +97,6 @@ export default class AppPresenter {
   }
 
   init() {
-    this.#renderfilter();
-    this.#renderButton();
     this.#renderLoading();
   }
 
@@ -240,7 +238,7 @@ export default class AppPresenter {
     render(this.#eventsInfoElement, this.#mainElement, RenderPosition.AFTERBEGIN);
   }
 
-  #renderButton() {
+  renderButton() {
     this.#buttonPresenter = new ButtonView(this.#onCreateButtonClick);
     render(this.#buttonPresenter, this.#mainElement);
   }
@@ -268,7 +266,7 @@ export default class AppPresenter {
     render(this.#loadingElement, this.#eventsElement);
   }
 
-  #renderfilter() {
+  renderfilter() {
     this.#filterPresenter = new FilterPresenter(this.#filtersElement, this.#filterModel, this.#pointModel);
     this.#filterPresenter.init();
   }

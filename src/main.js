@@ -12,5 +12,8 @@ const filterModel = new FilterModel();
 const pointModel = new PointModel(new PointsApiService(END_POINT, AUTHORIZATION));
 const appPresenter = new AppPresenter(eventsElement, filtersElement, mainElement, pointModel, filterModel);
 
-pointModel.init();
+pointModel.init().finally(() => {
+  appPresenter.renderButton();
+  appPresenter.renderfilter();
+});
 appPresenter.init();
