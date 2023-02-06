@@ -245,9 +245,7 @@ export default class AppPresenter {
     render(this.#buttonPresenter, this.#mainElement);
   }
 
-  #onCreateButtonClick = () => {
-    this.#renderNewPoint();
-  };
+  #onCreateButtonClick = () => this.#renderNewPoint();
 
   #renderNewPoint() {
     this.#addNewPointPresenter = new AddPointPresenter(this.#eventsListElement, this.#destinations, this.#offers, this.typesOfPoints, this.#onViewDataChange, this.#destroyNewPoint);
