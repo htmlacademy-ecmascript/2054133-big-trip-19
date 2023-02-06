@@ -51,7 +51,5 @@ export default class FilterPresenter {
     this.#filterModel.setFilter(UpdatePoint.LARGE, targetFilter);
   };
 
-  #onModelDataChange = () => {
-    this.init();
-  };
+  #onModelDataChange = () => this.init();
 }

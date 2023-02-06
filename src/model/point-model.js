@@ -38,7 +38,7 @@ export default class PointModel extends Observable {
       this._notify(updateType, response);
     }
     catch(err) {
-      throw new Error('Can/t update point');
+      throw new Error('Can\'t update point');
     }
   }
 
@@ -51,7 +51,7 @@ export default class PointModel extends Observable {
       this._notify(updateType, response);
     }
     catch(err) {
-      throw new Error('Can/t add point');
+      throw new Error('Can\'t add point');
     }
   }
 

@@ -92,7 +92,12 @@ export default class PointPresenter {
   };
 
   #onFormSubmit = (point) => {
-    const pointUpdateMethod = point.dateFrom !== this.#point.dateFrom || point.dateTo !== this.#point.dateTo || point.basePrice !== this.#point.basePrice ? UpdatePoint.MEDIUM : UpdatePoint.LOW;
+    const pointUpdateMethod =
+      point.dateFrom !== this.#point.dateFrom ||
+      point.dateTo !== this.#point.dateTo ||
+      point.basePrice !== this.#point.basePrice ?
+        UpdatePoint.MEDIUM : UpdatePoint.LOW;
+
     this.#onPointDataChange(
       UserAction.UPDATE_POINT,
       pointUpdateMethod,
@@ -139,30 +144,20 @@ export default class PointPresenter {
     this.#pointMode = PointMode.DEFAULT;
   }
 
-  resetView() {
-    if (this.#pointMode !== PointMode.DEFAULT) {
-      this.#replaceFormToPoint();
-    }
-  }
+  resetView = () => this.#pointMode !== PointMode.DEFAULT ? this.#replaceFormToPoint() : '';
 
-  setSaving = () => {
-    if (this.#pointMode === PointMode.EDITING) {
-      this.#pointEditElement.updateElement({isSaving: true});
-    }
-  };
+  setSaving = () => this.#pointMode === PointMode.EDITING ? this.#pointEditElement.updateElement({isSaving: true}) : '';
 
-  setDeleting = () => {
-    this.#pointEditElement.updateElement({isDeleting: true});
-  };
+  setDeleting = () => this.#pointEditElement.updateElement({isDeleting: true});
 
-  setAborting() {
+  setAborting = () => {
     if (this.#pointMode === PointMode.DEFAULT) {
       this.#pointElement.shake();
       return;
     }
     const resetForm = () => this.#pointEditElement.updateElement({isSaving: false, isDeleting: false});
     this.#pointEditElement.shake(resetForm);
-  }
+  };
 
   destroy() {
     remove(this.#pointElement);

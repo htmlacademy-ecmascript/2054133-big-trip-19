@@ -7,8 +7,8 @@ import { getDestination, getOffer } from '../../utils/utils';
 function createPointTemplate (point, pointDestination, pointOffers) {
 
   const {type, basePrice, dateFrom, dateTo, isFavorite} = point;
-  const {name} = getDestination(point, pointDestination);
-  const {offers} = getOffer(point, pointOffers);
+  const {name} = getDestination(point, pointDestination) ?? {};
+  const {offers} = getOffer(point, pointOffers) ?? {};
 
   const differenceDays = dayjs(dateTo).diff(dateFrom, 'd');
   const differenceHours = dayjs(dateTo).diff(dateFrom, 'h') % Time.HOURS_IN_DAY;
@@ -97,17 +97,17 @@ export default class PointView extends AbstractView {
     this.#pointDestination = destination;
     this.#pointOffers = offers;
     this.#onButtonClick = onButtonClick;
-    this.#favoriteClickHandler = onFavoriteClick;
+    this.#onFavoriteButtonClick = onFavoriteClick;
 
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onButtonClick);
-    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#favoriteClickHandler);
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#onFavoriteButtonClick);
   }
 
   get template() {
     return createPointTemplate(this.#point, this.#pointDestination, this.#pointOffers);
   }
 
-  #favoriteClickHandler = () => {
+  #onFavoriteButtonClick = () => {
     this.#onFavoriteClick(this.#point.isFavorite);
   };
 }

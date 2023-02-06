@@ -12,42 +12,40 @@ const createInfoTemplate = (points, pointDestinations, pointsOffers, updatePoint
 
   const createInfoDestinationsELement = () => {
 
-    let citiesInfoElement = null;
+    let result = '<h1 class="trip-info__title">';
 
-    switch(filteredPoints.length) {
-      case 0:
-        citiesInfoElement = '<h1 class="trip-info__title"</h1>';
-        break;
-      case 1:
-        citiesInfoElement = `<h1 class="trip-info__title">${getDestination(filteredPoints[0], pointDestinations).name}</h1>`;
-        break;
-      case 2:
-        citiesInfoElement = `<h1 class="trip-info__title">${getDestination(filteredPoints[0], pointDestinations).name} &mdash; ${getDestination(filteredPoints[1], pointDestinations).name}</h1>`;
-        break;
-      case 3:
-        citiesInfoElement = `<h1 class="trip-info__title">${getDestination(filteredPoints[0], pointDestinations).name} &mdash; ${getDestination(filteredPoints[1], pointDestinations).name} &mdash; ${getDestination(filteredPoints[2], pointDestinations).name}</h1>`;
-        break;
-      default:
-        citiesInfoElement = `<h1 class="trip-info__title">${getDestination(filteredPoints[0], pointDestinations).name} &mdash; ... &mdash; ${getDestination(filteredPoints[filteredPoints.length - 1], pointDestinations).name}</h1>`;
+    if (filteredPoints.length <= 3) {
+      for (let i = 0; i < filteredPoints.length; i++) {
+        if (i < 1) {
+          result += `${getDestination(filteredPoints[i], pointDestinations).name}`;
+        }
+        if (i > 0) {
+          result += ' &mdash; ';
+          result += `${getDestination(filteredPoints[i], pointDestinations).name}`;
+        }
+      }
     }
-    return citiesInfoElement;
+    if (filteredPoints.length > 3) {
+      result += `${getDestination(filteredPoints[0], pointDestinations).name} &mdash; ... &mdash; ${getDestination(filteredPoints[filteredPoints.length - 1], pointDestinations).name}`;
+    }
+
+    result += '</h1>';
+    return result;
   };
 
   const createInfoDatesElement = () => {
 
-    let datesInfoElement = null;
+    let result = '<p class="trip-info__dates">';
 
-    switch (filteredPoints.length) {
-      case 0:
-        datesInfoElement = '<p class="trip-info__dates"></p>';
-        break;
-      case 1:
-        datesInfoElement = `<p class="trip-info__dates">${humanizeDate(filteredPoints[0].dateFrom, DateFormat.DATE)}</p>`;
-        break;
-      default:
-        datesInfoElement = `<p class="trip-info__dates">${humanizeDate(filteredPoints[0].dateFrom, DateFormat.DATE)}&nbsp;&mdash;&nbsp;${humanizeDate(filteredPoints[filteredPoints.length - 1].dateTo, DateFormat.DATE)}</p>`;
+    if (filteredPoints.length === 1) {
+      result += `${humanizeDate(filteredPoints[0].dateFrom, DateFormat.DATE)}`;
     }
-    return datesInfoElement;
+    if (filteredPoints.length > 1) {
+      result += `${humanizeDate(filteredPoints[0].dateFrom, DateFormat.DATE)}&nbsp;&mdash;&nbsp;${humanizeDate(filteredPoints[filteredPoints.length - 1].dateTo, DateFormat.DATE)}`;
+    }
+
+    result += '</p>';
+    return result;
   };
 
   const createTotalCostElement = () => {
@@ -67,38 +65,6 @@ const createInfoTemplate = (points, pointDestinations, pointsOffers, updatePoint
 
     return `<p class="trip-info__cost">Total: &euro;&nbsp;<span class="trip-info__cost-value">${totalPrice}</span></p>`;
   };
-
-  // const createTotalCostElementV2 = () => {
-
-  //   const getPointsSumPrice = () => {
-  //     const priceElements = document.querySelectorAll('.event__price-value');
-  //     let priceSum = 0;
-  //     for (const priceElement of priceElements) {
-  //       priceSum += Number(priceElement.textContent);
-  //     }
-  //     return priceSum;
-  //   };
-
-  //   const getPointsSumOffers = () => {
-  //     const offerElements = document.querySelectorAll('.event__offer .event__offer-price');
-  //     let offersSum = 0;
-  //     for (const offerElement of offerElements) {
-  //       offersSum += Number(offerElement.textContent);
-  //     }
-  //     return offersSum;
-  //   };
-
-  //   let costInfoElement = null;
-
-  //   switch (filteredPoints.length) {
-  //     case 0:
-  //       costInfoElement = '<p class="trip-info__cost">Total: &euro;&nbsp;<span class="trip-info__cost-value">0</span></p>';
-  //       break;
-  //     default:
-  //       costInfoElement = `<p class="trip-info__cost">Total: &euro;&nbsp;<span class="trip-info__cost-value">${getPointsSumPrice() + getPointsSumOffers()} </span></p>`;
-  //   }
-  //   return costInfoElement;
-  // };
 
   const infoDestinationsElement = createInfoDestinationsELement();
   const infoDatesElement = createInfoDatesElement();
