@@ -97,7 +97,7 @@ export default class AppPresenter {
   }
 
   init() {
-    this.renderButton();
+    this.#renderButton();
     this.renderLoading();
   }
 
@@ -162,7 +162,7 @@ export default class AppPresenter {
     render(this.#eventsInfoElement, this.#mainElement, RenderPosition.AFTERBEGIN);
   }
 
-  renderButton() {
+  #renderButton() {
     this.#buttonPresenter = new ButtonView(this.#onCreateButtonClick);
     render(this.#buttonPresenter, this.#mainElement);
     this.#buttonPresenter.element.disabled = true;
@@ -261,8 +261,8 @@ export default class AppPresenter {
   };
 
   #onCreateButtonClick = () => {
+    this.#onModeChange();
     this.#renderNewPoint();
-    this.#pointsPresenter.forEach((presenter) => presenter.resetView())
   };
 
   #onSortChange = (target) => {
