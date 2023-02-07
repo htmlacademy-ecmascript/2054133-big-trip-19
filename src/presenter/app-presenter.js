@@ -97,8 +97,109 @@ export default class AppPresenter {
   }
 
   init() {
-    this.#renderLoading();
+    this.#renderButton();
+    this.renderLoading();
   }
+
+  #renderPoint(point) {
+    this.#buttonPresenter.element.disabled = false;
+    this.#pointPresenter = new PointPresenter(this.#eventsListElement, this.#onViewDataChange, this.#onModeChange, this.typesOfPoints);
+    this.#pointPresenter.init(point, this.destinations, this.offers);
+    this.#pointsPresenter.set(point.id, this.#pointPresenter);
+  }
+
+  #renderPoints() {
+    this.filteredPoints.forEach((point) => this.#renderPoint(point));
+  }
+
+  #clearBoard(resetSortType) {
+    this.#pointsPresenter.forEach((presenter) => presenter.destroy());
+    this.#pointsPresenter.clear();
+    remove(this.#eventsSortElement);
+
+    if (resetSortType) {
+      this.#currentSortType = SortType.DAY;
+    }
+    if (this.#eventMessageElement) {
+      remove(this.#eventMessageElement);
+    }
+    if (this.loadingElement) {
+      remove(this.loadingElement);
+    }
+
+    if (this.#addNewPointPresenter) {
+      this.#addNewPointPresenter.destroy();
+    }
+
+    remove(this.#eventsInfoElement);
+  }
+
+  #renderBoard() {
+    if (!this.filteredPoints.length) {
+      this.#renderMessage();
+      remove(this.#eventsSortElement);
+      return;
+    }
+    this.#renderSort();
+
+    this.#renderPoints();
+    render(this.#eventsListElement, this.#eventsElement);
+    this.#renderInfo();
+  }
+
+  #renderSort() {
+    this.#eventsSortElement = new PointsSortView(SortType, this.#onSortChange, this.#currentSortType);
+    render(this.#eventsSortElement, this.#eventsElement);
+  }
+
+  #renderMessage() {
+    this.#eventMessageElement = new EventsMessage(this.currentFilter, this.#points.length);
+    render(this.#eventMessageElement, this.#eventsElement);
+  }
+
+  #renderInfo(updateData) {
+    this.#eventsInfoElement = new InfoView(this.#points, this.destinations, this.offers, updateData);
+    render(this.#eventsInfoElement, this.#mainElement, RenderPosition.AFTERBEGIN);
+  }
+
+  #renderButton() {
+    this.#buttonPresenter = new ButtonView(this.#onCreateButtonClick);
+    render(this.#buttonPresenter, this.#mainElement);
+    this.#buttonPresenter.element.disabled = true;
+  }
+
+  #renderNewPoint() {
+    this.#addNewPointPresenter = new AddPointPresenter(this.#eventsListElement, this.#destinations, this.#offers, this.typesOfPoints, this.#onViewDataChange, this.#destroyNewPoint);
+
+    if (this.#filterModel.currentFilter !== FilterType.EVERYTHING) {
+      this.#filterModel.setFilter(UpdatePoint.LARGE, FilterType.EVERYTHING);
+    }
+    this.#onSortChange(SortType.DAY);
+    this.#buttonPresenter.element.disabled = true;
+
+    this.#addNewPointPresenter.init();
+  }
+
+  renderLoading() {
+    this.#loadingElement = new LoadingPresenter();
+    render(this.#loadingElement, this.#eventsElement);
+  }
+
+  renderfilter() {
+    this.#filterPresenter = new FilterPresenter(this.#filtersElement, this.#filterModel, this.#pointModel);
+    this.#filterPresenter.init();
+  }
+
+  #destroyNewPoint = () => {
+    this.#buttonPresenter.element.disabled = false;
+  };
+
+  #onModeChange = () => {
+    if (this.#addNewPointPresenter) {
+      this.#addNewPointPresenter.destroy();
+    }
+    this.#pointsPresenter.forEach((presenter) => presenter.resetView());
+  };
 
   #onViewDataChange = async (actionType, updateType, data) => {
     this.#uiBlocker.block();
@@ -159,55 +260,10 @@ export default class AppPresenter {
     }
   };
 
-  #renderPoint(point) {
-    this.#pointPresenter = new PointPresenter(this.#eventsListElement, this.#onViewDataChange, this.#onModeChange, this.typesOfPoints);
-    this.#pointPresenter.init(point, this.destinations, this.offers);
-    this.#pointsPresenter.set(point.id, this.#pointPresenter);
-  }
-
-  #renderPoints() {
-    this.filteredPoints.forEach((point) => this.#renderPoint(point));
-  }
-
-  #clearBoard(resetSortType) {
-    this.#pointsPresenter.forEach((presenter) => presenter.destroy());
-    this.#pointsPresenter.clear();
-    remove(this.#eventsSortElement);
-
-    if (resetSortType) {
-      this.#currentSortType = SortType.DAY;
-    }
-    if (this.#eventMessageElement) {
-      remove(this.#eventMessageElement);
-    }
-    if (this.loadingElement) {
-      remove(this.loadingElement);
-    }
-
-    if (this.#addNewPointPresenter) {
-      this.#addNewPointPresenter.destroy();
-    }
-
-    remove(this.#eventsInfoElement);
-  }
-
-  #renderBoard() {
-    if (!this.filteredPoints.length) {
-      this.#renderMessage();
-      remove(this.#eventsSortElement);
-      return;
-    }
-    this.#renderSort();
-
-    this.#renderPoints();
-    render(this.#eventsListElement, this.#eventsElement);
-    this.#renderInfo();
-  }
-
-  #renderSort() {
-    this.#eventsSortElement = new PointsSortView(SortType, this.#onSortChange, this.#currentSortType);
-    render(this.#eventsSortElement, this.#eventsElement);
-  }
+  #onCreateButtonClick = () => {
+    this.#onModeChange();
+    this.#renderNewPoint();
+  };
 
   #onSortChange = (target) => {
     if (target === this.#currentSortType) {
@@ -220,54 +276,4 @@ export default class AppPresenter {
     this.#clearBoard();
     this.#renderBoard();
   };
-
-  #onModeChange = () => {
-    if (this.#addNewPointPresenter) {
-      this.#addNewPointPresenter.destroy();
-    }
-    this.#pointsPresenter.forEach((presenter) => presenter.resetView());
-  };
-
-  #renderMessage() {
-    this.#eventMessageElement = new EventsMessage(this.currentFilter, this.#points.length);
-    render(this.#eventMessageElement, this.#eventsElement);
-  }
-
-  #renderInfo(updateData) {
-    this.#eventsInfoElement = new InfoView(this.#points, this.destinations, this.offers, updateData);
-    render(this.#eventsInfoElement, this.#mainElement, RenderPosition.AFTERBEGIN);
-  }
-
-  renderButton() {
-    this.#buttonPresenter = new ButtonView(this.#onCreateButtonClick);
-    render(this.#buttonPresenter, this.#mainElement);
-  }
-
-  #onCreateButtonClick = () => this.#renderNewPoint();
-
-  #renderNewPoint() {
-    this.#addNewPointPresenter = new AddPointPresenter(this.#eventsListElement, this.#destinations, this.#offers, this.typesOfPoints, this.#onViewDataChange, this.#destroyNewPoint);
-
-    if (this.#filterModel.currentFilter !== FilterType.EVERYTHING) {
-      this.#filterModel.setFilter(UpdatePoint.LARGE, FilterType.EVERYTHING);
-    }
-    this.#onSortChange(SortType.DAY);
-    this.#buttonPresenter.element.disabled = true;
-
-    this.#addNewPointPresenter.init();
-  }
-
-  #destroyNewPoint = () => {
-    this.#buttonPresenter.element.disabled = false;
-  };
-
-  #renderLoading() {
-    this.#loadingElement = new LoadingPresenter();
-    render(this.#loadingElement, this.#eventsElement);
-  }
-
-  renderfilter() {
-    this.#filterPresenter = new FilterPresenter(this.#filtersElement, this.#filterModel, this.#pointModel);
-    this.#filterPresenter.init();
-  }
 }
