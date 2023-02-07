@@ -5,7 +5,6 @@ import EditPointView from '../view/main-views/edit-point-view';
 
 export default class AddPointPresenter {
 
-  #addPointElement = null;
   #eventsListElement = null;
   #destinations = null;
   #offers = null;
@@ -13,6 +12,7 @@ export default class AddPointPresenter {
   #onPointDataChange = null;
   #destroyNewPoint = null;
 
+  #addPointElement = null;
   #blankPoint = null;
 
   constructor(eventsListElement, destinations, offers, typesOfPoints, onPointDataChange, destroyNewPoint) {
@@ -38,6 +38,28 @@ export default class AddPointPresenter {
     document.addEventListener('keydown', this.#onEscKeydown);
   }
 
+  destroy() {
+    if (!this.#addPointElement) {
+      return;
+    }
+
+    remove(this.#addPointElement);
+    this.#addPointElement = null;
+
+    this.#destroyNewPoint();
+
+    document.removeEventListener('keydown', this.#onEscKeydown);
+  }
+
+  setSaving = () => {
+    this.#addPointElement.updateElement({isSaving: true});
+  };
+
+  setAborting() {
+    const resetForm = () => this.#addPointElement.updateElement({isSaving: false, isDeleting: false});
+    this.#addPointElement.shake(resetForm);
+  }
+
   #onFormSubmit = (point) => {
     this.#onPointDataChange(
       UserAction.ADD_POINT,
@@ -55,26 +77,4 @@ export default class AddPointPresenter {
       this.destroy();
     }
   };
-
-  setSaving = () => {
-    this.#addPointElement.updateElement({isSaving: true});
-  };
-
-  setAborting() {
-    const resetForm = () => this.#addPointElement.updateElement({isSaving: false, isDeleting: false});
-    this.#addPointElement.shake(resetForm);
-  }
-
-  destroy() {
-    if (!this.#addPointElement) {
-      return;
-    }
-
-    remove(this.#addPointElement);
-    this.#addPointElement = null;
-
-    this.#destroyNewPoint();
-
-    document.removeEventListener('keydown', this.#onEscKeydown);
-  }
 }

@@ -6,15 +6,31 @@ export default class PointModel extends Observable {
 
   #pointsApiService = null;
 
+  #points = [];
+  #destinations = [];
+  #offers = [];
+  #types = [];
+
   constructor(pointsApiService) {
     super();
     this.#pointsApiService = pointsApiService;
   }
 
-  #points = [];
-  #destinations = [];
-  #offers = [];
-  #types = [];
+  get typesOfPoints() {
+    return this.#types;
+  }
+
+  get points() {
+    return this.#points;
+  }
+
+  get destinations() {
+    return this.#destinations;
+  }
+
+  get offers() {
+    return this.#offers;
+  }
 
   async init() {
     this.#points = await this.#pointsApiService.points();
@@ -69,22 +85,5 @@ export default class PointModel extends Observable {
     catch(err) {
       throw new Error('Can/t delete point');
     }
-  }
-
-  get typesOfPoints() {
-
-    return this.#types;
-  }
-
-  get points() {
-    return this.#points;
-  }
-
-  get destinations() {
-    return this.#destinations;
-  }
-
-  get offers() {
-    return this.#offers;
   }
 }

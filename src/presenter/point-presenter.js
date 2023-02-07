@@ -78,6 +78,41 @@ export default class PointPresenter {
     remove(prevPointEditElement);
   }
 
+  #replacePointToForm = () => {
+    replace(this.#pointEditElement, this.#pointElement);
+    this.#onModeChange();
+    document.addEventListener('keydown', this.#onEscKeydown);
+    this.#pointMode = PointMode.EDITING;
+  };
+
+  #replaceFormToPoint() {
+    replace(this.#pointElement, this.#pointEditElement);
+    document.removeEventListener('keydown', this.#onEscKeydown);
+    this.#pointMode = PointMode.DEFAULT;
+  }
+
+  resetView = () => this.#pointMode !== PointMode.DEFAULT ? this.#replaceFormToPoint() : '';
+
+  setSaving = () => this.#pointMode === PointMode.EDITING ? this.#pointEditElement.updateElement({isSaving: true}) : '';
+
+  setDeleting = () => this.#pointEditElement.updateElement({isDeleting: true});
+
+  setAborting = () => {
+    if (this.#pointMode === PointMode.DEFAULT) {
+      this.#pointElement.shake();
+      return;
+    }
+    const resetForm = () => this.#pointEditElement.updateElement({isSaving: false, isDeleting: false});
+    this.#pointEditElement.shake(resetForm);
+  };
+
+  destroy() {
+    remove(this.#pointElement);
+    remove(this.#pointEditElement);
+    this.#pointElement = null;
+    this.#pointEditElement = null;
+  }
+
   #onArrowClick = () => {
     this.#pointEditElement.reset(this.#point);
     this.#replaceFormToPoint();
@@ -130,39 +165,4 @@ export default class PointPresenter {
       this.#replaceFormToPoint();
     }
   };
-
-  #replacePointToForm = () => {
-    replace(this.#pointEditElement, this.#pointElement);
-    this.#onModeChange();
-    document.addEventListener('keydown', this.#onEscKeydown);
-    this.#pointMode = PointMode.EDITING;
-  };
-
-  #replaceFormToPoint() {
-    replace(this.#pointElement, this.#pointEditElement);
-    document.removeEventListener('keydown', this.#onEscKeydown);
-    this.#pointMode = PointMode.DEFAULT;
-  }
-
-  resetView = () => this.#pointMode !== PointMode.DEFAULT ? this.#replaceFormToPoint() : '';
-
-  setSaving = () => this.#pointMode === PointMode.EDITING ? this.#pointEditElement.updateElement({isSaving: true}) : '';
-
-  setDeleting = () => this.#pointEditElement.updateElement({isDeleting: true});
-
-  setAborting = () => {
-    if (this.#pointMode === PointMode.DEFAULT) {
-      this.#pointElement.shake();
-      return;
-    }
-    const resetForm = () => this.#pointEditElement.updateElement({isSaving: false, isDeleting: false});
-    this.#pointEditElement.shake(resetForm);
-  };
-
-  destroy() {
-    remove(this.#pointElement);
-    remove(this.#pointEditElement);
-    this.#pointElement = null;
-    this.#pointEditElement = null;
-  }
 }

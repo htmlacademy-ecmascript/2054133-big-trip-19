@@ -2,6 +2,7 @@ import Observable from '../framework/observable';
 import { FilterType } from '../utils/const';
 
 export default class FilterModel extends Observable {
+
   #filter = FilterType.EVERYTHING;
 
   get currentFilter() {
