@@ -15,15 +15,15 @@ const createInfoTemplate = (points, pointDestinations, pointsOffers, updatePoint
     let result = '<h1 class="trip-info__title">';
 
     if (filteredPoints.length <= 3) {
-      for (let i = 0; i < filteredPoints.length; i++) {
-        if (i < 1) {
-          result += `${getDestination(filteredPoints[i], pointDestinations).name}`;
+      filteredPoints.forEach((point) => {
+        if (point < 1) {
+          result += `${getDestination(point, pointDestinations).name}`;
         }
-        if (i > 0) {
+        if (point > 0) {
           result += ' &mdash; ';
-          result += `${getDestination(filteredPoints[i], pointDestinations).name}`;
+          result += `${getDestination(point, pointDestinations).name}`;
         }
-      }
+      });
     }
     if (filteredPoints.length > 3) {
       result += `${getDestination(filteredPoints[0], pointDestinations).name} &mdash; ... &mdash; ${getDestination(filteredPoints[filteredPoints.length - 1], pointDestinations).name}`;
