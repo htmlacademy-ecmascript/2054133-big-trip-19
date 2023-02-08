@@ -32,7 +32,6 @@ export default class AppPresenter {
   #typesOfPoints = null;
 
   #currentSortType = SortType.DAY;
-  #isLoading = true;
 
   #pointsPresenter = new Map();
 
@@ -240,7 +239,6 @@ export default class AppPresenter {
   #onModelDataChange = (updateType, data) => {
     switch(updateType) {
       case UpdatePoint.INIT:
-        this.#isLoading = false;
         remove(this.#loadingElement);
         this.#renderBoard({resetSort: true});
         break;
