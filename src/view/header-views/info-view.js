@@ -15,15 +15,15 @@ const createInfoTemplate = (points, pointDestinations, pointsOffers, updatePoint
     let result = '<h1 class="trip-info__title">';
 
     if (filteredPoints.length <= 3) {
-      for (let i = 0; i < filteredPoints.length; i++) {
-        if (i < 1) {
-          result += `${getDestination(filteredPoints[i], pointDestinations).name}`;
+      filteredPoints.forEach((point, index) => {
+        if (index < 1) {
+          result += `${getDestination(point, pointDestinations).name}`;
         }
-        if (i > 0) {
+        if (index > 0) {
           result += ' &mdash; ';
-          result += `${getDestination(filteredPoints[i], pointDestinations).name}`;
+          result += `${getDestination(point, pointDestinations).name}`;
         }
-      }
+      });
     }
     if (filteredPoints.length > 3) {
       result += `${getDestination(filteredPoints[0], pointDestinations).name} &mdash; ... &mdash; ${getDestination(filteredPoints[filteredPoints.length - 1], pointDestinations).name}`;
@@ -37,10 +37,7 @@ const createInfoTemplate = (points, pointDestinations, pointsOffers, updatePoint
 
     let result = '<p class="trip-info__dates">';
 
-    if (filteredPoints.length === 1) {
-      result += `${humanizeDate(filteredPoints[0].dateFrom, DateFormat.DATE)}`;
-    }
-    if (filteredPoints.length > 1) {
+    if (filteredPoints.length > 0) {
       result += `${humanizeDate(filteredPoints[0].dateFrom, DateFormat.DATE)}&nbsp;&mdash;&nbsp;${humanizeDate(filteredPoints[filteredPoints.length - 1].dateTo, DateFormat.DATE)}`;
     }
 

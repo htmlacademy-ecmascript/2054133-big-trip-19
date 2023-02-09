@@ -78,19 +78,6 @@ export default class PointPresenter {
     remove(prevPointEditElement);
   }
 
-  #replacePointToForm = () => {
-    replace(this.#pointEditElement, this.#pointElement);
-    this.#onModeChange();
-    document.addEventListener('keydown', this.#onEscKeydown);
-    this.#pointMode = PointMode.EDITING;
-  };
-
-  #replaceFormToPoint() {
-    replace(this.#pointElement, this.#pointEditElement);
-    document.removeEventListener('keydown', this.#onEscKeydown);
-    this.#pointMode = PointMode.DEFAULT;
-  }
-
   resetView = () => this.#pointMode !== PointMode.DEFAULT ? this.#replaceFormToPoint() : '';
 
   setSaving = () => this.#pointMode === PointMode.EDITING ? this.#pointEditElement.updateElement({isSaving: true}) : '';
@@ -111,6 +98,19 @@ export default class PointPresenter {
     remove(this.#pointEditElement);
     this.#pointElement = null;
     this.#pointEditElement = null;
+  }
+
+  #replacePointToForm = () => {
+    replace(this.#pointEditElement, this.#pointElement);
+    this.#onModeChange();
+    document.addEventListener('keydown', this.#onEscKeydown);
+    this.#pointMode = PointMode.EDITING;
+  };
+
+  #replaceFormToPoint() {
+    replace(this.#pointElement, this.#pointEditElement);
+    document.removeEventListener('keydown', this.#onEscKeydown);
+    this.#pointMode = PointMode.DEFAULT;
   }
 
   #onArrowClick = () => {

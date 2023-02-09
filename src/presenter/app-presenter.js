@@ -32,7 +32,6 @@ export default class AppPresenter {
   #typesOfPoints = null;
 
   #currentSortType = SortType.DAY;
-  #isLoading = true;
 
   #pointsPresenter = new Map();
 
@@ -99,6 +98,16 @@ export default class AppPresenter {
   init() {
     this.#renderButton();
     this.renderLoading();
+  }
+
+  renderLoading() {
+    this.#loadingElement = new LoadingPresenter();
+    render(this.#loadingElement, this.#eventsElement);
+  }
+
+  renderfilter() {
+    this.#filterPresenter = new FilterPresenter(this.#filtersElement, this.#filterModel, this.#pointModel);
+    this.#filterPresenter.init();
   }
 
   #renderPoint(point) {
@@ -180,16 +189,6 @@ export default class AppPresenter {
     this.#addNewPointPresenter.init();
   }
 
-  renderLoading() {
-    this.#loadingElement = new LoadingPresenter();
-    render(this.#loadingElement, this.#eventsElement);
-  }
-
-  renderfilter() {
-    this.#filterPresenter = new FilterPresenter(this.#filtersElement, this.#filterModel, this.#pointModel);
-    this.#filterPresenter.init();
-  }
-
   #destroyNewPoint = () => {
     this.#buttonPresenter.element.disabled = false;
   };
@@ -240,7 +239,6 @@ export default class AppPresenter {
   #onModelDataChange = (updateType, data) => {
     switch(updateType) {
       case UpdatePoint.INIT:
-        this.#isLoading = false;
         remove(this.#loadingElement);
         this.#renderBoard({resetSort: true});
         break;
