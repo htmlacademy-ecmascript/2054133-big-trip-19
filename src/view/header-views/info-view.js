@@ -15,11 +15,11 @@ const createInfoTemplate = (points, pointDestinations, pointsOffers, updatePoint
     let result = '<h1 class="trip-info__title">';
 
     if (filteredPoints.length <= 3) {
-      filteredPoints.forEach((point) => {
-        if (point < 1) {
+      filteredPoints.forEach((point, index) => {
+        if (index < 1) {
           result += `${getDestination(point, pointDestinations).name}`;
         }
-        if (point > 0) {
+        if (index > 0) {
           result += ' &mdash; ';
           result += `${getDestination(point, pointDestinations).name}`;
         }
@@ -37,10 +37,7 @@ const createInfoTemplate = (points, pointDestinations, pointsOffers, updatePoint
 
     let result = '<p class="trip-info__dates">';
 
-    if (filteredPoints.length === 1) {
-      result += `${humanizeDate(filteredPoints[0].dateFrom, DateFormat.DATE)}`;
-    }
-    if (filteredPoints.length > 1) {
+    if (filteredPoints.length > 0) {
       result += `${humanizeDate(filteredPoints[0].dateFrom, DateFormat.DATE)}&nbsp;&mdash;&nbsp;${humanizeDate(filteredPoints[filteredPoints.length - 1].dateTo, DateFormat.DATE)}`;
     }
 
