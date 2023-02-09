@@ -100,6 +100,16 @@ export default class AppPresenter {
     this.renderLoading();
   }
 
+  renderLoading() {
+    this.#loadingElement = new LoadingPresenter();
+    render(this.#loadingElement, this.#eventsElement);
+  }
+
+  renderfilter() {
+    this.#filterPresenter = new FilterPresenter(this.#filtersElement, this.#filterModel, this.#pointModel);
+    this.#filterPresenter.init();
+  }
+
   #renderPoint(point) {
     this.#buttonPresenter.element.disabled = false;
     this.#pointPresenter = new PointPresenter(this.#eventsListElement, this.#onViewDataChange, this.#onModeChange, this.typesOfPoints);
@@ -177,16 +187,6 @@ export default class AppPresenter {
     this.#buttonPresenter.element.disabled = true;
 
     this.#addNewPointPresenter.init();
-  }
-
-  renderLoading() {
-    this.#loadingElement = new LoadingPresenter();
-    render(this.#loadingElement, this.#eventsElement);
-  }
-
-  renderfilter() {
-    this.#filterPresenter = new FilterPresenter(this.#filtersElement, this.#filterModel, this.#pointModel);
-    this.#filterPresenter.init();
   }
 
   #destroyNewPoint = () => {

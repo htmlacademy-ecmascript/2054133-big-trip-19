@@ -27,14 +27,14 @@ export default class PointsSortView extends AbstractView {
     this.element.addEventListener('click', this.#sortClickHandler);
   }
 
+  get template() {
+    return createEventsSortTemplate(this.#sortType, this.#currentSort);
+  }
+
   #sortClickHandler = (evt) => {
     if (evt.target.tagName !== 'INPUT') {
       return;
     }
     this.#onSortClick(evt.target.dataset.sortType);
   };
-
-  get template() {
-    return createEventsSortTemplate(this.#sortType, this.#currentSort);
-  }
 }
